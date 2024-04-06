@@ -35,6 +35,7 @@
 #include "driver_joystick.h"
 #include "driver_oled.h"
 #include "UI.h"
+#include "menu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -133,20 +134,13 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-	extern UIPage UIpages[10];
-	OLED_Init();
-	OLED_CLS();
+	MenuInit();
+	vTaskDelay(3000);
   /* Infinite loop */
   for(;;)
   {
-	  int i = 0;
-	  for(i=0; i<9; i++){
-		OLED_CLS();
-		showPage(UIpages, i);
-		vTaskDelay(3000);
-	  }
-	
-    osDelay(1);
+	PageDown();
+	vTaskDelay(3000);
   }
   /* USER CODE END StartDefaultTask */
 }

@@ -43,6 +43,7 @@
 "drivertester_f407\mpu6050_iic.o"
 "drivertester_f407\driver_led.o"
 "drivertester_f407\ui.o"
+"drivertester_f407\menu.o"
 "drivertester_f407\croutine.o"
 "drivertester_f407\event_groups.o"
 "drivertester_f407\list.o"

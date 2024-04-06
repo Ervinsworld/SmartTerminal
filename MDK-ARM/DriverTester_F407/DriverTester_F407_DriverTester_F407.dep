@@ -94,7 +94,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65F26B4F)
-F (../Core/Src/freertos.c)(0x66111B19)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\freertos.o --omf_browse drivertester_f407\freertos.crf --depend drivertester_f407\freertos.d)
+F (../Core/Src/freertos.c)(0x66115135)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\freertos.o --omf_browse drivertester_f407\freertos.crf --depend drivertester_f407\freertos.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x65F26B51)
 I (D:\MDK5\ARM\ARMCC\include\stddef.h)(0x5475F300)
 I (D:\MDK5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -152,7 +152,8 @@ I (../Drivers/USER_Driver/driver_led.h)(0x65044FBC)
 I (../Drivers/USER_Driver/driver_joystick.h)(0x66078CB0)
 I (../Drivers/USER_Driver/driver_oled.h)(0x66101C30)
 I (../Core/Inc/i2c.h)(0x65F51A9A)
-I (..\GimbalApp\UI\UI.h)(0x661119CD)
+I (..\GimbalApp\UI\UI.h)(0x66114F56)
+I (..\GimbalApp\UI\menu.h)(0x661150A3)
 F (../Core/Src/adc.c)(0x660F8DB7)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\adc.o --omf_browse drivertester_f407\adc.crf --depend drivertester_f407\adc.d)
 I (../Core/Inc/adc.h)(0x660F8DB7)
 I (../Core/Inc/main.h)(0x65F5BA1B)
@@ -1278,7 +1279,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65F26B4F)
-F (..\Drivers\USER_Driver\driver_oled.c)(0x6610FDA1)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\driver_oled.o --omf_browse drivertester_f407\driver_oled.crf --depend drivertester_f407\driver_oled.d)
+F (..\Drivers\USER_Driver\driver_oled.c)(0x66111F32)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\driver_oled.o --omf_browse drivertester_f407\driver_oled.crf --depend drivertester_f407\driver_oled.d)
 I (..\Drivers\USER_Driver\driver_oled.h)(0x66101C30)
 I (../Core/Inc/i2c.h)(0x65F51A9A)
 I (../Core/Inc/main.h)(0x65F5BA1B)
@@ -1613,8 +1614,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65F26B4F)
-F (..\GimbalApp\UI\UI.c)(0x66111B55)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\ui.o --omf_browse drivertester_f407\ui.crf --depend drivertester_f407\ui.d)
-I (..\GimbalApp\UI\UI.h)(0x661119CD)
+F (..\GimbalApp\UI\UI.c)(0x66114EBC)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\ui.o --omf_browse drivertester_f407\ui.crf --depend drivertester_f407\ui.d)
+I (..\GimbalApp\UI\UI.h)(0x66114F56)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65F26B4F)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x660F8DB9)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x65F26B4F)
@@ -1656,6 +1657,48 @@ I (../Drivers/USER_Driver/driver_oled.h)(0x66101C30)
 I (../Core/Inc/i2c.h)(0x65F51A9A)
 I (../Core/Inc/main.h)(0x65F5BA1B)
 I (D:\MDK5\ARM\ARMCC\include\string.h)(0x5475F300)
+F (..\GimbalApp\UI\menu.c)(0x661151A4)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\menu.o --omf_browse drivertester_f407\menu.crf --depend drivertester_f407\menu.d)
+I (../Drivers/USER_Driver/driver_oled.h)(0x66101C30)
+I (../Core/Inc/i2c.h)(0x65F51A9A)
+I (../Core/Inc/main.h)(0x65F5BA1B)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65F26B4F)
+I (../Core/Inc/stm32f4xx_hal_conf.h)(0x660F8DB9)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h)(0x65F26B4F)
+I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h)(0x65F26B4C)
+I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h)(0x65F26B4C)
+I (../Drivers/CMSIS/Include/core_cm4.h)(0x65F26B4F)
+I (D:\MDK5\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (../Drivers/CMSIS/Include/cmsis_version.h)(0x65F26B4F)
+I (../Drivers/CMSIS/Include/cmsis_compiler.h)(0x65F26B4F)
+I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x65F26B4F)
+I (../Drivers/CMSIS/Include/mpu_armv7.h)(0x65F26B4F)
+I (../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h)(0x65F26B4C)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h)(0x65F26B4F)
+I (D:\MDK5\ARM\ARMCC\include\stddef.h)(0x5475F300)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_adc.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_can.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x65F26B4F)
+I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x65F26B4F)
+I (..\GimbalApp\UI\UI.h)(0x66114F56)
+I (..\GimbalApp\UI\menu.h)(0x661150A3)
 F (../Middlewares/Third_Party/FreeRTOS/Source/croutine.c)(0x65F26B51)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I..\GimbalApp\UI-I C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\croutine.o --omf_browse drivertester_f407\croutine.crf --depend drivertester_f407\croutine.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x65F26B51)
 I (D:\MDK5\ARM\ARMCC\include\stddef.h)(0x5475F300)
