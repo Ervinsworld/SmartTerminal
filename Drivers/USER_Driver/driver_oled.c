@@ -1,716 +1,243 @@
-// SPDX-License-Identifier: GPL-3.0-only
-/*
- * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
- * Discourse:  https://forums.100ask.net
- */
-
- 
-/*  Copyright (C) 2008-2023 深圳百问网科技有限公司
- *  All rights reserved
- *
- *
- * 免责声明: 百问网编写的文档，仅供学员学习使用，可以转发或引用(请保留作者信息)，禁止用于商业用途！
- * 免责声明: 百问网编写的程序，可以用于商业用途，但百问网不承担任何后果！
- * 
- * 
- * 本程序遵循GPL V3协议，使用请遵循协议许可
- * 本程序所用的开发板：	DShanMCU-F103
- * 百问网嵌入式学习平台：https://www.100ask.net
- * 百问网技术交流社区：	https://forums.100ask.net
- * 百问网官方B站：				https://space.bilibili.com/275908810
- * 百问网官方淘宝：			https://100ask.taobao.com
- * 联系我们(E-mail)：	  weidongshan@qq.com
- *
- * 版权所有，盗版必究。
- *  
- * 修改历史     版本号           作者        修改内容
- *-----------------------------------------------------
- * 2023.08.04      v01         百问科技      创建文件
- *-----------------------------------------------------
- */
-
-/*
-	修改oled驱动适配：0.96寸 改为 1.3寸
-	只需修改:OLED_SetColAddr_PAGE函数即可
-*/
-
 #include "driver_oled.h"
-#include "ascii_font.c"
-#include "stm32f4xx_hal.h"
-
-
-/*
-    全屏点亮或者熄灭
-*/
-#define ENTIRE_DISP_ON()       OLED_WriteCmd(0xA5) 
-#define ENTIRE_DISP_OFF()      OLED_WriteCmd(0xA4) 
-/*
-    阴码显示或者阳码显示
-*/
-#define DISP_NORMAL()          OLED_WriteCmd(0xA6)  
-#define DISP_INVERSE()         OLED_WriteCmd(0xA7)
-/*
-    打开显示或者关闭显示
-*/
-#define DISP_ON()              OLED_WriteCmd(0xAF) 
-#define DISP_OFF()             OLED_WriteCmd(0xAE) 
-
-/* 2. 滚动命令功能函数 */
-typedef enum
-{
-    H_RIGHT     = 0x26,
-    H_LEFT      = 0x27,
-}H_SCROLL_DIR;  // 水平滚动方向
-
-
-typedef enum
-{
-    HV_RIGHT    = 0x29,
-    HV_LEFT     = 0x2A,
-}HV_SCROLL_DIR;     // 水平和垂直滚动的方向
-
-
-/* 
-    开始或者停止滚动
-*/
-#define SCROLL_ON()             OLED_WriteCmd(0x2F)
-#define SCROLL_OFF()            OLED_WriteCmd(0x2E)
-
-
-/* 3. 地址设置功能函数 */
-typedef enum
-{
-    H_ADDR_MODE     = 0,    // 水平地址模式
-    V_ADDR_MODE     = 1,    // 垂直地址模式
-    PAGE_ADDR_MODE  = 2,    // 页地址模式
-}MEM_MODE;  // 内存地址模式
-
-
-/*
-    行地址翻转或者不翻转
-*/
-#define OLED_SEG_REMAP()        OLED_WriteCmd(0xA1)
-#define OLED_SEG_NOREMAP()      OLED_WriteCmd(0xA0)
-
-
-/*
-    COM引脚扫描方向正常扫描或者逆扫描
-*/
-#define OLED_SCAN_NORMAL()      OLED_WriteCmd(0xC0)
-#define OLED_SCAN_REMAP()       OLED_WriteCmd(0xC8)
-
-
-typedef enum
-{
-    COM_PIN_SEQ     = 0,
-    COM_PIN_ALT     = 1,
-}COM_PINS_MODE; // COM引脚属性
-typedef enum
-{
-    COM_NOREMAP     = 0,
-    COM_REMAP       = 1,
-}COM_REMAP_STATE;   // COM引脚翻转
-
-    
-typedef enum
-{
-    LEVEL_0     = 0x00,
-    LEVEL_1     = 0x20,
-    LEVEL_2     = 0x30,
-}VCOMH_LEVEL;   // 电压等级
-
-/* 6. 电荷碰撞功能函数 */
-typedef enum
-{
-    PUMP_DISABLE    = 0,
-    PUMP_ENABLE     = 1,
-}CHARGE_PUMP_STATE; // 打开或者关闭电荷泵
-
-
-#define OELD_I2C_ADDR 0x78
-#define OLED_TIMEOUT  500
-extern I2C_HandleTypeDef hi2c1;
-static I2C_HandleTypeDef *g_pHI2COLED = &hi2c1;
-
-/*
- *  函数名：OLED_WriteCmd
- *  功能描述：I2C发送命令给OLED
- *  输入参数：cmd-发送给OLED的命令
- *  输出参数：无
- *  返回值：0-成功, 其他值失败
- */
-static int OLED_WriteCmd(uint8_t cmd)
-{
-    uint8_t tmpbuf[2];
-
-    tmpbuf[0] = 0;
-    tmpbuf[1] = cmd;
-    
-    return HAL_I2C_Master_Transmit(g_pHI2COLED, OELD_I2C_ADDR, tmpbuf, 2, OLED_TIMEOUT);
-}
-
-/*
- *  函数名：OLED_WriteData
- *  功能描述：I2C发送命令给OLED
- *  输入参数：data-发送给OLED的写入GDRAM的数据
- *  输出参数：无
- *  返回值：0-成功, 其他值失败
- */
-static int OLED_WriteData(uint8_t data)
-{
-    uint8_t tmpbuf[2];
-
-    tmpbuf[0] = 0x40;
-    tmpbuf[1] = data;
-    
-    return HAL_I2C_Master_Transmit(g_pHI2COLED, OELD_I2C_ADDR, tmpbuf, 2, OLED_TIMEOUT);
-}
-
-/*
- *  函数名：OLED_WriteNBytes
- *  功能描述：连续发送N个写入显存的数据
- *  输入参数：buf         - 数据buffer
- *            length - 数据个数
- *  输出参数：无
- *  返回值：0-成功, 其他值失败
- */
-static int OLED_WriteNBytes(uint8_t *buf, uint16_t length)
-{
-    return HAL_I2C_Mem_Write(g_pHI2COLED, OELD_I2C_ADDR, 0x40, 1, buf, length, OLED_TIMEOUT);
-}
-
-/************** 1. 基础命令功能函数 **************/
-/*
- *  函数名：OLED_SetContrastValue
- *  功能描述：设置OLED的对比度：发送命令0x81--->发送对比度值
- *  输入参数：value --> 对比度值，范围0~255
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetContrastValue(uint8_t value)
-{
-    OLED_WriteCmd(0x81);
-    OLED_WriteCmd(value);
-}
-
-/************** 2. 滚动命令功能函数 **************/
-/*
- *  函数名：OLED_H_Scroll
- *  功能描述：让指定页的像素朝着设置的方向按设置的频率水平滚动
- *  输入参数：dir--->滚动方向：朝左或者朝右
- *            start--->起始页
- *            fr_time--->滚动间隔时间，每隔这么多帧水平偏移一列滚动
- *            end--->结束页
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_H_Scroll(H_SCROLL_DIR dir, uint8_t start, uint8_t fr_time, uint8_t end)
-{
-    if((dir != H_RIGHT) && (dir != H_LEFT))     return;
-    if((start>0x07) || (fr_time>0x07) || (end>0x07))    return;
-    OLED_WriteCmd(dir);
-    OLED_WriteCmd(0x00);
-    OLED_WriteCmd(start);
-    OLED_WriteCmd(fr_time);
-    OLED_WriteCmd(end);
-    OLED_WriteCmd(0x00);
-    OLED_WriteCmd(0xFF);
-}
-
-/*
- *  函数名：OLED_HV_Scroll
- *  功能描述：让指定页的像素朝着设置的方向按设置的频率水平滚动且会将像素的行地址进行偏移offset这么多个单位
- *  输入参数：dir--->滚动方向：朝左或者朝右
- *            start--->起始页
- *            fr_time--->滚动间隔时间，每隔这么多帧水平偏移一列滚动
- *            end--->结束页
- *            offset--->行偏移单位
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_HV_Scroll(HV_SCROLL_DIR dir, uint8_t start, uint8_t fr_time, uint8_t end, uint8_t offset)
-{
-    if((dir != HV_RIGHT) && (dir != HV_LEFT))     return;
-    if((start>0x07) || (fr_time>0x07) || (end>0x07) || (offset>0x3F))    return;
-    OLED_WriteCmd(dir);
-    OLED_WriteCmd(0x00);
-    OLED_WriteCmd(start);
-    OLED_WriteCmd(fr_time);
-    OLED_WriteCmd(end);
-    OLED_WriteCmd(offset);
-}
-
-/*
- *  函数名：OLED_SetVScrollArea
- *  功能描述：设置OLED像素垂直滚动的区域
- *  输入参数：area-->顶行区域
- *            row_num--->滚动的行区域
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetVScrollArea(uint8_t area, uint8_t row_num)
-{
-    if((area>0x3F) || (row_num>0x7F))       return;
-    OLED_WriteCmd(0xA3);
-    OLED_WriteCmd(area);
-    OLED_WriteCmd(row_num);
-}
-
-/************** 3. 地址设置功能函数 **************/
-static MEM_MODE mem_mode = PAGE_ADDR_MODE;  // 静态局部变量，保存OLED的地址模式的
-
-/*
- *  函数名：OLED_SetColAddr_PAGE
- *  功能描述：设置OLED在页地址模式下的显示起始行地址
- *  输入参数：addr-->起始行地址
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetColAddr_PAGE(uint8_t addr)
-{
-    if(mem_mode != PAGE_ADDR_MODE)  return;
-    if(addr > 0x7F)   return;
-    //OLED_WriteCmd(0x00 + (addr & 0x0F));//oled 0.96
-	OLED_WriteCmd(0x02 + (addr & 0x0F));//oled 1.3
-    OLED_WriteCmd(0x10 + (addr>>4));
-}
-
-/*
- *  函数名：OLED_SetMemAddrMode
- *  功能描述：设置OLED的地址模式
- *  输入参数：mode-->地址模式：页地址模式、水平地址模式、垂直地址模式
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetMemAddrMode(MEM_MODE mode)
-{
-    if((mode != H_ADDR_MODE) && (mode != V_ADDR_MODE) && (mode != PAGE_ADDR_MODE))      return;
-    OLED_WriteCmd(0x20);
-    OLED_WriteCmd(mode);
-    mem_mode = mode;
-}
-
-/*
- *  函数名：OLED_SetColAddr_HV
- *  功能描述：设置OLED在水平地址模式或垂直地址模式下像素显示的起始行地址和结束行地址
- *  输入参数：start-->起始行地址
- *            end --->结束行地址
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetColAddr_HV(uint8_t start, uint8_t end)
-{
-    if(mem_mode == PAGE_ADDR_MODE)      return;
-    if((start > 127) || (end > 127))    return;
-    OLED_WriteCmd(0x21);
-    OLED_WriteCmd(start);
-    OLED_WriteCmd(end);
-}
-
-/*
- *  函数名：OLED_SetPageAddr_HV
- *  功能描述：设置OLED在水平地址模式或垂直地址模式下像素显示的起始页地址和结束页地址
- *  输入参数：start-->起始页地址
- *            end --->结束页地址
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetPageAddr_HV(uint8_t start, uint8_t end)
-{
-    if(mem_mode == PAGE_ADDR_MODE)      return;
-    if((start > 7) || (end > 7))        return; 
-    OLED_WriteCmd(0x22);
-    OLED_WriteCmd(start);
-    OLED_WriteCmd(end);
-}
-
-/*
- *  函数名：OLED_SetPageAddr_PAGE
- *  功能描述：设置OLED在页地址模式下的显示起始页地址
- *  输入参数：addr-->起始页地址
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetPageAddr_PAGE(uint8_t addr)
-{
-    if(mem_mode != PAGE_ADDR_MODE)  return;
-    if(addr > 7)   return;
-    OLED_WriteCmd(0xB0 + addr);
-}
-
-/************** 4. 硬件配置功能函数 **************/
-/*
- *  函数名：OLED_SetDispStartLine
- *  功能描述：设置OLED从第line行开始显示，即将默认的0行偏移至line那一行
- *  输入参数：line-->显示的起始行
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetDispStartLine(uint8_t line)
-{
-    if(line > 63)       return;
-    OLED_WriteCmd(0x40 + line);
-}
-
-/*
- *  函数名：OLED_SetMuxRatio
- *  功能描述：设置OLED复用率
- *  输入参数：ratio-->复用率值
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetMuxRatio(uint8_t ratio)
-{
-    if((ratio < 15) || (ratio > 63))      return;
-    OLED_WriteCmd(0xA8);
-    OLED_WriteCmd(ratio);
-}
-
-/*
- *  函数名：OLED_SetDispOffset
- *  功能描述：设置OLED的COM引脚偏移值
- *  输入参数：offset-->COM偏移值
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetDispOffset(uint8_t offset)
-{
-    if(offset > 63)     return;
-    OLED_WriteCmd(0xD3);
-    OLED_WriteCmd(offset);
-}
-
-/*
- *  函数名：OLED_SetComConfig
- *  功能描述：设置OLED的COM引脚属性
- *  输入参数：mode-->COM引脚模式是连续的还是可选择的
- *            state-->COM引脚翻转与否
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetComConfig(COM_PINS_MODE mode, COM_REMAP_STATE state)
-{
-    if((mode != COM_PIN_SEQ) && (mode != COM_PIN_ALT))      return;
-    if((state != COM_NOREMAP) && (state != COM_REMAP))      return;
-    
-    OLED_WriteCmd(0xDA);
-    OLED_WriteCmd(0x02 + (mode << 4) + (state << 5));
-}
-
-/************** 5. 时间设置功能函数 **************/
-/*
- *  函数名：OLED_SetDCLK_Freq
- *  功能描述：设置OLED的扫描周期和晶振频率
- *  输入参数：div-->时钟分频系数
- *            freq-->晶振频率
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetDCLK_Freq(uint8_t div, uint8_t freq)
-{
-    if((div>0x0F) || (freq>0x0F))       return;
-    OLED_WriteCmd(0xD5);
-    OLED_WriteCmd(div + (freq<<4));
-}
-
-/*
- *  函数名：OLED_SetPreChargePeriod
- *  功能描述：设置OLED的预充电周期
- *  输入参数：phase1-->预充电阶段1时间
- *            phase2-->预充电阶段2时间
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetPreChargePeriod(uint8_t phase1, uint8_t phase2)
-{
-    if((phase1>0x0F) || (phase2>0x0F))       return;
-    OLED_WriteCmd(0xD9);
-    OLED_WriteCmd(phase1 + (phase2<<4));    
-}
-
-/*
- *  函数名：OLED_SetVcomhLevel
- *  功能描述：设置OLED的电压等级
- *  输入参数：level-->电压等级
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetVcomhLevel(VCOMH_LEVEL level)
-{
-    if((level != LEVEL_0) && (level != LEVEL_1) && (level != LEVEL_2))      return;
-    OLED_WriteCmd(0xDB);
-    OLED_WriteCmd(level);
-}
-
-/************** 6. 电荷碰撞功能函数 **************/
-/*
- *  函数名：OLED_SetChargePump
- *  功能描述：打开或关闭OLED的电荷泵
- *  输入参数：state-->电荷泵打开或关闭
- *  输出参数：无
- *  返回值：无
-*/
-static void OLED_SetChargePump(CHARGE_PUMP_STATE state)
-{
-    if((state != PUMP_DISABLE) && (state != PUMP_ENABLE))   return;
-    OLED_WriteCmd(0x8D);
-    OLED_WriteCmd((state<<2) + 0x10);
-}
-
-/************** 7. 初始化函数 **************/
-/*
- *  函数名：OLED_Init
- *  功能描述：初始化OLED
- *  输入参数：无
- *  输出参数：无
- *  返回值：无
- */
+#include "ascii.h"
+#include "main.h"
+void WriteCmd(unsigned char I2C_Command)//д����
+ {
+    HAL_I2C_Mem_Write(&hi2c1,OLED0561_ADD,COM,I2C_MEMADD_SIZE_8BIT,&I2C_Command,1,100);
+ }
+       
+void WriteDat(unsigned char I2C_Data)//д����
+ {
+        HAL_I2C_Mem_Write(&hi2c1,OLED0561_ADD,DAT,I2C_MEMADD_SIZE_8BIT,&I2C_Data,1,100);
+  }
 void OLED_Init(void)
-{   
-    /*
-     * 前提: 已经初始化的I2C通道
-     * 本工程里已经: 
-     *    使用MX_I2C1_Init初始化I2C通道
-     *    使用HAL_I2C_MspInit初始化I2C引脚
-     */
-    HAL_Delay(100); //这里的延时很重要
-    OLED_SetMemAddrMode(PAGE_ADDR_MODE);    // 0. 设置地址模式
-    OLED_SetMuxRatio(0x3F);                 // 1. 设置多路复用率
-    OLED_SetDispOffset(0x00);               // 2. 设置显示的偏移值
-    OLED_SetDispStartLine(0x00);            // 3. 设置起始行
-    OLED_SEG_REMAP();                       // 4. 行翻转
-    OLED_SCAN_REMAP();                      // 5. 正常扫描
-    OLED_SetComConfig(COM_PIN_SEQ, COM_NOREMAP);          // 6. COM 引脚设置
-    OLED_SetContrastValue(0x7F);            // 7. 设置对比度
-    ENTIRE_DISP_OFF();                      // 8. 全屏点亮/熄灭
-    DISP_NORMAL();                          // 9. 显示模式
-    OLED_SetDCLK_Freq(0x00, 0x08);          // 10. 设置分频系数和频率增值
-    OLED_SetChargePump(PUMP_ENABLE);        // 11. 使能电荷碰撞
-    
-    OLED_SetComConfig(COM_PIN_ALT, COM_NOREMAP);
-    
-    DISP_ON();
+{
+    HAL_Delay(100); //�������ʱ����Ҫ
+   
+    WriteCmd(0xAE); //display off
+    WriteCmd(0x20); //Set Memory Addressing Mode   
+    WriteCmd(0x10); //00,Horizontal Addressing Mode;01,Vertical Addressing Mode;10,Page Addressing Mode (RESET);11,Invalid
+    WriteCmd(0xb0); //Set Page Start Address for Page Addressing Mode,0-7
+    WriteCmd(0xc8); //Set COM Output Scan Direction
+    WriteCmd(0x02); //---set low column address0.96�磺0x00,1.3��0x02
+    WriteCmd(0x10); //---set high column address
+    WriteCmd(0x40); //--set start line address
+    WriteCmd(0x81); //--set contrast control register
+    WriteCmd(0xff); //���ȵ��� 0x00~0xff
+    WriteCmd(0xa1); //--set segment re-map 0 to 127
+    WriteCmd(0xa6); //--set normal display
+    WriteCmd(0xa8); //--set multiplex ratio(1 to 64)
+    WriteCmd(0x3F); //
+    WriteCmd(0xa4); //0xa4,Output follows RAM content;0xa5,Output ignores RAM content
+    WriteCmd(0xd3); //-set display offset
+    WriteCmd(0x00); //-not offset
+    WriteCmd(0xd5); //--set display clock divide ratio/oscillator frequency
+    WriteCmd(0xf0); //--set divide ratio
+    WriteCmd(0xd9); //--set pre-charge period
+    WriteCmd(0x22); //
+    WriteCmd(0xda); //--set com pins hardware configuration
+    WriteCmd(0x12);
+    WriteCmd(0xdb); //--set vcomh
+    WriteCmd(0x20); //0x20,0.77xVcc
+    WriteCmd(0x8d); //--set DC-DC enable
+    WriteCmd(0x14); //
+    WriteCmd(0xaf); //--turn on oled panel
 }
 
-/************** 8. 基本驱动功能函数 **************/
-/*
- *  函数名：OLED_SetPosition
- *  功能描述：设置像素显示的起始页和起始列地址
- *  输入参数：page-->页地址模式下的起始页地址
- *            col-->页地址模式下的起始行地址
- *  输出参数：无
- *  返回值：无
-*/
-void OLED_SetPosition(uint8_t page, uint8_t col)
+void OLED_SetPos(unsigned char x, unsigned char y) //������ʼ������
 {
-    OLED_SetPageAddr_PAGE(page);
-    OLED_SetColAddr_PAGE(col);
+    WriteCmd(0xb0+y);
+    WriteCmd(((x&0xf0)>>4)|0x10);
+    WriteCmd((x&0x0f)|0x01);
 }
 
-/*
- *  函数名：OLED_Clear
- *  功能描述：清屏函数
- *  输入参数：无
- *  输出参数：无
- *  返回值：无
-*/
-void OLED_Clear(void)
+void OLED_Fill(unsigned char fill_Data)//ȫ�����
 {
-    uint8_t i = 0;
-    uint8_t buf[128] = {0};
-    
-    for(i=0; i<8; i++)
+    unsigned char m,n;
+    for(m=0;m<8;m++)
     {
-        OLED_SetPosition(i, 0);
-        OLED_WriteNBytes(&buf[0], 128);
+        WriteCmd(0xb0+m);       //page0-page1
+        WriteCmd(0x02);     //	//low  column start address1.3����Ļ���͵�ַ�Ǵ�0x02��ʼ�ģ�0.96��Ļ�Ǵ�0x00��ַ��ʼ���ر�ע����ط���������
+        WriteCmd(0x10);     //high column start address
+        for(n=0;n<128;n++)
+            {
+                WriteDat(fill_Data);
+            }
     }
 }
 
-/*
- *  函数名：OLED_PutChar
- *  功能描述：显示一个字符
- *  输入参数：x --> x坐标(0~15)
- *            y --> y坐标(0~7)
- *            c -->   显示的字符
- *  输出参数：无
- *  返回值：无
- */
-void OLED_PutChar(uint8_t x, uint8_t y, char c)
+
+void OLED_CLS(void)//����
 {
-    uint8_t page = y;
-    uint8_t col  = x*8;
-    
-    if (y > 7 || x > 15)
-        return;
-	
-    OLED_SetPosition(page, col);
-    OLED_WriteNBytes((uint8_t*)&ascii_font[c][0], 8);
-    
-    OLED_SetPosition(page + 1, col);
-    OLED_WriteNBytes((uint8_t*)&ascii_font[c][8], 8);
+    OLED_Fill(0x00);
 }
 
-/*
- *  函数名：OLED_PrintString
- *  功能描述：显示一个字符串
- *  输入参数：x --> x坐标(0~15)
- *            y --> y坐标(0~7)
- *            str -->   显示的字符串
- *  输出参数：无
- *  返回值：打印了多少个字符
- */
-int OLED_PrintString(uint8_t x, uint8_t y, const char *str)
-{   
-    int i = 0;
-    while (str[i])
+void OLED_ON(void)
+{
+    WriteCmd(0X8D);  //���õ�ɱ�
+    WriteCmd(0X14);  //������ɱ�
+    WriteCmd(0XAF);  //OLED����
+}
+
+void OLED_OFF(void)
+{
+    WriteCmd(0X8D);  //���õ�ɱ�
+    WriteCmd(0X10);  //�رյ�ɱ�
+    WriteCmd(0XAE);  //OLED����
+}
+
+// Parameters     : x,y -- ��ʼ������(x:0~127, y:0~7); ch[] -- Ҫ��ʾ���ַ���; TextSize -- �ַ���С(1:6*8 ; 2:8*16)
+// Description    : ��ʾascii.h�е�ASCII�ַ�,��6*8��8*16��ѡ��
+void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsigned char TextSize)
+{
+    unsigned char c = 0,i = 0,j = 0;
+    switch(TextSize)
     {
-        OLED_PutChar(x, y, str[i]);
-        x++;
-        if(x > 15)
+        case 1:
         {
-            x  = 0;
-            y += 2;
+            while(ch[j] != '\0')
+            {
+                c = ch[j] - 32;
+                if(x > 126)
+                {
+                    x = 0;
+                    y++;
+                }
+                OLED_SetPos(x,y);
+                for(i=0;i<6;i++)
+                    WriteDat(F6x8[c][i]);
+                x += 6;
+                j++;
+            }
+        }break;
+        case 2:
+        {
+            while(ch[j] != '\0')
+            {
+                c = ch[j] - 32;
+                if(x > 120)
+                {
+                    x = 0;
+                    y++;
+                }
+                OLED_SetPos(x,y);
+                for(i=0;i<8;i++)
+                    WriteDat(F8X16[c*16+i]);
+                OLED_SetPos(x,y+1);
+                for(i=0;i<8;i++)
+                    WriteDat(F8X16[c*16+i+8]);
+                x += 8;
+                j++;
+            }
+        }break;
+    }
+}
+
+// Parameters     : x,y -- ��ʼ������(x:0~127, y:0~7); N:������.h�е�����
+// Description    : ��ʾASCII_8x16.h�еĺ���,16*16����
+void OLED_ShowCN(unsigned char x, unsigned char y, unsigned char N)
+{
+    unsigned char wm=0;
+    unsigned int  adder=32*N;
+    OLED_SetPos(x , y);
+    for(wm = 0;wm < 16;wm++)
+    {
+        WriteDat(F16x16[adder]);
+        adder += 1;
+    }
+    OLED_SetPos(x,y + 1);
+    for(wm = 0;wm < 16;wm++)
+    {
+        WriteDat(F16x16[adder]);
+        adder += 1;
+    }
+}
+
+// �����Լ�д����ʾ�����ַ����ĺ�����Ҫ�Ȱ������ַ�����������������ʽ�������������ȡ��ģ�����ascll.h��Ӧ��λ��(��������)
+//��������ֱ�Ϊ��x:��ʼ������  
+//                              y��������(����0-7)  
+//                              begin:����������ַ����ĵ�һ����������ascll.c�ֿ���������  
+//                num:����Ҫ��д������
+//                ����Ҫ����ԡ���ȡ����ģ����������������ֿ������Ϊ0,1,������0��������ڶ��У����x��0��y��2��begin��0��num��2
+void OLED_ShowCN_STR(u8 x , u8 y , u8 begin , u8 num)
+{
+    u8 i;
+    for(i=0;i<num;i++){OLED_ShowCN(i*16+x,y,i+begin);}    //OLED��ʾ����
+}
+
+// Parameters     : x0,y0 -- ��ʼ������(x0:0~127, y0:0~7); x1,y1 -- ���Խ���(������)������(x1:1~128,y1:1~8)
+// Description    : ��ʾBMPλͼ
+void OLED_DrawBMP(unsigned char x0,unsigned char y0,unsigned char x1,unsigned char y1,const unsigned char BMP[])
+{
+    unsigned int j=0;
+    unsigned char x,y;
+
+  if(y1%8==0)
+        y = y1/8;
+  else
+        y = y1/8 + 1;
+    for(y=y0;y<y1;y++)
+    {
+        OLED_SetPos(x0,y);
+    for(x=x0;x<x1;x++)
+        {
+            WriteDat(BMP[j++]);
         }
-                
-        i++;
     }
-    return i;
 }
 
-/*
- *  函数名：OLED_ClearLine
- *  功能描述：清除一行
- *  输入参数：x - 从这里开始
- *            y - 清除这行
- *  输出参数：无
- *  返回值：无
- */
-void OLED_ClearLine(uint8_t x, uint8_t y)
+void OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
+{      
+    unsigned char c=0,i=0; 
+        c=chr-' ';//�õ�ƫ�ƺ��ֵ          
+        if(x>128-1){x=0;y=y+2;}
+        if(Char_Size ==16)
+            {
+            OLED_SetPos(x,y);  
+            for(i=0;i<8;i++)
+            WriteDat(F8X16[c*16+i]);
+            OLED_SetPos(x,y+1);
+            for(i=0;i<8;i++)
+            WriteDat(F8X16[c*16+i+8]);
+            }
+            else { 
+                OLED_SetPos(x,y);
+                for(i=0;i<6;i++)
+                WriteDat(F6x8[c][i]);
+               
+            }
+}
+u32 oled_pow(u8 m,u8 n)
 {
-    for (;x < 16; x++)
+    u32 result=1;    
+    while(n--)result*=m;    
+    return result;
+}  
+//��ʾ2������
+//x,y :�������  
+//len :���ֵ�λ��
+//size:�����С
+//mode:ģʽ   0,���ģʽ;1,����ģʽ
+//num:��ֵ(0~4294967295);          
+void OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size2)
+{          
+    u8 t,temp;
+    u8 enshow=0;                           
+    for(t=0;t<len;t++)
     {
-        OLED_PutChar(x, y, ' ');
-    }
-}
-
-/*
- *  OLED_PrintHex
- *  功能描述：以16进制显示数值
- *  输入参数：x - x坐标(0~15)
- *            y - y坐标(0~7)
- *            val -   显示的数据
- *            pre -   非零时显示"0x"前缀
- *  输出参数：无
- *  返回值：打印了多少个字符
- */
-int OLED_PrintHex(uint8_t x, uint8_t y, uint32_t val, uint8_t pre)
-{
-    uint8_t hex_tab[]={'0','1','2','3','4','5','6','7',\
-                             '8','9','a','b','c','d','e','f'};
-	int i, j;
-	char arr[11];
-
-	/* 提取数据 */
-    arr[0] = '0';
-    arr[1] = 'x';
-    arr[10] = '\0';
-
-    j = 2;
-	for (i = 7; i >= 0; i--)
-	{
-        arr[j] = hex_tab[(val >> (i*4)) & 0xf];
-        if ((j != 2) || (arr[j] != '0'))
+        temp=(num/oled_pow(10,len-t-1))%10;
+        if(enshow==0&&t<(len-1))
         {
-            j++;
-        }        
-	}
-    if (j == 2)
-        j++;
-    arr[j] = '\0';
-
-    if (pre)
-    {
-        OLED_PrintString(x, y, arr);
-        return j;
-    }
-    else
-    {
-        OLED_PrintString(x, y, arr+2);
-        return j - 2;
+            if(temp==0)
+            {
+                OLED_ShowChar(x+(size2/2)*t,y,' ',size2);
+                continue;
+            }else enshow=1;
+        }
+        OLED_ShowChar(x+(size2/2)*t,y,temp+'0',size2);
     }
 }
-
-
-/*
- *  OLED_PrintSignedVal
- *  功能描述：以10进制显示一个数值
- *  输入参数：x --> x坐标(0~15)
- *            y --> y坐标(0~7)
- *            val -->   显示的数据
- *  输出参数：无
- *  返回值：打印了多少个字符
-*/
-int OLED_PrintSignedVal(uint8_t x, uint8_t y, int32_t val)
-{
-    char str[16];
-    char revert_str[16];
-    int i = 0, j = 0;
-    int mod;
-
-    if (val < 0)
-    {
-        str[i++] = '-';
-        val = 0 - val;
-    }
-    else if (val == 0)
-    {
-        str[i++] = '0';
-    }
-
-    while (val)
-    {
-        mod = val % 10;
-        revert_str[j++] = mod + '0';
-        val = val / 10;
-    }
-
-    while (j)
-    {
-        str[i++] = revert_str[j-1];
-        j--;
-    } 
-    
-    str[i] = '\0';
-    OLED_PrintString(x, y, str);
-    return i;
+void drawInitBMP(){
+	OLED_DrawBMP(39,0,87,5,BMP_Init_64x64);
 }
-
-
-/**********************************************************************
- * 函数名称： OLED_Test
- * 功能描述： OLED测试程序
- * 输入参数： 无
- * 输出参数： 无
- *            无
- * 返 回 值： 0 - 成功, 其他值 - 失败
- * 修改日期        版本号     修改人        修改内容
- * -----------------------------------------------
- * 2023/08/03        V1.0     韦东山       创建
- ***********************************************************************/
-void OLED_Test(void)
-{
-	// 清屏
-	OLED_Clear();
-    
-	while (1)
-	{
-		// 在(0, 0)打印'A'
-		OLED_PutChar(0, 0, 'A');
-		// 在(1, 0)打印'Y'
-		OLED_PutChar(1, 0, 'Y');
-		// 在第0列第2页打印一个字符串"Hello World!"
-		OLED_PrintString(0, 2, "Hello World!");
-	}
-}
-
-
+     

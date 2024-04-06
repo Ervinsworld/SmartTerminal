@@ -1,7 +1,7 @@
 drivertester_f407\driver_oled.o: ..\Drivers\USER_Driver\driver_oled.c
 drivertester_f407\driver_oled.o: ..\Drivers\USER_Driver\driver_oled.h
-drivertester_f407\driver_oled.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdint.h
-drivertester_f407\driver_oled.o: ..\Drivers\USER_Driver\ascii_font.c
+drivertester_f407\driver_oled.o: ../Core/Inc/i2c.h
+drivertester_f407\driver_oled.o: ../Core/Inc/main.h
 drivertester_f407\driver_oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 drivertester_f407\driver_oled.o: ../Core/Inc/stm32f4xx_hal_conf.h
 drivertester_f407\driver_oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -9,6 +9,7 @@ drivertester_f407\driver_oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_h
 drivertester_f407\driver_oled.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 drivertester_f407\driver_oled.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 drivertester_f407\driver_oled.o: ../Drivers/CMSIS/Include/core_cm4.h
+drivertester_f407\driver_oled.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdint.h
 drivertester_f407\driver_oled.o: ../Drivers/CMSIS/Include/cmsis_version.h
 drivertester_f407\driver_oled.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 drivertester_f407\driver_oled.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -38,3 +39,4 @@ drivertester_f407\driver_oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_h
 drivertester_f407\driver_oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\driver_oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\driver_oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+drivertester_f407\driver_oled.o: ..\Drivers\USER_Driver\ascii.h

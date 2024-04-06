@@ -50,10 +50,11 @@ drivertester_f407\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_R
 drivertester_f407\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 drivertester_f407\freertos.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdio.h
 drivertester_f407\freertos.o: ../Drivers/USER_Driver/driver_motorComm.h
-drivertester_f407\freertos.o: ../Drivers/USER_Driver/driver_lcd.h
 drivertester_f407\freertos.o: ../Drivers/MPU6050/mpu6050.h
 drivertester_f407\freertos.o: ../Drivers/MPU6050/inv_mpu.h
 drivertester_f407\freertos.o: ../Drivers/MPU6050/inv_mpu_dmp_motion_driver.h
 drivertester_f407\freertos.o: ../Drivers/USER_Driver/driver_led.h
 drivertester_f407\freertos.o: ../Drivers/USER_Driver/driver_joystick.h
 drivertester_f407\freertos.o: ../Drivers/USER_Driver/driver_oled.h
+drivertester_f407\freertos.o: ../Core/Inc/i2c.h
+drivertester_f407\freertos.o: ..\GimbalApp\UI\UI.h

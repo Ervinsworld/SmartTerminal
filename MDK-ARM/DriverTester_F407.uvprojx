@@ -1167,6 +1167,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>GimbalApp</GroupName>
+          <Files>
+            <File>
+              <FileName>UI.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GimbalApp\UI\UI.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
