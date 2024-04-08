@@ -35,7 +35,10 @@
 #include "driver_joystick.h"
 #include "driver_oled.h"
 #include "UI.h"
-#include "menu.h"
+#include "page.h"
+#include "joystick.h"
+/** User FreeRTOS  **/
+#include "queue.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +58,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+
+QueueHandle_t JoyStickQueueHandle;
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -98,6 +103,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
+
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -106,16 +112,17 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+  JoyStickQueueHandle = xQueueCreate(30, sizeof(joystickValue));
+	
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  //默认任务中运行
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-  
+  defaultTaskHandle = osThreadNew(UI_Task, NULL, &defaultTask_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  
+  xTaskCreate(Joystick_Task, "JoystickTask", 128, NULL, osPriorityNormal, NULL);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -134,13 +141,11 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-	MenuInit();
-	vTaskDelay(3000);
+	
   /* Infinite loop */
   for(;;)
   {
-	PageDown();
-	vTaskDelay(3000);
+	
   }
   /* USER CODE END StartDefaultTask */
 }

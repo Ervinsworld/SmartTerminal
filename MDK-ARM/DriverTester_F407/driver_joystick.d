@@ -38,4 +38,5 @@ drivertester_f407\driver_joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4
 drivertester_f407\driver_joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\driver_joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\driver_joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+drivertester_f407\driver_joystick.o: ../Core/Inc/gpio.h
 drivertester_f407\driver_joystick.o: ..\Drivers\USER_Driver\driver_joystick.h

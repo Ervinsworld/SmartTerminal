@@ -1,7 +1,9 @@
 #include "adc.h"
+#include "gpio.h"
 #include "driver_joystick.h"
 
 static uint32_t ADC_Buffer[100];//用于储存ADC向DMA转运的数据，长度100
+static buttonState g_ButtonState;
 
 /**********************************************************************
  * 函数名称： JoyStickInit
@@ -18,7 +20,7 @@ void JoyStickInit(){
 }
 
 /**********************************************************************
- * 函数名称： JoyStickInit
+ * 函数名称： JoyStickValueCal
  * 功能描述： 摇杆值计算，对于每个轴，将Buffer中的数据累加50次取平均值
  * 输入参数： 无
  * 输出参数： 无
@@ -28,10 +30,10 @@ void JoyStickInit(){
  * 2024/3/14	     V1.0	  Ervin	      创建
  ***********************************************************************/
 
-struct JoystickValue JoyStickValueCal(){
+joystickValue JoyStickValueCal(){
 	uint8_t i;
 	uint32_t x, y;
-	struct JoystickValue value;
+	joystickValue value;
 	for(i = 0,x =0,y=0; i < 100;)
 	{
 		x += ADC_Buffer[i++];
@@ -44,10 +46,28 @@ struct JoystickValue JoyStickValueCal(){
 	return value;
 }	
 
-void Joystick_Test(void){
-	struct JoystickValue value;
+/**********************************************************************
+ * 函数名称： JoystickButton_IRQ_Callback
+ * 功能描述： 摇杆按键的中断回调函数
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期：      版本号     修改人	      修改内容
+ * -----------------------------------------------
+ *  2024/4/7	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+
+void JoystickButton_IRQ_Callback(void){
+	if(HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin)==GPIO_PIN_SET)
+		g_ButtonState = free;
+	else
+		g_ButtonState = pressed;
+};
+
+void Joystick_Test(void *params){
+	joystickValue value;
 	while(1){
 		value = JoyStickValueCal();
-		printf("xValue = %d, yValue = %d\n", value.xValue, value.yValue);
+		printf("xValue = %d, yValue = %d, ButtonValue = %d\n", value.xValue, value.yValue, g_ButtonState);
 	}
 }

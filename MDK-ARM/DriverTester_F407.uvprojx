@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/USER_Driver;../Drivers/MPU6050;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/USER_Driver;../Drivers/MPU6050;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../GimbalApp/UI</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1120,11 +1120,6 @@
           <GroupName>USER_Driver</GroupName>
           <Files>
             <File>
-              <FileName>driver_lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\USER_Driver\driver_lcd.c</FilePath>
-            </File>
-            <File>
               <FileName>driver_oled.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\USER_Driver\driver_oled.c</FilePath>
@@ -1164,11 +1159,26 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\USER_Driver\driver_led.c</FilePath>
             </File>
+            <File>
+              <FileName>driver_irq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\USER_Driver\driver_irq.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>GimbalApp</GroupName>
           <Files>
+            <File>
+              <FileName>Joystick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GimbalApp\Joystick\Joystick.c</FilePath>
+            </File>
+            <File>
+              <FileName>page.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GimbalApp\UI\page.c</FilePath>
+            </File>
             <File>
               <FileName>UI.c</FileName>
               <FileType>1</FileType>

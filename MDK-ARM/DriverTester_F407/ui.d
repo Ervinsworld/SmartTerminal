@@ -1,5 +1,7 @@
 drivertester_f407\ui.o: ..\GimbalApp\UI\UI.c
-drivertester_f407\ui.o: ..\GimbalApp\UI\UI.h
+drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_oled.h
+drivertester_f407\ui.o: ../Core/Inc/i2c.h
+drivertester_f407\ui.o: ../Core/Inc/main.h
 drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 drivertester_f407\ui.o: ../Core/Inc/stm32f4xx_hal_conf.h
 drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -37,8 +39,13 @@ drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex
 drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-drivertester_f407\ui.o: ..\GimbalApp\UI\Icons.c
-drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_oled.h
-drivertester_f407\ui.o: ../Core/Inc/i2c.h
-drivertester_f407\ui.o: ../Core/Inc/main.h
-drivertester_f407\ui.o: D:\MDK5\ARM\ARMCC\Bin\..\include\string.h
+drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_joystick.h
+drivertester_f407\ui.o: ..\GimbalApp\UI\page.h
+drivertester_f407\ui.o: ..\GimbalApp\UI\UI.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+drivertester_f407\ui.o: ../Core/Inc/FreeRTOSConfig.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
