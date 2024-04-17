@@ -1,4 +1,4 @@
-# Desktop_Terminal
+# SmartTerminal
 ### Introduction
 A desptop_terminal with a 1.3 inch oled,a joystick and a programmed knob.
 The knob is a BLDC, benefit to the FOC controller, it can create more interesting interface experience.
