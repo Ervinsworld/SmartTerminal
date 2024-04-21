@@ -37,8 +37,11 @@
 #include "UI.h"
 #include "page.h"
 #include "joystick.h"
+#include "Motor.h"
 /** User FreeRTOS  **/
 #include "queue.h"
+#include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
+#include "semphr.h"                     // ARM.FreeRTOS::RTOS:Core
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,9 +61,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+TaskHandle_t MotorPidTaskHandle;
 
-QueueHandle_t JoyStickQueueHandle;
-
+//QueueHandle_t MotorInfQueueHandle;
+QueueHandle_t TargetAngleQueueHandle;
+//SemaphoreHandle_t ActionSemaphore;
+EventGroupHandle_t UIResponseEvent;
+EventGroupHandle_t ActionEvent;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -89,10 +96,8 @@ void MX_FREERTOS_Init(void) {
 	OLED_Init();//oled初始化
 	JoyStickInit();//摇杆初始化
 	MotorCommInit();//电机通讯初始化
-	MPU_Init();//MPU6050初始化
-//	if(MPU_Init())
-//		printf("MPU_Init_Failed!\n");
-    mpu_dmp_init();		//dmp初始化
+	//MPU_Init();//MPU6050初始化
+    //mpu_dmp_init();		//dmp初始化
 	printf("Everything is Inited！\r\n");
 	
   /* USER CODE END Init */
@@ -103,7 +108,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
-
+	//ActionSemaphore = xSemaphoreCreateBinary();
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
@@ -112,21 +117,31 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
-  JoyStickQueueHandle = xQueueCreate(30, sizeof(joystickValue));
-	
+	//MotorInfQueueHandle = xQueueCreate(20, sizeof(MotorInf));
+	TargetAngleQueueHandle = xQueueCreate(20, sizeof(float));
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(UI_Task, NULL, &defaultTask_attributes);
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  xTaskCreate(Joystick_Task, "JoystickTask", 128, NULL, osPriorityNormal, NULL);
+  xTaskCreate(MotorPid_Task, "MotorPidTask", 128, NULL, osPriorityNormal+2, &MotorPidTaskHandle);
+  xTaskCreate(UI_Task, "UITask", 128, NULL, osPriorityNormal+1, NULL);
+  xTaskCreate(Joystick_Task, "JoystickTask", 128, NULL, osPriorityNormal+1, NULL);
+  xTaskCreate(Motor_Task, "MotorTask", 128, NULL, osPriorityNormal+1, NULL);
+  xTaskCreate(UIAction_Task, "UIAction_Task", 128, NULL, osPriorityNormal+1, NULL);
+
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+  
+  //UI换页响应事件组使用低五位：0位：右；1位：左，2位：下，3位：上，4位事件页面进入面
+  UIResponseEvent = xEventGroupCreate();
+  //UI动作处理事件只用最低位
+  ActionEvent = xEventGroupCreate();
   /* USER CODE END RTOS_EVENTS */
 
 }

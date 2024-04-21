@@ -1,7 +1,7 @@
 #include "can.h"
 #include "driver_motorComm.h"
 
-struct MotorStatus g_motorStatus;
+MotorInf g_currentMotorInf;
 
 /**********************************************************************
  * 函数名称： MotorCommInit
@@ -57,7 +57,7 @@ void SendMessage2Motor(float voltage, uint8_t motorID)
 
 /**********************************************************************
  * 函数名称： HAL_CAN_RxFifo0MsgPendingCallback
- * 功能描述： CAN收到数据的中断回调
+ * 功能描述： CAN收到数据的中断回调(使用xQueueSendFromISR保护数据程序会无故卡死，这里只能使用全局变量传递数据)
  * 输入参数： 无
  * 输出参数： 无
  * 返 回 值： 无
@@ -75,16 +75,15 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		return;
 
 	
-	g_motorStatus.angle = *(int32_t*)&rxData[0] / 1000.0f;
-	g_motorStatus.speed = *(int16_t*)&rxData[4] / 10.0f;
+	g_currentMotorInf.angle = *(int32_t*)&rxData[0] / 1000.0f;
+	g_currentMotorInf.speed = *(int16_t*)&rxData[4] / 10.0f;
 
+	//xQueueSendFromISR(MotorInfQueueHandle, &g_currentMotorInf, NULL);
 }
 
 
 void MotorComm_Test(void){
-	while(1){
-		SendMessage2Motor(2, 6);
-		printf("angle is %f\n", g_motorStatus.angle);
-		printf("speed is %f\n", g_motorStatus.speed);
-	}
+	SendMessage2Motor(2, 1);
+	printf("angle is %f\n", g_currentMotorInf.angle);
+	printf("speed is %f\n", g_currentMotorInf.speed);
 }

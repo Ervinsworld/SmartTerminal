@@ -21,28 +21,31 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.14.0_KEIL
 Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
-C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\DriverTester_F407.uvprojx
-Project File Date:  04/08/2024
+C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\DriverTester_F407.uvprojx
+Project File Date:  04/18/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
-compiling Joystick.c...
-compiling UI.c...
-..\GimbalApp\UI\UI.c(36): warning:  #223-D: function "vTaskDelay" declared implicitly
-                        vTaskDelay(500);
-..\GimbalApp\UI\UI.c(47): warning:  #223-D: function "vTaskDelay" declared implicitly
-                        vTaskDelay(500);
-..\GimbalApp\UI\UI.c(49): warning:  #223-D: function "vTaskDelay" declared implicitly
-                vTaskDelay(20);
-..\GimbalApp\UI\UI.c(99): warning:  #188-D: enumerated type mixed with another type
+compiling page.c...
+..\GimbalApp\UI\page.c(110): warning:  #188-D: enumerated type mixed with another type
         setCurrentpage(id);
-..\GimbalApp\UI\UI.c(131): warning:  #188-D: enumerated type mixed with another type
+..\GimbalApp\UI\page.c(141): warning:  #188-D: enumerated type mixed with another type
         setCurrentpage(id);
-..\GimbalApp\UI\UI.c: 5 warnings, 0 errors
+..\GimbalApp\UI\page.c(228): warning:  #188-D: enumerated type mixed with another type
+                        setCurrentpage(PageMapTable[i][page.data]);
+..\GimbalApp\UI\page.c(254): warning:  #188-D: enumerated type mixed with another type
+                                setCurrentpage(PageMapTable[i][0]);
+..\GimbalApp\UI\page.c(248): warning:  #177-D: variable "j" was declared but never referenced
+        int i, j;
+..\GimbalApp\UI\page.c(443): warning:  #940-D: missing return statement at end of non-void function "showbardata"
+  }
+..\GimbalApp\UI\page.c(631): warning:  #1-D: last line of file ends without a newline
+  }
+..\GimbalApp\UI\page.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=30572 RO-data=8928 RW-data=368 ZI-data=20520  
+Program Size: Code=25404 RO-data=6004 RW-data=324 ZI-data=20580  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 5 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -53,7 +56,7 @@ Package Vendor: ARM
    * Component: CORE Version: 3.40.0
 
 <h2>Collection of Component include folders:</h2>
-  C:\Users\16081\Desktop\gimbal\gimbal_firmware\Handheld-Gimbal\MDK-ARM\RTE
+  C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE
   D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include
   D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1
 

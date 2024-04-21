@@ -37,8 +37,8 @@ drivertester_f407\page.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_
 drivertester_f407\page.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\page.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\page.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-drivertester_f407\page.o: ..\GimbalApp\UI\Icons.c
 drivertester_f407\page.o: ../Drivers/USER_Driver/driver_oled.h
 drivertester_f407\page.o: ../Core/Inc/i2c.h
 drivertester_f407\page.o: ../Core/Inc/main.h
 drivertester_f407\page.o: D:\MDK5\ARM\ARMCC\Bin\..\include\string.h
+drivertester_f407\page.o: ..\GimbalApp\UI\Icons.c

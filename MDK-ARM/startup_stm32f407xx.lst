@@ -831,11 +831,11 @@ ARM Macro Assembler    Page 13
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=drivertester_f407\startup_stm32f407xx.d -odrivertester_f407\sta
-rtup_stm32f407xx.o -I../Core/Inc -IC:\Users\16081\Desktop\gimbal\gimbal_firmwar
-e\Handheld-Gimbal\MDK-ARM\RTE -ID:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include 
--ID:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1 --predefine="__MICROLIB SETA 1" --
-predefine="__UVISION_VERSION SETA 514" --predefine="_RTE_ SETA 1" --predefine="
-STM32F407xx SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
+rtup_stm32f407xx.o -I../Core/Inc -IC:\Users\16081\Desktop\SmartTerminal\termina
+l_firmware\SmartTerminal\MDK-ARM\RTE -ID:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\I
+nclude -ID:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1 --predefine="__MICROLIB SET
+A 1" --predefine="__UVISION_VERSION SETA 514" --predefine="_RTE_ SETA 1" --pred
+efine="STM32F407xx SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
 
 
 

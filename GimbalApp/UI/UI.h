@@ -5,12 +5,8 @@
 
 /*FreeRTOS任务函数*/
 void UI_Task(void *params);
+void UIAction_Task(void *params);
 
 /*操作函数*/
 void UI_Init(void);
-int8_t PageDown(void);
-int8_t PageUp(void);
-int8_t SlideRight(void);
-int8_t SlideLeft(void);
-int8_t PageAction(void);
 #endif

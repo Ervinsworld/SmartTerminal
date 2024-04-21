@@ -41,8 +41,9 @@ joystickValue JoyStickValueCal(){
 	}
 	x /= 50;
 	y /= 50;
-	value.xValue = x;
-	value.yValue = y;
+	//由于摇杆安装方式，x, y对调
+	value.xValue = y;
+	value.yValue = x;
 	return value;
 }	
 

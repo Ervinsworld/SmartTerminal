@@ -47,3 +47,5 @@ drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include
 drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h

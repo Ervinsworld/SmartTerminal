@@ -42,6 +42,8 @@ drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_joystick.h
 drivertester_f407\ui.o: ..\GimbalApp\UI\page.h
 drivertester_f407\ui.o: ..\GimbalApp\UI\UI.h
+drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_motorComm.h
+drivertester_f407\ui.o: ..\GimbalApp\Motor\Motor.h
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 drivertester_f407\ui.o: ../Core/Inc/FreeRTOSConfig.h
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
@@ -49,3 +51,9 @@ drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/porta
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h

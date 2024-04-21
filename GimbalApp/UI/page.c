@@ -1,35 +1,48 @@
 #include "page.h"
-#include "Icons.c"
 #include "stm32f4xx_hal.h"
 #include "driver_oled.h"
 #include <string.h>
+#include "Icons.c"
 
-//页面底部的字符串信息，根据UI_page结构体数组的数组索引值索引字符串信息
-const char* bottomStr[10][3] = 
+
+/************					页面相关表				************/
+//父子页面关系表，二维数组每行的第一个元素是父页面，其余是子页面，索引号和UI_page结构体的data对应
+const uint8_t PageMapTable[FatherPageNum][MaxSonPageNum] = 
 {
-	{"Switch", "", ""},
-	{"Switch", "", ""},
-	{"Low", "Meduim", "High"},
-	{"Flip", "", ""},
-	{"OFF", "ON", ""},
-	{"Power off", "", ""},
-	{"Hold to Unlock", "", ""},
-	{"Unlocking...", "", ""},
-	{"Initing...", "", ""},
+	{Light, Off, On},
+	{Mode, Bright1, Bright2, Bright3},
 };
 
-const UIPage UIpages[10] = 
-{	
-{pStatic, 0, 0, BMP_Eye_48x48},
-{nStatic, 0, 0, BMP_EyeBlocked_48x48},
-{pSilde, 3, 0, BMP_Meter_48x48},
-{pStatic, 0, 0, BMP_Flip_48x48},
-{pSilde, 2, 0, BMP_Camera_48x48},
-{pStatic, 0, 0, BMP_Power_48x48},
-{nStatic, 0, 0, BMP_Lock_48x48},
-{nStatic, 0, 0, BMP_Unlocked_48x48},
-{nStatic, 0, 0, BMP_Spinner_48x48},
+
+//页面底部的字符串信息，对于pSlide模式的页面，其索引号和UI_page结构体的data对应
+const char* bottomStr[PageNum][3] = 
+{
+	{"Light", "", ""},
+	{"OFF", "", ""},
+	{"ON", "", ""},
+	{"Mode", "", ""},
+	{"Low", "", ""},
+	{"Medium", "", ""},
+	{"High", "", ""},
+	{"Brightness", "", ""},
+	{"Free", "Ratchet", "Fixed"},
+	{"Block", "Car"},
 };
+
+const UIPage UIpages[PageNum] = 
+{	
+{pStatic, 0, 1, BMP_LIGHT_48x48},//data值1表示灯光关闭，2表示灯光开启
+{nStatic, 0, 0, BMP_OFF_48x48},
+{nStatic, 0, 0, BMP_ON_48x48},
+{pStatic, 0, 1, BMP_Sunny_48x48},//data值1，2，3代表亮度1，2，3
+{nStatic, 0, 0, BMP_BRIGHT1_48x48},
+{nStatic, 0, 0, BMP_BRIGHT2_48x48},
+{nStatic, 0, 0, BMP_BRIGHT3_48x48},
+{pStatic, 0, 0, BMP_WINDOW_48x48},//data值代表屏幕亮度的值，上限100，1细分
+{pSlide, 3, 0, BMP_MOTOR_48x48},
+{pSlide, 2, 0, BMP_SWITCH_48x48},
+};
+
 
 //当前页面的结构体参数和当前页面的id
 UIPage g_currentPage;
@@ -46,7 +59,6 @@ static uint8_t g_stringSize = 2;//字符大小恒定为2
 static uint8_t g_string_Ypos = 6;//字符串显示y坐标恒定为6
 static uint8_t g_string_Xpos;
 static uint8_t g_string_LenRes;
-
 
 /**********************************************************************
  * 函数名称： PageInfInit
@@ -71,6 +83,185 @@ void PagesInfInit(){
 }
 
 /**********************************************************************
+ * 函数名称： PageDown
+ * 功能描述： 翻下一页
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 0表示成功，-1表示失败
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/7	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+int8_t PageDown(){
+	uint8_t id = getCurrentpageId();
+	UIPage page = getCurrentpage();
+	//若该页是被动状态，则无法执行翻页操作
+	if(page.InfMode==nStatic)
+		return -1;
+	do{
+		if(id==PageNum){
+			id = 1;
+		}
+		else{
+			id++;
+		}
+	}while(UIpages[id-1].InfMode==nStatic);
+	clearPage();
+	setCurrentpage(id);
+	showPage();
+	return 0;
+}
+
+/**********************************************************************
+ * 函数名称： PageUp
+ * 功能描述： 翻上一页
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 0表示成功，-1表示失败
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/7      V1.0	  Ervin	      创建
+ ***********************************************************************/
+int8_t PageUp(){
+	uint8_t id = getCurrentpageId();
+	UIPage page = getCurrentpage();
+	//若该页是被动状态，则无法执行翻页操作
+	if(page.InfMode==nStatic)
+		return -1;
+	do{
+		if(id==1){
+			id = PageNum;
+		}
+		else{
+			id--;
+		}
+
+	}while(UIpages[id-1].InfMode==nStatic);
+	clearPage();
+	setCurrentpage(id);
+	showPage();
+	return 0;
+}
+
+/**********************************************************************
+ * 函数名称： SlideRight
+ * 功能描述： 向右滑动
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 0表示成功，-1表示失败
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/7	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+int8_t SlideRight(){
+	//uint8_t id = getCurrentpageId();
+	UIPage page = getCurrentpage();
+	//若该页不是滑动页面，则无法执行滑动
+	if(page.InfMode!=pSlide)
+		return -1;
+	uint8_t num = page.slideNum;
+	uint8_t data = page.data;
+	if(data == num-1){
+		data = 0;
+	}
+	else{
+		data++;
+	}
+	setPagedata(data);
+	clearString();
+	showString();
+	return 0;
+}
+
+/**********************************************************************
+ * 函数名称： SlideLeft
+ * 功能描述： 向右滑动
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 0表示成功，-1表示失败
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/7	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+int8_t SlideLeft(){
+	//uint8_t id = getCurrentpageId();
+	UIPage page = getCurrentpage();
+	//若该页不是滑动页面，则无法执行滑动
+	if(page.InfMode!=pSlide)
+		return -1;
+	uint8_t num = page.slideNum;
+	uint8_t data = page.data;
+	if(data == 0){
+		data = num-1;
+	}
+	else{
+		data--;
+	}
+	setPagedata(data);
+	clearString();
+	showString();
+	return 0;
+}
+
+/**********************************************************************
+ * 函数名称： PageIn
+ * 功能描述： 进入子页面
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： -1为失败，0为成功
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/6	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+
+int8_t PageIn(){
+	int i;
+	UIPage page = getCurrentpage();
+	clearPage();
+	//若为window页面
+	if(getCurrentpageId() == Window){
+		showbarFrame();
+		return 0;
+	}
+	for(i=0; i<FatherPageNum; i++){
+		if(PageMapTable[i][0] == getCurrentpageId()){
+			setCurrentpage(PageMapTable[i][page.data]);
+			showPage();
+			return 0;
+		}
+	}
+	return -1;
+}
+
+/**********************************************************************
+ * 函数名称： PageOut
+ * 功能描述： 返回父页面
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： -1为失败，0为成功
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/6	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+
+int8_t PageOut(){
+	int i, j;
+	UIPage page = getCurrentpage();
+	for(i=0; i<FatherPageNum; i++){
+		for(int j=1; j<MaxSonPageNum; j++){
+			if(PageMapTable[i][j] == getCurrentpageId()){
+				clearPage();
+				setCurrentpage(PageMapTable[i][0]);
+				showPage();
+				return 0;
+			}
+		}
+	}
+	return -1;
+}
+
+
+/**********************************************************************
  * 函数名称： setCurrentpage
  * 功能描述： 设置当前页面，写入全局变量
  * 输入参数： pageID
@@ -82,7 +273,7 @@ void PagesInfInit(){
  ***********************************************************************/
 void setCurrentpage(PageID id){
 	//g_currentPage = UIpages[id];
-	memcpy(&g_currentPage, &UIpages[id], sizeof(g_currentPage));
+	memcpy(&g_currentPage, &UIpages[id-1], sizeof(g_currentPage));
 	g_currentId = id;
 }
 
@@ -126,10 +317,10 @@ PageID getCurrentpageId(){
  ***********************************************************************/
 int8_t setPagedata(uint8_t data){
 	//判断设定值是否超过了数量值，若超过不允许操作，返回-1
-	if(data >= g_currentPage.datanum)
+	if(g_currentPage.InfMode == pSlide && data >= g_currentPage.slideNum)
 		return -1;
 	else
-		g_currentPage.nowadata = data;
+		g_currentPage.data = data;
 	return 0;
 }
 
@@ -146,8 +337,10 @@ int8_t setPagedata(uint8_t data){
  ***********************************************************************/
 void showPage(){
 	//若为滑动模式则显示箭头
-	if(g_currentPage.InfMode == pSilde)
+	if(g_currentPage.InfMode == pSlide)
 		showArrows();
+	else if(g_currentPage.InfMode == nStatic||g_currentPage.InfMode == nDynamic)
+		showBackArrow();
 	showString();
 	OLED_DrawBMP(g_mainIcon_Xstart,g_mainIcon_Ystart,g_mainIcon_XEnd,g_mainIcon_YEnd,g_currentPage.mainBMP);
 	//OLED_DrawBMP(39,0,87,6,BMP_Camera_48x48);
@@ -165,7 +358,124 @@ void showPage(){
  ***********************************************************************/
 void clearPage(){
 	clearMainIcon();
-	clearBottom();
+	clearString();
+	if(g_currentPage.InfMode == pSlide)
+		clearArrows();
+	else if(g_currentPage.InfMode == nStatic||g_currentPage.InfMode == nDynamic)
+		clearBackArrow();
+}
+
+/**********************************************************************
+ * 函数名称： showbar
+ * 功能描述： 数值条显示函数
+ * 输入参数： 数值条的值，从0-100
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/19	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+
+void showbar(){
+	static uint8_t last_value = 0;
+	int8_t error;
+	uint8_t i, j;
+	error = g_currentPage.data - last_value;
+	if(error>0){
+		for(i=0; i<BarWidth; i++){
+			OLED_SetPos(BarXStart+last_value,BarYStart+i);
+			for(j=0;j<error;j++)
+				WriteDat(0xFF);
+		}
+	}
+	else if(error<0){
+		for(i=0; i<BarWidth; i++){
+			OLED_SetPos(BarXStart+g_currentPage.data,BarYStart+i);
+			for(j=0;j<-error;j++)
+				WriteDat(0x81);
+		}
+	}
+	last_value = g_currentPage.data;
+}
+
+/**********************************************************************
+ * 函数名称： showbarFrame
+ * 功能描述： 数值条边框显示函数
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/19	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+void showbarFrame(){
+	uint8_t i, j;
+	for(i=0; i<BarWidth; i++){
+		OLED_SetPos(BarXStart,BarYStart+i);
+		for(j=0;j<BarLength;j++){
+			if(j==0||j==BarLength-1)
+				WriteDat(0xFF);
+			else
+				WriteDat(0x81);
+		}
+	}
+}
+
+/**********************************************************************
+ * 函数名称： showbardata
+ * 功能描述： 数值条底部数值的显示函数
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 0为成功，-1为失败
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/19	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+int8_t showbardata(){
+	char s[5] = {0};
+	if(g_currentId!=Window)
+		return -1;
+	Int2String(g_currentPage.data, s);
+	uint8_t len = strlen(s);
+	g_string_LenRes = len<<3;
+	g_string_Xpos = ((Xres-g_string_LenRes)>>1) - 1;
+	OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)s, g_stringSize);
+}
+
+char* Int2String(int num,char *str)//10进制 
+{
+    int i = 0;//指示填充str 
+    if(num<0)//如果num为负数，将num变正 
+    {
+        num = -num;
+        str[i++] = '-';
+    } 
+    //转换 
+    do
+    {
+        str[i++] = num%10+48;//取num最低位 字符0~9的ASCII码是48~57；简单来说数字0+48=48，ASCII码对应字符'0' 
+        num /= 10;//去掉最低位    
+    }while(num);//num不为0继续循环
+    
+    str[i] = '\0';
+    
+    //确定开始调整的位置 
+    int j = 0;
+    if(str[0]=='-')//如果有负号，负号不用调整 
+    {
+        j = 1;//从第二位开始调整 
+        ++i;//由于有负号，所以交换的对称轴也要后移1位 
+    }
+    //对称交换 
+    for(;j<i/2;j++)
+    {
+        //对称交换两端的值 其实就是省下中间变量交换a+b的值：a=a+b;b=a-b;a=a-b; 
+        str[j] = str[j] + str[i-1-j];
+        str[i-1-j] = str[j] - str[i-1-j];
+        str[j] = str[j] - str[i-1-j];
+    } 
+    
+    return str;//返回转换后的值 
 }
 
 /**********************************************************************
@@ -217,11 +527,22 @@ void clearString(){
  * 2024/4/6	     V1.0	  Ervin	      创建
  ***********************************************************************/
 void showString(){
-	uint8_t len = strlen(bottomStr[g_currentId][g_currentPage.nowadata]);
-	g_string_LenRes = len<<3;
-	g_string_Xpos = ((Xres-g_string_LenRes)>>1) - 1;
-	OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)bottomStr[g_currentId][g_currentPage.nowadata], g_stringSize);
+	if(g_currentPage.InfMode == pSlide){
+		uint8_t len = strlen(bottomStr[g_currentId-1][g_currentPage.data]);
+		g_string_LenRes = len<<3;
+		g_string_Xpos = ((Xres-g_string_LenRes)>>1) - 1;
+		OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)bottomStr[g_currentId-1][g_currentPage.data], g_stringSize);
+	}
+	else{
+		uint8_t len = strlen(bottomStr[g_currentId-1][0]);
+		g_string_LenRes = len<<3;
+		g_string_Xpos = ((Xres-g_string_LenRes)>>1) - 1;
+		OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)bottomStr[g_currentId-1][0], g_stringSize);
+	}
+	
 }
+
+
 
 /**********************************************************************
  * 函数名称： clearBottom
@@ -274,4 +595,37 @@ void clearArrows(){
 void showArrows(){
 	OLED_DrawBMP(0,6,ArrowBMPres,8,BMP_Left_16x16);//显示左箭头
 	OLED_DrawBMP(Xres-ArrowBMPres,6,Xres,8,BMP_Right_16x16);//显示右箭头
+}
+
+/**********************************************************************
+ * 函数名称： clearBackArrow
+ * 功能描述： 清除返回箭头
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/17	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+void clearBackArrow(){
+	uint8_t i, j;
+	for(i=0; i<2; i++){
+		OLED_SetPos(0,i);
+		for(j=0;j<ArrowBMPres;j++)
+			WriteDat(0x00);
+	}
+}
+
+/**********************************************************************
+ * 函数名称： showBackArrow
+ * 功能描述： 子页面显示返回箭头
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/17	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+void showBackArrow(){
+	OLED_DrawBMP(0,0,ArrowBMPres,2,BMP_Left_16x16);
 }

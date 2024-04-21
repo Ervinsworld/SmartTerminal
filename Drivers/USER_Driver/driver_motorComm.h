@@ -3,10 +3,10 @@
 
 #include "stm32f4xx_hal.h"
 
-struct MotorStatus{
+typedef struct MotorStatus{
 	float angle;  
 	float speed;        
-};
+}MotorInf;
 
 void MotorCommInit(void);
 void SendMessage2Motor(float voltage, uint8_t motorID);

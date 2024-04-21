@@ -60,4 +60,8 @@ drivertester_f407\freertos.o: ../Core/Inc/i2c.h
 drivertester_f407\freertos.o: ../GimbalApp/UI/UI.h
 drivertester_f407\freertos.o: ../GimbalApp/UI/page.h
 drivertester_f407\freertos.o: ..\GimbalApp\Joystick\joystick.h
+drivertester_f407\freertos.o: ..\GimbalApp\Motor\Motor.h
 drivertester_f407\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
+drivertester_f407\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+drivertester_f407\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+drivertester_f407\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
