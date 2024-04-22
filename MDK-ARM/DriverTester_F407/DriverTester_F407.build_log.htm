@@ -27,15 +27,19 @@ Project File Date:  04/18/2024
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
 compiling UI.c...
-..\GimbalApp\UI\UI.c(62): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                if(g_currentMotorInf.angle<_3_PI_8){
-..\GimbalApp\UI\UI.c(75): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                if(g_currentMotorInf.angle>_PI_8){
-..\GimbalApp\UI\UI.c: 2 warnings, 0 errors
+..\GimbalApp\UI\UI.c(67): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                if(g_currentMotorInf.angle<_3_PI_8 - angleDiff){
+..\GimbalApp\UI\UI.c(80): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                if(g_currentMotorInf.angle>_PI_8 - angleDiff){
+..\GimbalApp\UI\UI.c(81): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        targetAngle = _PI_2 - angleDiff;
+..\GimbalApp\UI\UI.c(191): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                case Bright1: diffAngle = _PI_2 - lastTargetAngle;      break;
+..\GimbalApp\UI\UI.c: 4 warnings, 0 errors
 linking...
-Program Size: Code=25112 RO-data=5924 RW-data=400 ZI-data=20576  
+Program Size: Code=25748 RO-data=5924 RW-data=404 ZI-data=20580  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 2 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 

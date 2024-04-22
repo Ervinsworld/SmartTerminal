@@ -65,6 +65,7 @@ TaskHandle_t MotorPidTaskHandle;
 
 //QueueHandle_t MotorInfQueueHandle;
 QueueHandle_t TargetAngleQueueHandle;
+QueueHandle_t AngleDiffQueueHandle;
 //QueueHandle_t ButtonQueueHandle;
 
 //SemaphoreHandle_t ActionSemaphore;
@@ -122,6 +123,8 @@ void MX_FREERTOS_Init(void) {
   /* add queues, ... */
 
 	TargetAngleQueueHandle = xQueueCreate(1, sizeof(float));//UI页面想要设置angle的目标值mailbox
+	AngleDiffQueueHandle = xQueueCreate(1, sizeof(float));//用来消除刚进入子页面时的angle差异（消除进入子页面时的电机快速转动）
+	
 	//ButtonQueueHandle = xQueueCreate(1, sizeof(int));
   /* USER CODE END RTOS_QUEUES */
 
