@@ -1,4 +1,5 @@
 #include "driver_joystick.h"
+#include "page.h"
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
@@ -16,6 +17,7 @@
 void Joystick_Task(void *params){
 	joystickValue value;
 	extern EventGroupHandle_t UIResponseEvent;
+	extern buttonState g_ButtonState;
 	while(1){
 		value = JoyStickValueCal();
 		if(value.xValue<500)
@@ -26,6 +28,9 @@ void Joystick_Task(void *params){
 			xEventGroupSetBits(UIResponseEvent, 1<<2);
 		else if(value.yValue<500)
 			xEventGroupSetBits(UIResponseEvent, 1<<3);
+		if(g_ButtonState == pressed)
+			xEventGroupSetBits(UIResponseEvent, 1<<4);
+		//printf("PageID:%d\n", getCurrentpageId());
 		vTaskDelay(100);
 	}
 }

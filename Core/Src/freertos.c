@@ -65,9 +65,12 @@ TaskHandle_t MotorPidTaskHandle;
 
 //QueueHandle_t MotorInfQueueHandle;
 QueueHandle_t TargetAngleQueueHandle;
+//QueueHandle_t ButtonQueueHandle;
+
 //SemaphoreHandle_t ActionSemaphore;
-EventGroupHandle_t UIResponseEvent;
-EventGroupHandle_t ActionEvent;
+EventGroupHandle_t UIResponseEvent;//摇杆事件对应的event（上下左右按下）
+EventGroupHandle_t UIActionEvent;//UI子页面和电机动作交互的事件
+
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -117,8 +120,9 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
-	//MotorInfQueueHandle = xQueueCreate(20, sizeof(MotorInf));
-	TargetAngleQueueHandle = xQueueCreate(20, sizeof(float));
+
+	TargetAngleQueueHandle = xQueueCreate(1, sizeof(float));//UI页面想要设置angle的目标值mailbox
+	//ButtonQueueHandle = xQueueCreate(1, sizeof(int));
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -128,22 +132,21 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   xTaskCreate(MotorPid_Task, "MotorPidTask", 128, NULL, osPriorityNormal+2, &MotorPidTaskHandle);
-  xTaskCreate(UI_Task, "UITask", 128, NULL, osPriorityNormal+1, NULL);
   xTaskCreate(Joystick_Task, "JoystickTask", 128, NULL, osPriorityNormal+1, NULL);
-  xTaskCreate(Motor_Task, "MotorTask", 128, NULL, osPriorityNormal+1, NULL);
-  xTaskCreate(UIAction_Task, "UIAction_Task", 128, NULL, osPriorityNormal+1, NULL);
-
+  xTaskCreate(UI_Task, "UITask", 256, NULL, osPriorityNormal+1, NULL);
+  xTaskCreate(UIAction_Task, "UIAction_Task", 256, NULL, osPriorityNormal+1, NULL);
+  //xTaskCreate(Joystick_Test, "test", 128, NULL, osPriorityNormal+1, NULL);
+ 
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
   
-  //UI换页响应事件组使用低五位：0位：右；1位：左，2位：下，3位：上，4位事件页面进入面
+  //UI换页响应事件组使用低五位：0位：右；1位：左，2位：下，3位：上，4位：按钮
   UIResponseEvent = xEventGroupCreate();
-  //UI动作处理事件只用最低位
-  ActionEvent = xEventGroupCreate();
+  //UI动作事件只用最低位
+  UIActionEvent = xEventGroupCreate(); 
   /* USER CODE END RTOS_EVENTS */
-
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */

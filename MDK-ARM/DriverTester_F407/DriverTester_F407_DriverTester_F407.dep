@@ -94,7 +94,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
-F (../Core/Src/freertos.c)(0x66227BD5)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\freertos.o --omf_browse drivertester_f407\freertos.crf --depend drivertester_f407\freertos.d)
+F (../Core/Src/freertos.c)(0x66267ED8)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\freertos.o --omf_browse drivertester_f407\freertos.crf --depend drivertester_f407\freertos.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x65F26B51)
 I (D:\MDK5\ARM\ARMCC\include\stddef.h)(0x5475F300)
 I (D:\MDK5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -144,7 +144,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h)(0x65F26B51)
 I (D:\MDK5\ARM\ARMCC\include\stdio.h)(0x5475F300)
-I (../Drivers/USER_Driver/driver_motorComm.h)(0x66211D31)
+I (../Drivers/USER_Driver/driver_motorComm.h)(0x66261B88)
 I (../Drivers/MPU6050/mpu6050.h)(0x661F310B)
 I (../Drivers/MPU6050/inv_mpu.h)(0x661F310B)
 I (../Drivers/MPU6050/inv_mpu_dmp_motion_driver.h)(0x661F310B)
@@ -153,9 +153,9 @@ I (../Drivers/USER_Driver/driver_joystick.h)(0x661F310B)
 I (../Drivers/USER_Driver/driver_oled.h)(0x661F310B)
 I (../Core/Inc/i2c.h)(0x661F310A)
 I (../GimbalApp/UI/UI.h)(0x66226B9D)
-I (../GimbalApp/UI/page.h)(0x662281A0)
+I (../GimbalApp/UI/page.h)(0x66263CE6)
 I (..\GimbalApp\Joystick\joystick.h)(0x661F310B)
-I (..\GimbalApp\Motor\Motor.h)(0x662206FB)
+I (..\GimbalApp\Motor\Motor.h)(0x66261BC7)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x65F26B51)
@@ -1326,7 +1326,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
 I (..\Drivers\USER_Driver\ascii.h)(0x661F310B)
-F (..\Drivers\USER_Driver\driver_joystick.c)(0x662118ED)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\driver_joystick.o --omf_browse drivertester_f407\driver_joystick.crf --depend drivertester_f407\driver_joystick.d)
+F (..\Drivers\USER_Driver\driver_joystick.c)(0x66263003)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\driver_joystick.o --omf_browse drivertester_f407\driver_joystick.crf --depend drivertester_f407\driver_joystick.d)
 I (../Core/Inc/adc.h)(0x661F310A)
 I (../Core/Inc/main.h)(0x661F310A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65F26B4F)
@@ -1367,7 +1367,19 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
 I (../Core/Inc/gpio.h)(0x661F310A)
 I (..\Drivers\USER_Driver\driver_joystick.h)(0x661F310B)
-F (..\Drivers\USER_Driver\driver_motorComm.c)(0x66212C6F)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\driver_motorcomm.o --omf_browse drivertester_f407\driver_motorcomm.crf --depend drivertester_f407\driver_motorcomm.d)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x65F26B51)
+I (../Core/Inc/FreeRTOSConfig.h)(0x662128DD)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x65F26B51)
+I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x65F26B51)
+F (..\Drivers\USER_Driver\driver_motorComm.c)(0x66261B8B)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\driver_motorcomm.o --omf_browse drivertester_f407\driver_motorcomm.crf --depend drivertester_f407\driver_motorcomm.d)
 I (../Core/Inc/can.h)(0x661F310A)
 I (../Core/Inc/main.h)(0x661F310A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65F26B4F)
@@ -1406,7 +1418,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
-I (..\Drivers\USER_Driver\driver_motorComm.h)(0x66211D31)
+I (..\Drivers\USER_Driver\driver_motorComm.h)(0x66261B88)
 F (..\Drivers\MPU6050\inv_mpu.c)(0x661F310B)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\inv_mpu.o --omf_browse drivertester_f407\inv_mpu.crf --depend drivertester_f407\inv_mpu.d)
 I (D:\MDK5\ARM\ARMCC\include\stdio.h)(0x5475F300)
 I (D:\MDK5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -1661,7 +1673,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
 I (../Core/Inc/gpio.h)(0x661F310A)
 I (../Core/Inc/main.h)(0x661F310A)
-F (..\GimbalApp\Joystick\Joystick.c)(0x662118FE)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\joystick.o --omf_browse drivertester_f407\joystick.crf --depend drivertester_f407\joystick.d)
+F (..\GimbalApp\Joystick\Joystick.c)(0x66263AA0)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\joystick.o --omf_browse drivertester_f407\joystick.crf --depend drivertester_f407\joystick.d)
 I (../Drivers/USER_Driver/driver_joystick.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65F26B4F)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x661F310A)
@@ -1699,6 +1711,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x65F26B4F)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
+I (../GimbalApp/UI/page.h)(0x66263CE6)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x65F26B51)
 I (../Core/Inc/FreeRTOSConfig.h)(0x662128DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h)(0x65F26B51)
@@ -1711,8 +1724,8 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x65F26B51)
-F (..\GimbalApp\UI\page.c)(0x66228786)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\page.o --omf_browse drivertester_f407\page.crf --depend drivertester_f407\page.d)
-I (..\GimbalApp\UI\page.h)(0x662281A0)
+F (..\GimbalApp\UI\page.c)(0x662685CA)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\page.o --omf_browse drivertester_f407\page.crf --depend drivertester_f407\page.d)
+I (..\GimbalApp\UI\page.h)(0x66263CE6)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65F26B4F)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x661F310A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x661F310B)
@@ -1754,7 +1767,7 @@ I (../Core/Inc/i2c.h)(0x661F310A)
 I (../Core/Inc/main.h)(0x661F310A)
 I (D:\MDK5\ARM\ARMCC\include\string.h)(0x5475F300)
 I (..\GimbalApp\UI\Icons.c)(0x66225AAB)
-F (..\GimbalApp\UI\UI.c)(0x66228693)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\ui.o --omf_browse drivertester_f407\ui.crf --depend drivertester_f407\ui.d)
+F (..\GimbalApp\UI\UI.c)(0x6626873C)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\ui.o --omf_browse drivertester_f407\ui.crf --depend drivertester_f407\ui.d)
 I (../Drivers/USER_Driver/driver_oled.h)(0x661F310B)
 I (../Core/Inc/i2c.h)(0x661F310A)
 I (../Core/Inc/main.h)(0x661F310A)
@@ -1795,10 +1808,10 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
 I (../Drivers/USER_Driver/driver_joystick.h)(0x661F310B)
-I (..\GimbalApp\UI\page.h)(0x662281A0)
+I (..\GimbalApp\UI\page.h)(0x66263CE6)
 I (..\GimbalApp\UI\UI.h)(0x66226B9D)
-I (../Drivers/USER_Driver/driver_motorComm.h)(0x66211D31)
-I (..\GimbalApp\Motor\Motor.h)(0x662206FB)
+I (../Drivers/USER_Driver/driver_motorComm.h)(0x66261B88)
+I (..\GimbalApp\Motor\Motor.h)(0x66261BC7)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x65F26B51)
 I (../Core/Inc/FreeRTOSConfig.h)(0x662128DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h)(0x65F26B51)
@@ -1812,8 +1825,8 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h)(0x65F26B51)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x65F26B51)
-F (..\GimbalApp\Motor\Motor.c)(0x6621E3D2)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\motor.o --omf_browse drivertester_f407\motor.crf --depend drivertester_f407\motor.d)
-I (../Drivers/USER_Driver/driver_motorComm.h)(0x66211D31)
+F (..\GimbalApp\Motor\Motor.c)(0x66262FE0)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I../Drivers/USER_Driver -I../Drivers/MPU6050 -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I../GimbalApp/UI -I..\GimbalApp\Joystick -I..\GimbalApp\Motor-I C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\RTE-I D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include-I D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1-D__UVISION_VERSION="514" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx-o drivertester_f407\motor.o --omf_browse drivertester_f407\motor.crf --depend drivertester_f407\motor.d)
+I (../Drivers/USER_Driver/driver_motorComm.h)(0x66261B88)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x65F26B4F)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x661F310A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x661F310B)
@@ -1851,7 +1864,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x661F310B)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x661F310B)
 I (..\GimbalApp\Motor\pid.h)(0x661FA49C)
-I (..\GimbalApp\Motor\Motor.h)(0x662206FB)
+I (..\GimbalApp\Motor\Motor.h)(0x66261BC7)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x65F26B51)
 I (../Core/Inc/FreeRTOSConfig.h)(0x662128DD)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h)(0x65F26B51)

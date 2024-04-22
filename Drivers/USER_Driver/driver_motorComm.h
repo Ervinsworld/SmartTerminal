@@ -8,6 +8,8 @@ typedef struct MotorStatus{
 	float speed;        
 }MotorInf;
 
+extern MotorInf g_currentMotorInf;
+
 void MotorCommInit(void);
 void SendMessage2Motor(float voltage, uint8_t motorID);
 void MotorComm_Test(void);	

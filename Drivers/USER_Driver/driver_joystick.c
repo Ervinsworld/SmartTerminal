@@ -1,10 +1,16 @@
 #include "adc.h"
 #include "gpio.h"
 #include "driver_joystick.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
 
 static uint32_t ADC_Buffer[100];//用于储存ADC向DMA转运的数据，长度100
-static buttonState g_ButtonState;
+buttonState g_ButtonState = free;
 
+//static buttonState g_ButtonState;
+extern EventGroupHandle_t UIResponseEvent;
+//extern QueueHandle_t ButtonQueueHandle;
 /**********************************************************************
  * 函数名称： JoyStickInit
  * 功能描述： 摇杆初始化
@@ -59,14 +65,21 @@ joystickValue JoyStickValueCal(){
  ***********************************************************************/
 
 void JoystickButton_IRQ_Callback(void){
-	if(HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin)==GPIO_PIN_SET)
+	if(HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin)==GPIO_PIN_SET){
 		g_ButtonState = free;
-	else
+		//xQueueOverwriteFromISR(ButtonQueueHandle, &g_ButtonState, NULL);
+	}	
+	else{
 		g_ButtonState = pressed;
+		//xQueueOverwriteFromISR(ButtonQueueHandle, &g_ButtonState, NULL);
+	}
+		
 };
+
 
 void Joystick_Test(void *params){
 	joystickValue value;
+	int buttonValue;
 	while(1){
 		value = JoyStickValueCal();
 		printf("xValue = %d, yValue = %d, ButtonValue = %d\n", value.xValue, value.yValue, g_ButtonState);

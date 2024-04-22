@@ -29,7 +29,7 @@ const char* bottomStr[PageNum][3] =
 	{"Block", "Car"},
 };
 
-const UIPage UIpages[PageNum] = 
+UIPage UIpages[PageNum] = 
 {	
 {pStatic, 0, 1, BMP_LIGHT_48x48},//data值1表示灯光关闭，2表示灯光开启
 {nStatic, 0, 0, BMP_OFF_48x48},
@@ -167,7 +167,7 @@ int8_t SlideRight(){
 	else{
 		data++;
 	}
-	setPagedata(data);
+	setCurrentPagedata(data);
 	clearString();
 	showString();
 	return 0;
@@ -197,7 +197,7 @@ int8_t SlideLeft(){
 	else{
 		data--;
 	}
-	setPagedata(data);
+	setCurrentPagedata(data);
 	clearString();
 	showString();
 	return 0;
@@ -208,7 +208,7 @@ int8_t SlideLeft(){
  * 功能描述： 进入子页面
  * 输入参数： 无
  * 输出参数： 无
- * 返 回 值： -1为失败，0为成功
+ * 返 回 值： -1为失败,否则返回0
  * 修改日期        版本号     修改人	      修改内容
  * -----------------------------------------------
  * 2024/4/6	     V1.0	  Ervin	      创建
@@ -224,6 +224,7 @@ int8_t PageIn(){
 		return 0;
 	}
 	for(i=0; i<FatherPageNum; i++){
+		//查询页面映射关系表
 		if(PageMapTable[i][0] == getCurrentpageId()){
 			setCurrentpage(PageMapTable[i][page.data]);
 			showPage();
@@ -306,8 +307,8 @@ PageID getCurrentpageId(){
 }
 
 /**********************************************************************
- * 函数名称： setPagedata
- * 功能描述： 设置页面的数据值
+ * 函数名称： setCurrentPagedata
+ * 功能描述： 设置当前页面的数据值
  * 输入参数： data
  * 输出参数： 无
  * 返 回 值： -1表示失败，0表示成功
@@ -315,15 +316,36 @@ PageID getCurrentpageId(){
  * -----------------------------------------------
  * 2024/4/7	     V1.0	  Ervin	      创建
  ***********************************************************************/
-int8_t setPagedata(uint8_t data){
+int8_t setCurrentPagedata(uint8_t data){
 	//判断设定值是否超过了数量值，若超过不允许操作，返回-1
 	if(g_currentPage.InfMode == pSlide && data >= g_currentPage.slideNum)
 		return -1;
-	else
+	else{
 		g_currentPage.data = data;
+		UIpages[g_currentId-1].data = data;
+	}
 	return 0;
 }
 
+/**********************************************************************
+ * 函数名称： setPagedata
+ * 功能描述： 设置指定页面的数据值
+ * 输入参数： id, data
+ * 输出参数： 无
+ * 返 回 值： -1表示失败，0表示成功
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/7	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+int8_t setPagedata(uint8_t id, uint8_t data){
+	//判断设定值是否超过了数量值，若超过不允许操作，返回-1
+	UIPage page = UIpages[id-1];
+	if(page.InfMode == pSlide && data >= page.slideNum)
+		return -1;
+	else 
+		UIpages[id-1].data = data;
+	return 0;
+}
 
 /**********************************************************************
  * 函数名称： showPage

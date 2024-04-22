@@ -79,7 +79,8 @@ int8_t PageOut(void);
 void setCurrentpage(PageID id);
 UIPage getCurrentpage(void);
 PageID getCurrentpageId(void);
-int8_t setPagedata(uint8_t data);
+int8_t setCurrentPagedata(uint8_t data);
+int8_t setPagedata(uint8_t id, uint8_t data);
 
 //位图显示，清除方法
 void showPage(void);
