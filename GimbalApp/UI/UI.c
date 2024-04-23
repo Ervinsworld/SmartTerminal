@@ -38,7 +38,7 @@ void UIAction_Task(void *params){
 		//printf("%f,%f\n", motorInf.angle, targetAngle);
 		switch(id){
 			case On:{
-				if(g_currentMotorInf.angle>-_3_PI_8 - angleDiff){
+				if(g_currentMotorInf.angle>-_3_PI_4 - angleDiff){
 					targetAngle = 0 - angleDiff;
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					clearPage();
@@ -51,8 +51,8 @@ void UIAction_Task(void *params){
 			}
 
 			case Off:{
-				if(g_currentMotorInf.angle<-_PI_8 - angleDiff){
-					targetAngle = -_PI_2 - angleDiff;
+				if(g_currentMotorInf.angle<-_PI_4 - angleDiff){
+					targetAngle = -_PI - angleDiff;
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					clearPage();
 					setCurrentpage(On);
@@ -64,7 +64,7 @@ void UIAction_Task(void *params){
 			}
 			
 			case Bright1:{
-				if(g_currentMotorInf.angle<_3_PI_8 - angleDiff){
+				if(g_currentMotorInf.angle<_3_PI_4 - angleDiff){
 					targetAngle = 0 - angleDiff;
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					clearPage();
@@ -77,8 +77,8 @@ void UIAction_Task(void *params){
 			}
 			
 			case Bright2:{
-				if(g_currentMotorInf.angle>_PI_8 - angleDiff){
-					targetAngle = _PI_2 - angleDiff;
+				if(g_currentMotorInf.angle>_PI_4 - angleDiff){
+					targetAngle = _PI - angleDiff;
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					clearPage();
 					setCurrentpage(Bright1);
@@ -86,8 +86,8 @@ void UIAction_Task(void *params){
 					showPage();
 					vTaskDelay(pdMS_TO_TICKS(1000));
 				}
-				else if(g_currentMotorInf.angle<-_PI_8 - angleDiff){
-					targetAngle = -_PI_2 - angleDiff;
+				else if(g_currentMotorInf.angle<-_PI_4 - angleDiff){
+					targetAngle = -_PI - angleDiff;
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					clearPage();
 					setCurrentpage(Bright3);
@@ -99,7 +99,7 @@ void UIAction_Task(void *params){
 			}
 			
 			case Bright3:{
-				if(g_currentMotorInf.angle>-_3_PI_8 - angleDiff){
+				if(g_currentMotorInf.angle>-_3_PI_4 - angleDiff){
 					targetAngle = 0 - angleDiff;
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					clearPage();
@@ -135,7 +135,7 @@ void UIAction_Task(void *params){
 			default:
 				break;
 		}
-
+		//printf("%f\n", targetAngle);
 	}
 }
 
@@ -155,7 +155,7 @@ void UI_Task(void *params){
 	EventBits_t UIResponseEventbit;
 	PageID id;
 	//float targetAngle = 0;
-	float lastTargetAngle = 0;
+	float TargetAngle = 0;
 	float diffAngle = 0;
 	UI_Init();//初始化UI
 	while(1){
@@ -174,10 +174,10 @@ void UI_Task(void *params){
 				else if(UIResponseEventbit&(1<<0))
 					SlideRight();
 				else if(UIResponseEventbit&(1<<4)){
-					xQueuePeek(TargetAngleQueueHandle, &lastTargetAngle, 0);				
+					xQueuePeek(TargetAngleQueueHandle, &TargetAngle, 0);				
 					//设置各子页面进入时的目标角度
-					id = getCurrentpageId();
 					PageIn();
+					id = getCurrentpageId();
 					switch(id){
 						/*
 						case On: targetAngle = -_PI_2;break;
@@ -186,15 +186,15 @@ void UI_Task(void *params){
 						case Bright2: targetAngle = 0;break;
 						case Bright3: targetAngle = -_PI_2;break;
 						*/
-						case On: diffAngle = -_PI_2 - lastTargetAngle;	break;
-						case Off: diffAngle = 0 - lastTargetAngle;	break;
-						case Bright1: diffAngle = _PI_2 - lastTargetAngle;	break;
-						case Bright2: diffAngle = 0 - lastTargetAngle;	break;
-						case Bright3: diffAngle = -_PI_2 - lastTargetAngle;	break;
+						case On: diffAngle = -_PI - TargetAngle;	break;
+						case Off: diffAngle = 0 - TargetAngle;	break;
+						case Bright1: diffAngle = _PI - TargetAngle;	break;
+						case Bright2: diffAngle = 0 - TargetAngle;	break;
+						case Bright3: diffAngle = -_PI - TargetAngle;	break;
 						default:break;
 					}
 					xQueueOverwrite(AngleDiffQueueHandle, &diffAngle);
-					vTaskDelay(pdMS_TO_TICKS(2000));
+					//vTaskDelay(pdMS_TO_TICKS(2000));
 					xEventGroupSetBits(UIActionEvent, 1<<0);
 					//printf("%f, %f\n", targetAngle, g_currentMotorInf.angle);	
 				}
