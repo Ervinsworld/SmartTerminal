@@ -139,7 +139,7 @@ void MX_FREERTOS_Init(void) {
   xTaskCreate(UI_Task, "UITask", 256, NULL, osPriorityNormal+1, NULL);
   xTaskCreate(UIAction_Task, "UIAction_Task", 256, NULL, osPriorityNormal+1, NULL);
   /*test_thread*/
-  //xTaskCreate(AnglePrint_Task, "test", 128, NULL, osPriorityNormal+1, NULL);
+  xTaskCreate(UIPrint_Task, "test", 128, NULL, osPriorityNormal+1, NULL);
  
   /* USER CODE END RTOS_THREADS */
 

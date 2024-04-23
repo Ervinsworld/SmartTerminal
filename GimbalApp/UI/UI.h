@@ -6,6 +6,7 @@
 /*FreeRTOS任务函数*/
 void UI_Task(void *params);
 void UIAction_Task(void *params);
+void UIPrint_Task(void *params);
 
 /*操作函数*/
 void UI_Init(void);

@@ -200,7 +200,7 @@ void UI_Task(void *params){
 				}
 				//成功后延迟并清除所有位
 				//printf("bit:%d\n", UIResponseEventbit);
-				vTaskDelay(pdMS_TO_TICKS(1000));
+				vTaskDelay(pdMS_TO_TICKS(700));
 				xEventGroupClearBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3|1<<4);
 			}
 			
@@ -221,6 +221,23 @@ void UI_Task(void *params){
 	}
 }
 
+/**********************************************************************
+ * 函数名称： UIPrint_Task
+ * 功能描述： UI信息的打印测试函数
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/6	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+
+void UIPrint_Task(void *params){
+	while(1){
+		printf("%d\n", getCurrentpageId());
+		vTaskDelay(pdMS_TO_TICKS(50));
+	}
+}
 
 /**********************************************************************
  * 函数名称： UI_Init

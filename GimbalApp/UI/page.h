@@ -9,7 +9,7 @@
 #define MainBMPres 48   //主图标像素值
 #define ArrowBMPres 16  //箭头图标像素值，只有滑动模式拥有箭头图标
 
-#define PageNum 10
+#define PageNum 11
 #define FatherPageNum 5
 #define MaxSonPageNum 4
 
@@ -25,8 +25,8 @@
 				- pSilde  最下栏无滑动框（只有静态字符串）的主动类型
 	被动类型：由主动类型页面的事件（因按下按钮/旋转电机等）而触发的页面
 			 被动类型页面也有两种：
-				- nStatic  只显示无交互
-				- nDynamic 有交互的
+				- nStatic  只显示画面，画面本身和外设无交互
+				- nDynamic 有交互的，效果需要单独实现
 */
 
 
@@ -39,7 +39,7 @@ typedef enum
 	nDynamic = 3
 }InterfaceMode;
 
-//页面代号，共十种页面,在c文件中补充页面的具体信息
+//页面代号，共N种页面,在c文件中补充页面的具体信息
 typedef enum
 {
     Light = 1,
@@ -52,6 +52,7 @@ typedef enum
 	Window,
 	MotorPlay,
 	Game,
+	Bar
 }PageID;
 
 /************					页面信息结构体				************/
@@ -90,8 +91,9 @@ void clearPage(void);
 void showbarFrame(void);
 void showbar(void);
 int8_t showbardata(void);
+void clearBar(void);
 
-//不需要使用的子方法
+//子方法
 void clearMainIcon(void);
 void clearBottom(void);
 void showString(void);
@@ -101,5 +103,6 @@ void clearArrows(void);
 void showBackArrow(void);
 void clearBackArrow(void);
 
+//功能函数
 char* Int2String(int num,char *str);
 #endif

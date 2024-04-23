@@ -11,6 +11,7 @@ const uint8_t PageMapTable[FatherPageNum][MaxSonPageNum] =
 {
 	{Light, Off, On},
 	{Mode, Bright1, Bright2, Bright3},
+	{Window, Bar},
 };
 
 
@@ -38,9 +39,10 @@ UIPage UIpages[PageNum] =
 {nStatic, 0, 0, BMP_BRIGHT1_48x48},
 {nStatic, 0, 0, BMP_BRIGHT2_48x48},
 {nStatic, 0, 0, BMP_BRIGHT3_48x48},
-{pStatic, 0, 0, BMP_WINDOW_48x48},//data值代表屏幕亮度的值，上限100，1细分
+{pStatic, 0, 0, BMP_WINDOW_48x48},//data存储bar的值，0-100，精度1
 {pSlide, 3, 0, BMP_MOTOR_48x48},
 {pSlide, 2, 0, BMP_SWITCH_48x48},
+{nDynamic, 0, 0, NULL},
 };
 
 
@@ -96,7 +98,7 @@ int8_t PageDown(){
 	uint8_t id = getCurrentpageId();
 	UIPage page = getCurrentpage();
 	//若该页是被动状态，则无法执行翻页操作
-	if(page.InfMode==nStatic)
+	if((page.InfMode==nStatic) || (page.InfMode==nDynamic))
 		return -1;
 	do{
 		if(id==PageNum){
@@ -105,7 +107,7 @@ int8_t PageDown(){
 		else{
 			id++;
 		}
-	}while(UIpages[id-1].InfMode==nStatic);
+	}while((UIpages[id-1].InfMode==nStatic) || (UIpages[id-1].InfMode==nDynamic));
 	clearPage();
 	setCurrentpage(id);
 	showPage();
@@ -126,7 +128,7 @@ int8_t PageUp(){
 	uint8_t id = getCurrentpageId();
 	UIPage page = getCurrentpage();
 	//若该页是被动状态，则无法执行翻页操作
-	if(page.InfMode==nStatic)
+	if((page.InfMode==nStatic) || (page.InfMode==nDynamic))
 		return -1;
 	do{
 		if(id==1){
@@ -136,7 +138,7 @@ int8_t PageUp(){
 			id--;
 		}
 
-	}while(UIpages[id-1].InfMode==nStatic);
+	}while((UIpages[id-1].InfMode==nStatic) || (UIpages[id-1].InfMode==nDynamic));
 	clearPage();
 	setCurrentpage(id);
 	showPage();
@@ -217,15 +219,17 @@ int8_t SlideLeft(){
 int8_t PageIn(){
 	int i;
 	UIPage page = getCurrentpage();
+	PageID id = getCurrentpageId();
 	clearPage();
-	//若为window页面
-	if(getCurrentpageId() == Window){
+	if(id == Window){
+		setCurrentpage(Bar);
 		showbarFrame();
+		showbardata();
 		return 0;
 	}
 	for(i=0; i<FatherPageNum; i++){
 		//查询页面映射关系表
-		if(PageMapTable[i][0] == getCurrentpageId()){
+		if(PageMapTable[i][0] == id){
 			setCurrentpage(PageMapTable[i][page.data]);
 			showPage();
 			return 0;
@@ -248,6 +252,15 @@ int8_t PageIn(){
 int8_t PageOut(){
 	int i, j;
 	UIPage page = getCurrentpage();
+	//若为window页面
+	if(getCurrentpageId() == Bar){
+		clearBar();
+		clearString();
+		setCurrentpage(Window);
+		showPage();
+		return 0;
+	}
+	//若为其他页面
 	for(i=0; i<FatherPageNum; i++){
 		for(int j=1; j<MaxSonPageNum; j++){
 			if(PageMapTable[i][j] == getCurrentpageId()){
@@ -444,6 +457,26 @@ void showbarFrame(){
 }
 
 /**********************************************************************
+ * 函数名称： clearBar
+ * 功能描述： 擦除整个Bar
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/23	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+void clearBar(){
+	uint8_t i, j;
+	for(i=0; i<BarWidth; i++){
+		OLED_SetPos(BarXStart,BarYStart+i);
+		for(j=0;j<BarLength;j++){
+			WriteDat(0x00);
+		}
+	}
+}
+
+/**********************************************************************
  * 函数名称： showbardata
  * 功能描述： 数值条底部数值的显示函数
  * 输入参数： 无
@@ -455,7 +488,7 @@ void showbarFrame(){
  ***********************************************************************/
 int8_t showbardata(){
 	char s[5] = {0};
-	if(g_currentId!=Window)
+	if(g_currentId!=Bar)
 		return -1;
 	Int2String(g_currentPage.data, s);
 	uint8_t len = strlen(s);
@@ -464,6 +497,16 @@ int8_t showbardata(){
 	OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)s, g_stringSize);
 }
 
+/**********************************************************************
+ * 函数名称： Int2String
+ * 功能描述： 整型转字符串型
+ * 输入参数： 数字
+ * 输出参数： 字符串首地址
+ * 返 回 值： 字符串首地址
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/19	     V1.0	  Ervin	      创建
+ ***********************************************************************/
 char* Int2String(int num,char *str)//10进制 
 {
     int i = 0;//指示填充str 

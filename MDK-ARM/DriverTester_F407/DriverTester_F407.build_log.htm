@@ -26,20 +26,26 @@ Project File Date:  04/18/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
-compiling UI.c...
-..\GimbalApp\UI\UI.c(67): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                if(g_currentMotorInf.angle<_3_PI_4 - angleDiff){
-..\GimbalApp\UI\UI.c(80): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                if(g_currentMotorInf.angle>_PI_4 - angleDiff){
-..\GimbalApp\UI\UI.c(81): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                        targetAngle = _PI - angleDiff;
-..\GimbalApp\UI\UI.c(191): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                                case Bright1: diffAngle = _PI - TargetAngle;    break;
-..\GimbalApp\UI\UI.c: 4 warnings, 0 errors
+compiling page.c...
+..\GimbalApp\UI\page.c(112): warning:  #188-D: enumerated type mixed with another type
+        setCurrentpage(id);
+..\GimbalApp\UI\page.c(143): warning:  #188-D: enumerated type mixed with another type
+        setCurrentpage(id);
+..\GimbalApp\UI\page.c(233): warning:  #188-D: enumerated type mixed with another type
+                        setCurrentpage(PageMapTable[i][page.data]);
+..\GimbalApp\UI\page.c(268): warning:  #188-D: enumerated type mixed with another type
+                                setCurrentpage(PageMapTable[i][0]);
+..\GimbalApp\UI\page.c(253): warning:  #177-D: variable "j" was declared but never referenced
+        int i, j;
+..\GimbalApp\UI\page.c(498): warning:  #940-D: missing return statement at end of non-void function "showbardata"
+  }
+..\GimbalApp\UI\page.c(696): warning:  #1-D: last line of file ends without a newline
+  }
+..\GimbalApp\UI\page.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=25900 RO-data=5924 RW-data=404 ZI-data=20580  
+Program Size: Code=26056 RO-data=5924 RW-data=424 ZI-data=20576  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 4 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
