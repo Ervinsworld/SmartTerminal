@@ -7,6 +7,7 @@
 
 extern QueueHandle_t TargetAngleQueueHandle;
 extern QueueHandle_t AngleDiffQueueHandle;
+//extern QueueHandle_t MotorRawQueueHandle;
 
 /**********************************************************************
  * 函数名称： MotorPid_Task
@@ -43,6 +44,7 @@ void AnglePrint_Task(void *params){
 	float targetAngle = 0;
 	float diffAngle = 0;
 	while(1){
+		//xQueuePeek(MotorRawQueueHandle, &rxData, 0);
 		xQueuePeek(TargetAngleQueueHandle, &targetAngle, 0);
 		xQueuePeek(AngleDiffQueueHandle, &diffAngle, 0);
 		printf("%f, %f, %f\n", g_currentMotorInf.angle, diffAngle, targetAngle);//物理角度，角度差值，目标角度

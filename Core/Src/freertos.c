@@ -64,8 +64,11 @@
 TaskHandle_t MotorPidTaskHandle;
 
 //QueueHandle_t MotorInfQueueHandle;
+
 QueueHandle_t TargetAngleQueueHandle;
 QueueHandle_t AngleDiffQueueHandle;
+//QueueHandle_t MotorRawQueueHandle;
+
 //QueueHandle_t ButtonQueueHandle;
 
 //SemaphoreHandle_t ActionSemaphore;
@@ -122,6 +125,7 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
 
+	//MotorRawQueueHandle = xQueueCreate(1, sizeof(uint8_t)*8);//接受CAN通信传来的原始电机数据帧
 	TargetAngleQueueHandle = xQueueCreate(1, sizeof(float));//UI页面想要设置angle的目标值mailbox
 	AngleDiffQueueHandle = xQueueCreate(1, sizeof(float));//用来消除刚进入子页面时的angle差异（消除进入子页面时的电机快速转动）
 	
@@ -142,7 +146,7 @@ void MX_FREERTOS_Init(void) {
   xTaskCreate(UIAction_Task, "UIAction_Task", 256, NULL, osPriorityNormal+1, NULL);
   
   /*test_thread*/
-  //xTaskCreate(ButtonTest_Task, "test", 128, NULL, osPriorityNormal, NULL);
+  //xTaskCreate(AnglePrint_Task, "test", 128, NULL, osPriorityNormal, NULL);
  
   /* USER CODE END RTOS_THREADS */
 

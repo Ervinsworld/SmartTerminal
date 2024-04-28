@@ -1,7 +1,11 @@
 #include "can.h"
 #include "driver_motorComm.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
 
 MotorInf g_currentMotorInf;
+//extern QueueHandle_t MotorRawQueueHandle;
 
 /**********************************************************************
  * º¯ÊýÃû³Æ£º MotorCommInit
@@ -74,11 +78,10 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &header, rxData) != HAL_OK)
 		return;
 
-	
+	//xQueueOverwriteFromISR(MotorRawQueueHandle, &rxData, NULL);
 	g_currentMotorInf.angle = *(int32_t*)&rxData[0] / 1000.0f;
 	g_currentMotorInf.speed = *(int16_t*)&rxData[4] / 10.0f;
 
-	//xQueueSendFromISR(MotorInfQueueHandle, &g_currentMotorInf, NULL);
 }
 
 

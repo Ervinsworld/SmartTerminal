@@ -208,7 +208,7 @@ void UI_Task(void *params){
 		}
 		//若为子页面,摇杆移动任意方向或按下皆可退出到父页面操作
 		else{
-			xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3|1<<4, pdTRUE, pdFALSE, portMAX_DELAY);
+			xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3, pdTRUE, pdFALSE, portMAX_DELAY);
 			//xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 			xEventGroupClearBits(UIActionEvent, 1<<0);//停止动作执行任务
 			PageOut();
