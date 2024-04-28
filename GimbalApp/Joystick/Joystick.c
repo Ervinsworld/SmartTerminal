@@ -4,6 +4,8 @@
 #include "queue.h"
 #include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
 
+extern EventGroupHandle_t UIResponseEvent;
+
 /**********************************************************************
  * 函数名称： Joystick_Task
  * 功能描述： FreeRTOS摇杆任务,每100tick去DMA队列中计算一次摇杆值
@@ -16,8 +18,6 @@
  ***********************************************************************/
 void Joystick_Task(void *params){
 	joystickValue value;
-	extern EventGroupHandle_t UIResponseEvent;
-	extern buttonState g_ButtonState;
 	while(1){
 		value = JoyStickValueCal();
 		if(value.xValue<500)
@@ -28,9 +28,15 @@ void Joystick_Task(void *params){
 			xEventGroupSetBits(UIResponseEvent, 1<<2);
 		else if(value.yValue<500)
 			xEventGroupSetBits(UIResponseEvent, 1<<3);
-		if(g_ButtonState == pressed)
-			xEventGroupSetBits(UIResponseEvent, 1<<4);
-		//printf("PageID:%d\n", getCurrentpageId());
+		vTaskDelay(100);
+	}
+}
+
+void ButtonTest_Task(void *params){
+	while(1){
+		//xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3|1<<4, pdTRUE, pdFALSE, portMAX_DELAY);
+		xEventGroupWaitBits(UIResponseEvent, 1<<4, pdTRUE, pdFALSE, portMAX_DELAY);
+		printf("Button is pressed!\n");
 		vTaskDelay(100);
 	}
 }

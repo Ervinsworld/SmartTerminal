@@ -113,16 +113,18 @@ void UIAction_Task(void *params){
 			
 			//PI到 -PI映射到0-100
 			/*
-			case Window:{
-				static int last_value = 0; 
-				int value = ((_PI-g_currentMotorInf.angle)/_PI)*50;
-
-				//printf("%d\n", value);
-				printf("%d\n", getCurrentpage().data);
+			case Bar:{
+				UIPage page = getCurrentpage();
+				int value = page.data;
+				//停转电机
+				vTaskSuspend(MotorPidTaskHandle);
+				SendMessage2Motor(0, motorID);
+				//将电机停转时的角度值和value绑定
+				
+				value = ((_PI-g_currentMotorInf.angle)/_PI)*50;
 				if(value>=0&&value<=100&&(last_value!=value)){
-					vTaskSuspend(MotorPidTaskHandle);
-					SendMessage2Motor(0, motorID);
-					setPagedata(value);
+
+					setCurrentPagedata(value);
 					showbar();
 			    	clearString();
 					showbardata();
@@ -131,7 +133,6 @@ void UIAction_Task(void *params){
 				break;
 			}
 			*/
-			
 			default:
 				break;
 		}

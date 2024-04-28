@@ -134,12 +134,15 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  
+
   xTaskCreate(MotorPid_Task, "MotorPidTask", 128, NULL, osPriorityNormal+2, &MotorPidTaskHandle);
   xTaskCreate(Joystick_Task, "JoystickTask", 128, NULL, osPriorityNormal+1, NULL);
   xTaskCreate(UI_Task, "UITask", 256, NULL, osPriorityNormal+1, NULL);
   xTaskCreate(UIAction_Task, "UIAction_Task", 256, NULL, osPriorityNormal+1, NULL);
+  
   /*test_thread*/
-  xTaskCreate(UIPrint_Task, "test", 128, NULL, osPriorityNormal+1, NULL);
+  //xTaskCreate(ButtonTest_Task, "test", 128, NULL, osPriorityNormal, NULL);
  
   /* USER CODE END RTOS_THREADS */
 
@@ -151,6 +154,7 @@ void MX_FREERTOS_Init(void) {
   //UI动作事件只用最低位
   UIActionEvent = xEventGroupCreate(); 
   /* USER CODE END RTOS_EVENTS */
+
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -167,7 +171,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	
+	vTaskDelay(1);
   }
   /* USER CODE END StartDefaultTask */
 }

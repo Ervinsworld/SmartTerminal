@@ -65,13 +65,14 @@ joystickValue JoyStickValueCal(){
  ***********************************************************************/
 
 void JoystickButton_IRQ_Callback(void){
+	
 	if(HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin)==GPIO_PIN_SET){
-		g_ButtonState = free;
-		//xQueueOverwriteFromISR(ButtonQueueHandle, &g_ButtonState, NULL);
+		//g_ButtonState = free;
+		
 	}	
 	else{
-		g_ButtonState = pressed;
-		//xQueueOverwriteFromISR(ButtonQueueHandle, &g_ButtonState, NULL);
+		//g_ButtonState = pressed;
+		xEventGroupSetBitsFromISR(UIResponseEvent, 1<<4, NULL);
 	}
 		
 };
