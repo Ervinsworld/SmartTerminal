@@ -41,4 +41,11 @@ drivertester_f407\page.o: ../Drivers/USER_Driver/driver_oled.h
 drivertester_f407\page.o: ../Core/Inc/i2c.h
 drivertester_f407\page.o: ../Core/Inc/main.h
 drivertester_f407\page.o: D:\MDK5\ARM\ARMCC\Bin\..\include\string.h
+drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+drivertester_f407\page.o: ../Core/Inc/FreeRTOSConfig.h
+drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 drivertester_f407\page.o: ..\GimbalApp\UI\Icons.c

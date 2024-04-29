@@ -2,6 +2,7 @@
 #include "stm32f4xx_hal.h"
 #include "driver_oled.h"
 #include <string.h>
+#include "FreeRTOS.h"
 #include "Icons.c"
 
 
@@ -218,10 +219,9 @@ int8_t SlideLeft(){
 
 int8_t PageIn(){
 	int i;
-	UIPage page = getCurrentpage();
-	PageID id = getCurrentpageId();
 	clearPage();
-	if(id == Window){
+	if(g_currentId == Window){
+		vTaskDelay(OLED_DELAY);
 		setCurrentpage(Bar);
 		showbarFrame();
 		showbardata();
@@ -229,8 +229,8 @@ int8_t PageIn(){
 	}
 	for(i=0; i<FatherPageNum; i++){
 		//查询页面映射关系表
-		if(PageMapTable[i][0] == id){
-			setCurrentpage(PageMapTable[i][page.data]);
+		if(PageMapTable[i][0] == g_currentId){
+			setCurrentpage(PageMapTable[i][g_currentPage.data]);
 			showPage();
 			return 0;
 		}
@@ -251,11 +251,13 @@ int8_t PageIn(){
 
 int8_t PageOut(){
 	int i, j;
-	UIPage page = getCurrentpage();
-	//若为window页面
-	if(getCurrentpageId() == Bar){
+	//若为Bar页面
+	if(g_currentId == Bar){
+		vTaskDelay(OLED_DELAY);
 		clearBar();
+		vTaskDelay(OLED_DELAY);
 		clearString();
+		vTaskDelay(OLED_DELAY);
 		setCurrentpage(Window);
 		showPage();
 		return 0;
@@ -411,7 +413,9 @@ void clearPage(){
  * 2024/4/19	     V1.0	  Ervin	      创建
  ***********************************************************************/
 
-void showbar(){
+int8_t showbar(){
+	if(g_currentId != Bar)
+		return -1;
 	static uint8_t last_value = 0;
 	int8_t error;
 	uint8_t i, j;
@@ -431,6 +435,7 @@ void showbar(){
 		}
 	}
 	last_value = g_currentPage.data;
+	return 0;
 }
 
 /**********************************************************************

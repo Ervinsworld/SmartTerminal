@@ -10,13 +10,17 @@
 #define ArrowBMPres 16  //箭头图标像素值，只有滑动模式拥有箭头图标
 
 #define PageNum 11
-#define FatherPageNum 5
-#define MaxSonPageNum 4
+#define FatherPageNum 5 //父页面的数量
+#define MaxSonPageNum 4	//最多的子页面的数量
 
 #define BarXStart 14
 #define BarYStart 2
 #define BarLength 100
 #define BarWidth  1
+
+//由于oled操作很耗时，在oled操作密集时，需要使用短暂延时间隔各，以防止丢帧;该宏给vTaskDelay调用，单位为tick
+#define OLED_DELAY 20	
+
 /*
 页面的类型有两种：
 	主动类型：菜单中响应摇杆上下移动而循环刷新的页面
@@ -88,9 +92,9 @@ void showPage(void);
 void clearPage(void);
 
 //数值条操作方法
-void showbarFrame(void);
-void showbar(void);
-int8_t showbardata(void);
+void showbarFrame(void);//显示数值条外框
+int8_t showbar(void);//根据pagedata显示数值条
+int8_t showbardata(void);//显示底部数据
 void clearBar(void);
 
 //子方法

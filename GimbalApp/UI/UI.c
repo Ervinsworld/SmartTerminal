@@ -112,27 +112,40 @@ void UIAction_Task(void *params){
 			}
 			
 			//PI到 -PI映射到0-100
-			/*
+
 			case Bar:{
 				UIPage page = getCurrentpage();
-				int value = page.data;
-				//停转电机
-				vTaskSuspend(MotorPidTaskHandle);
-				SendMessage2Motor(0, motorID);
-				//将电机停转时的角度值和value绑定
+				float value = page.data;
+				float minAngle = _PI - angleDiff; //最小边界值
+				float maxAngle = -_PI - angleDiff;  //最大边界值
 				
-				value = ((_PI-g_currentMotorInf.angle)/_PI)*50;
-				if(value>=0&&value<=100&&(last_value!=value)){
-
+				
+				//将电机角度值转换为value值
+				value = -(g_currentMotorInf.angle + angleDiff)*(50/_PI) + 50;
+				
+				if(value>=0&&value<=100){
+					//确保电机断电，pid任务暂停
+					vTaskSuspend(MotorPidTaskHandle);
+					SendMessage2Motor(0 ,motorID);
+					//发送当前角度为目标角度已备退出使用
+					targetAngle = g_currentMotorInf.angle;
+					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					setCurrentPagedata(value);
-					showbar();
+					//showbar();
 			    	clearString();
 					showbardata();
 				}
-				last_value = value;
+				else if(value<0){
+					xQueueOverwrite(TargetAngleQueueHandle, &minAngle);
+					vTaskResume(MotorPidTaskHandle);
+				}
+				else if(value>100){
+					xQueueOverwrite(TargetAngleQueueHandle, &maxAngle);
+					vTaskResume(MotorPidTaskHandle);
+				}
 				break;
 			}
-			*/
+
 			default:
 				break;
 		}
@@ -178,7 +191,10 @@ void UI_Task(void *params){
 					xQueuePeek(TargetAngleQueueHandle, &TargetAngle, 0);				
 					//设置各子页面进入时的目标角度
 					PageIn();
+					//vTaskDelay(3000);
 					id = getCurrentpageId();
+					//vTaskDelay(3000);
+					//printf("current id1: %d", id);
 					switch(id){
 						/*
 						case On: targetAngle = -_PI_2;break;
@@ -192,8 +208,18 @@ void UI_Task(void *params){
 						case Bright1: diffAngle = _PI - TargetAngle;	break;
 						case Bright2: diffAngle = 0 - TargetAngle;	break;
 						case Bright3: diffAngle = -_PI - TargetAngle;	break;
-						default:break;
+						case Bar:{
+							//暂停pid任务并电机断电
+							vTaskSuspend(MotorPidTaskHandle);
+							SendMessage2Motor(0 ,motorID);
+							//vTaskDelay(1000);
+							diffAngle = -(float)getCurrentpage().data*_PI/50 + _PI - TargetAngle;
+							printf("bar diffangle is %f:\n",diffAngle);
+							break;
+						} 
+						default:break;	
 					}
+					//printf("current id2: %d", id);
 					xQueueOverwrite(AngleDiffQueueHandle, &diffAngle);
 					//vTaskDelay(pdMS_TO_TICKS(2000));
 					xEventGroupSetBits(UIActionEvent, 1<<0);
@@ -211,6 +237,9 @@ void UI_Task(void *params){
 			xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3, pdTRUE, pdFALSE, portMAX_DELAY);
 			//xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 			xEventGroupClearBits(UIActionEvent, 1<<0);//停止动作执行任务
+			//若为Bar则恢复电机任务
+			if(getCurrentpageId() == Bar)
+				vTaskResume(MotorPidTaskHandle);
 			PageOut();
 			//printf("I am out\n");
 			//成功后延迟0.5秒并清除所有位
