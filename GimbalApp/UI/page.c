@@ -423,15 +423,20 @@ int8_t showbar(){
 	if(error>0){
 		for(i=0; i<BarWidth; i++){
 			OLED_SetPos(BarXStart+last_value,BarYStart+i);
-			for(j=0;j<error;j++)
+			for(j=0;j<=error;j++)
 				WriteDat(0xFF);
 		}
 	}
 	else if(error<0){
 		for(i=0; i<BarWidth; i++){
 			OLED_SetPos(BarXStart+g_currentPage.data,BarYStart+i);
-			for(j=0;j<-error;j++)
-				WriteDat(0x81);
+			//判断上次的值，设置for循环的开始和结束值，以禁止删除bar的左右边框
+			for(j=0;j<=-error+1;j++){
+				WriteDat(0xC3);
+			}
+			OLED_SetPos(BarXStart+101,BarYStart+i);
+			WriteDat(0xFF);
+			WriteDat(0xFF);
 		}
 	}
 	last_value = g_currentPage.data;
@@ -451,12 +456,12 @@ int8_t showbar(){
 void showbarFrame(){
 	uint8_t i, j;
 	for(i=0; i<BarWidth; i++){
-		OLED_SetPos(BarXStart,BarYStart+i);
-		for(j=0;j<BarLength;j++){
-			if(j==0||j==BarLength-1)
+		OLED_SetPos(BarXStart-2,BarYStart+i);
+		for(j=0;j<=BarLength+2;j++){
+			if(j==0||j==1||j==BarLength+1||j==BarLength+2)
 				WriteDat(0xFF);
 			else
-				WriteDat(0x81);
+				WriteDat(0xC3);
 		}
 	}
 }

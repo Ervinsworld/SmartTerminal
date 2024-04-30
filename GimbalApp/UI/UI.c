@@ -123,23 +123,32 @@ void UIAction_Task(void *params){
 				//将电机角度值转换为value值
 				value = -(g_currentMotorInf.angle + angleDiff)*(50/_PI) + 50;
 				
-				if(value>=0&&value<=100){
+				if(value>=-5&&value<105){
 					//确保电机断电，pid任务暂停
 					vTaskSuspend(MotorPidTaskHandle);
 					SendMessage2Motor(0 ,motorID);
 					//发送当前角度为目标角度已备退出使用
 					targetAngle = g_currentMotorInf.angle;
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-					setCurrentPagedata(value);
-					//showbar();
+					if(value<0){
+						setCurrentPagedata(0);
+					}
+					else if(value > 100){
+						setCurrentPagedata(100);
+					}
+					else{
+						setCurrentPagedata(value);
+					}
+					
+					showbar();
 			    	//clearString();
 					showbardata();
 				}
-				else if(value<0){
+				else if(value<-5){
 					xQueueOverwrite(TargetAngleQueueHandle, &minAngle);
 					vTaskResume(MotorPidTaskHandle);
 				}
-				else if(value>100){
+				else if(value>=105){
 					xQueueOverwrite(TargetAngleQueueHandle, &maxAngle);
 					vTaskResume(MotorPidTaskHandle);
 				}
