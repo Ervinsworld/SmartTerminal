@@ -224,6 +224,7 @@ int8_t PageIn(){
 		vTaskDelay(OLED_DELAY);
 		setCurrentpage(Bar);
 		showbarFrame();
+		barInit();
 		showbardata();
 		return 0;
 	}
@@ -403,9 +404,30 @@ void clearPage(){
 }
 
 /**********************************************************************
+ * 函数名称： barInit
+ * 功能描述： 设置刚进入bar时初始值
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/19	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+
+int8_t barInit(){
+	if(g_currentId != Bar)
+		return -1;
+	int i;
+	OLED_SetPos(BarXStart,BarYStart);
+	for(i=0;i<=g_currentPage.data;i++)
+		WriteDat(0xFF);
+	return 0;
+}
+
+/**********************************************************************
  * 函数名称： showbar
  * 功能描述： 数值条显示函数
- * 输入参数： 数值条的值，从0-100
+ * 输入参数： 无
  * 输出参数： 无
  * 返 回 值： 无
  * 修改日期        版本号     修改人	      修改内容
@@ -418,27 +440,23 @@ int8_t showbar(){
 		return -1;
 	static uint8_t last_value = 0;
 	int8_t error;
-	uint8_t i, j;
+	uint8_t i;
 	error = g_currentPage.data - last_value;
 	if(error>0){
-		for(i=0; i<BarWidth; i++){
-			OLED_SetPos(BarXStart+last_value,BarYStart+i);
-			for(j=0;j<=error;j++)
-				WriteDat(0xFF);
-		}
+		OLED_SetPos(BarXStart+last_value,BarYStart);
+		for(i=0;i<=error;i++)
+			WriteDat(0xFF);
 	}
 	else if(error<0){
-		for(i=0; i<BarWidth; i++){
-			OLED_SetPos(BarXStart+g_currentPage.data,BarYStart+i);
-			//判断上次的值，设置for循环的开始和结束值，以禁止删除bar的左右边框
-			for(j=0;j<=-error+1;j++){
-				WriteDat(0xC3);
-			}
-			OLED_SetPos(BarXStart+101,BarYStart+i);
-			WriteDat(0xFF);
-			WriteDat(0xFF);
+		OLED_SetPos(BarXStart+g_currentPage.data,BarYStart);
+		//判断上次的值，设置for循环的开始和结束值，以禁止删除bar的左右边框
+		for(i=0;i<=-error+1;i++){
+			WriteDat(0xC3);
 		}
 	}
+	OLED_SetPos(BarXStart+101,BarYStart);
+	WriteDat(0xFF);
+	WriteDat(0xFF);
 	last_value = g_currentPage.data;
 	return 0;
 }
@@ -454,16 +472,15 @@ int8_t showbar(){
  * 2024/4/19	     V1.0	  Ervin	      创建
  ***********************************************************************/
 void showbarFrame(){
-	uint8_t i, j;
-	for(i=0; i<BarWidth; i++){
-		OLED_SetPos(BarXStart-2,BarYStart+i);
-		for(j=0;j<=BarLength+2;j++){
-			if(j==0||j==1||j==BarLength+1||j==BarLength+2)
-				WriteDat(0xFF);
-			else
-				WriteDat(0xC3);
-		}
+	uint8_t i;
+	OLED_SetPos(BarXStart-2,BarYStart);
+	for(i=0;i<=BarLength+3;i++){
+		if(i==0||i==1||i==BarLength+2||i==BarLength+3)
+			WriteDat(0xFF);
+		else
+			WriteDat(0xC3);
 	}
+
 }
 
 /**********************************************************************
@@ -477,13 +494,12 @@ void showbarFrame(){
  * 2024/4/23	     V1.0	  Ervin	      创建
  ***********************************************************************/
 void clearBar(){
-	uint8_t i, j;
-	for(i=0; i<BarWidth; i++){
-		OLED_SetPos(BarXStart,BarYStart+i);
-		for(j=0;j<BarLength;j++){
-			WriteDat(0x00);
-		}
+	uint8_t i;
+	OLED_SetPos(BarXStart-2,BarYStart);
+	for(i=0;i<=BarLength+3;i++){
+		WriteDat(0x00);
 	}
+
 }
 
 /**********************************************************************

@@ -16,10 +16,10 @@
 #define BarXStart 14
 #define BarYStart 2
 #define BarLength 100
-#define BarWidth  1
+//#define BarWidth  1
 
 //由于oled操作很耗时，在oled操作密集时，需要使用短暂延时间隔各，以防止丢帧;该宏给vTaskDelay调用，单位为tick
-#define OLED_DELAY 20	
+#define OLED_DELAY 50	
 
 /*
 页面的类型有两种：
@@ -96,6 +96,7 @@ void showbarFrame(void);//显示数值条外框
 int8_t showbar(void);//根据pagedata显示数值条
 int8_t showbardata(void);//显示底部数据
 void clearBar(void);
+int8_t barInit(void);
 
 //子方法
 void clearMainIcon(void);

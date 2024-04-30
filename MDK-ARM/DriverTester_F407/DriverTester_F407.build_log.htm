@@ -26,6 +26,14 @@ Project File Date:  04/18/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
+compiling freertos.c...
+..\GimbalApp\Joystick\joystick.h(7): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/freertos.c: 1 warning, 0 errors
+compiling Joystick.c...
+..\GimbalApp\Joystick\Joystick.c(39): warning:  #223-D: function "printf" declared implicitly
+                printf("Button is pressed!\n");
+..\GimbalApp\Joystick\Joystick.c: 1 warning, 0 errors
 compiling page.c...
 ..\GimbalApp\UI\page.c(113): warning:  #188-D: enumerated type mixed with another type
         setCurrentpage(id);
@@ -33,23 +41,41 @@ compiling page.c...
         setCurrentpage(id);
 ..\GimbalApp\UI\page.c(224): warning:  #223-D: function "vTaskDelay" declared implicitly
                 vTaskDelay(OLED_DELAY);
-..\GimbalApp\UI\page.c(233): warning:  #188-D: enumerated type mixed with another type
+..\GimbalApp\UI\page.c(234): warning:  #188-D: enumerated type mixed with another type
                         setCurrentpage(PageMapTable[i][g_currentPage.data]);
-..\GimbalApp\UI\page.c(256): warning:  #223-D: function "vTaskDelay" declared implicitly
+..\GimbalApp\UI\page.c(257): warning:  #223-D: function "vTaskDelay" declared implicitly
                 vTaskDelay(OLED_DELAY);
-..\GimbalApp\UI\page.c(270): warning:  #188-D: enumerated type mixed with another type
+..\GimbalApp\UI\page.c(271): warning:  #188-D: enumerated type mixed with another type
                                 setCurrentpage(PageMapTable[i][0]);
-..\GimbalApp\UI\page.c(253): warning:  #177-D: variable "j" was declared but never referenced
+..\GimbalApp\UI\page.c(254): warning:  #177-D: variable "j" was declared but never referenced
         int i, j;
-..\GimbalApp\UI\page.c(513): warning:  #940-D: missing return statement at end of non-void function "showbardata"
+..\GimbalApp\UI\page.c(529): warning:  #940-D: missing return statement at end of non-void function "showbardata"
   }
-..\GimbalApp\UI\page.c(711): warning:  #1-D: last line of file ends without a newline
+..\GimbalApp\UI\page.c(727): warning:  #1-D: last line of file ends without a newline
   }
 ..\GimbalApp\UI\page.c: 9 warnings, 0 errors
+compiling UI.c...
+..\GimbalApp\UI\UI.c(67): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                if(g_currentMotorInf.angle<_3_PI_4 - angleDiff){
+..\GimbalApp\UI\UI.c(80): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                if(g_currentMotorInf.angle>_PI_4 - angleDiff){
+..\GimbalApp\UI\UI.c(81): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        targetAngle = _PI - angleDiff;
+..\GimbalApp\UI\UI.c(119): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                float minAngle = _PI - angleDiff; //最小边界值
+..\GimbalApp\UI\UI.c(217): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                case Bright1: diffAngle = _PI - TargetAngle;    break;
+..\GimbalApp\UI\UI.c(225): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                        diffAngle = -(float)getCurrentpage().data*_PI/50 + _PI - TargetAngle;
+..\GimbalApp\UI\UI.c(226): warning:  #223-D: function "printf" declared implicitly
+                                                        printf("bar diffangle is %f:\n",diffAngle);
+..\GimbalApp\UI\UI.c(276): warning:  #223-D: function "printf" declared implicitly
+                printf("%d\n", getCurrentpageId());
+..\GimbalApp\UI\UI.c: 8 warnings, 0 errors
 linking...
-Program Size: Code=27140 RO-data=5932 RW-data=420 ZI-data=20580  
+Program Size: Code=27128 RO-data=5932 RW-data=420 ZI-data=20580  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 9 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 19 Warning(s).
 
 <h2>Software Packages used:</h2>
 
