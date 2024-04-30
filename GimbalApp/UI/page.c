@@ -492,14 +492,19 @@ void clearBar(){
  * 2024/4/19	     V1.0	  Ervin	      创建
  ***********************************************************************/
 int8_t showbardata(){
-	char s[5] = {0};
+	char s[7] = {0};
+	char result_s[7] = " ";
 	if(g_currentId!=Bar)
 		return -1;
 	Int2String(g_currentPage.data, s);
-	uint8_t len = strlen(s);
+	//给转换完成的数字前后都加上一个空格“ ”
+	strcat(s, " ");
+	strcat(result_s, s);
+	//计算字符串显示参数并显示字符
+	uint8_t len = strlen(result_s);
 	g_string_LenRes = len<<3;
 	g_string_Xpos = ((Xres-g_string_LenRes)>>1) - 1;
-	OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)s, g_stringSize);
+	OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)result_s, g_stringSize);
 }
 
 /**********************************************************************

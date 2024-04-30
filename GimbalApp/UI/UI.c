@@ -132,7 +132,7 @@ void UIAction_Task(void *params){
 					xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 					setCurrentPagedata(value);
 					//showbar();
-			    	clearString();
+			    	//clearString();
 					showbardata();
 				}
 				else if(value<0){
