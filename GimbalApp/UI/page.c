@@ -13,8 +13,8 @@ const uint8_t PageMapTable[FatherPageNum][MaxSonPageNum] =
 	{Light, Off, On},
 	{Mode, Bright1, Bright2, Bright3},
 	{Window, Bar},
+	{MotorPlay, Free, Ratchet, Fixed},
 };
-
 
 //页面底部的字符串信息，对于pSlide模式的页面，其索引号和UI_page结构体的data对应
 const char* bottomStr[PageNum][3] = 
@@ -40,10 +40,13 @@ UIPage UIpages[PageNum] =
 {nStatic, 0, 0, BMP_BRIGHT1_48x48},
 {nStatic, 0, 0, BMP_BRIGHT2_48x48},
 {nStatic, 0, 0, BMP_BRIGHT3_48x48},
-{pStatic, 0, 0, BMP_WINDOW_48x48},//data存储bar的值，0-100，精度1
-{pSlide, 3, 0, BMP_MOTOR_48x48},
-{pSlide, 2, 0, BMP_SWITCH_48x48},
-{nDynamic, 0, 0, NULL},
+{pStatic, 0, 1, BMP_WINDOW_48x48},//data恒为1
+{pSlide, 3, 1, BMP_XBOX_48x48},//data值1, 2, 3代表 Free, Ratchet, Fixed模式
+{pSlide, 2, 1, BMP_SWITCH_48x48},
+{nDynamic, 0, 0, NULL},//bar页面，data存储bar的值，0-100，精度1
+{nDynamic, 0, 0, BMP_FREE_48x48},//Free页面
+{nDynamic, 0, 0, BMP_RATCHET_48x48},//Ratchet页面
+{nDynamic, 0, 0, BMP_FIXED_48x48},//Fixed页面
 };
 
 
@@ -164,8 +167,8 @@ int8_t SlideRight(){
 		return -1;
 	uint8_t num = page.slideNum;
 	uint8_t data = page.data;
-	if(data == num-1){
-		data = 0;
+	if(data == num){
+		data = 1;
 	}
 	else{
 		data++;
@@ -194,8 +197,8 @@ int8_t SlideLeft(){
 		return -1;
 	uint8_t num = page.slideNum;
 	uint8_t data = page.data;
-	if(data == 0){
-		data = num-1;
+	if(data == 1){
+		data = num;
 	}
 	else{
 		data--;
@@ -219,18 +222,10 @@ int8_t SlideLeft(){
 
 int8_t PageIn(){
 	int i;
-	clearPage();
-	if(g_currentId == Window){
-		vTaskDelay(OLED_DELAY);
-		setCurrentpage(Bar);
-		showbarFrame();
-		barInit();
-		showbardata();
-		return 0;
-	}
 	for(i=0; i<FatherPageNum; i++){
 		//查询页面映射关系表
 		if(PageMapTable[i][0] == g_currentId){
+			clearPage();
 			setCurrentpage(PageMapTable[i][g_currentPage.data]);
 			showPage();
 			return 0;
@@ -254,6 +249,8 @@ int8_t PageOut(){
 	int i, j;
 	//若为Bar页面
 	if(g_currentId == Bar){
+		vTaskDelay(OLED_DELAY);
+		clearBackArrow();
 		vTaskDelay(OLED_DELAY);
 		clearBar();
 		vTaskDelay(OLED_DELAY);
@@ -334,7 +331,7 @@ PageID getCurrentpageId(){
  ***********************************************************************/
 int8_t setCurrentPagedata(uint8_t data){
 	//判断设定值是否超过了数量值，若超过不允许操作，返回-1
-	if(g_currentPage.InfMode == pSlide && data >= g_currentPage.slideNum)
+	if(g_currentPage.InfMode == pSlide && data > g_currentPage.slideNum)
 		return -1;
 	else{
 		g_currentPage.data = data;
@@ -374,10 +371,25 @@ int8_t setPagedata(uint8_t id, uint8_t data){
  * 2024/4/6	     V1.0	  Ervin	      创建
  ***********************************************************************/
 void showPage(){
+	//nDynamic模式需根据每个页面特殊处理
+	if(g_currentPage.InfMode == nDynamic){
+		showBackArrow();
+		if(g_currentId == Bar){
+			vTaskDelay(OLED_DELAY);
+			showbarFrame();
+			barInit();
+			showbardata();
+		}
+		else if(g_currentId == Free || g_currentId == Ratchet || g_currentId == Fixed){
+			OLED_DrawBMP(g_mainIcon_Xstart,g_mainIcon_Ystart,g_mainIcon_XEnd,g_mainIcon_YEnd,g_currentPage.mainBMP);
+		}				
+		return;
+	}
 	//若为滑动模式则显示箭头
-	if(g_currentPage.InfMode == pSlide)
+	else if(g_currentPage.InfMode == pSlide)
 		showArrows();
-	else if(g_currentPage.InfMode == nStatic||g_currentPage.InfMode == nDynamic)
+	//若为静态模式则显示返回箭头
+	else if(g_currentPage.InfMode == nStatic)
 		showBackArrow();
 	showString();
 	OLED_DrawBMP(g_mainIcon_Xstart,g_mainIcon_Ystart,g_mainIcon_XEnd,g_mainIcon_YEnd,g_currentPage.mainBMP);
@@ -624,10 +636,10 @@ void clearString(){
  ***********************************************************************/
 void showString(){
 	if(g_currentPage.InfMode == pSlide){
-		uint8_t len = strlen(bottomStr[g_currentId-1][g_currentPage.data]);
+		uint8_t len = strlen(bottomStr[g_currentId-1][g_currentPage.data-1]);
 		g_string_LenRes = len<<3;
 		g_string_Xpos = ((Xres-g_string_LenRes)>>1) - 1;
-		OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)bottomStr[g_currentId-1][g_currentPage.data], g_stringSize);
+		OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)bottomStr[g_currentId-1][g_currentPage.data-1], g_stringSize);
 	}
 	else{
 		uint8_t len = strlen(bottomStr[g_currentId-1][0]);

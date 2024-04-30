@@ -9,12 +9,12 @@
 #define MainBMPres 48   //主图标像素值
 #define ArrowBMPres 16  //箭头图标像素值，只有滑动模式拥有箭头图标
 
-#define PageNum 11
+#define PageNum 14
 #define FatherPageNum 5 //父页面的数量
 #define MaxSonPageNum 4	//最多的子页面的数量
 
 #define BarXStart 14
-#define BarYStart 2
+#define BarYStart 3
 #define BarLength 100
 //#define BarWidth  1
 
@@ -56,7 +56,10 @@ typedef enum
 	Window,
 	MotorPlay,
 	Game,
-	Bar
+	Bar,
+	Free,
+	Ratchet,
+	Fixed,
 }PageID;
 
 /************					页面信息结构体				************/
