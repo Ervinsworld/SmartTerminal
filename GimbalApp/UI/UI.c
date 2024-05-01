@@ -20,11 +20,11 @@
  * 2024/4/19	     V1.0	  Ervin	      创建
  ***********************************************************************/
 
+extern TaskHandle_t MotorPidTaskHandle;
 extern QueueHandle_t TargetAngleQueueHandle;
 extern QueueHandle_t AngleDiffQueueHandle;
 extern EventGroupHandle_t UIResponseEvent;
-extern EventGroupHandle_t UIActionEvent;
-extern TaskHandle_t MotorPidTaskHandle;
+extern SemaphoreHandle_t UIActionSemaphore;
 extern SemaphoreHandle_t MotorPidSemaphore;
 
 void UIAction_Task(void *params){ 
@@ -32,8 +32,8 @@ void UIAction_Task(void *params){
 	float targetAngle = 0;
 	float angleDiff = 0;
 	while(1){
-		//等待按下按键进入子页面，该事件决定这整个任务的启停
-		xEventGroupWaitBits(UIActionEvent, 1<<0, pdFALSE, pdFALSE, portMAX_DELAY);
+		//等待按下按键进入子页面，该信号量决定这整个任务的启停
+		xSemaphoreTake(UIActionSemaphore, portMAX_DELAY);
 		xQueuePeek(AngleDiffQueueHandle, &angleDiff, portMAX_DELAY);
 		id = getCurrentpageId();
 		//printf("%f,%f\n", motorInf.angle, targetAngle);
@@ -156,6 +156,7 @@ void UIAction_Task(void *params){
 			default:
 				break;
 		}
+		xSemaphoreGive(UIActionSemaphore);
 		//printf("%f\n", targetAngle);
 	}
 }
@@ -228,7 +229,7 @@ void UI_Task(void *params){
 					//printf("current id2: %d", id);
 					xQueueOverwrite(AngleDiffQueueHandle, &diffAngle);
 					//vTaskDelay(pdMS_TO_TICKS(2000));
-					xEventGroupSetBits(UIActionEvent, 1<<0);
+					xSemaphoreGive(UIActionSemaphore);
 					//printf("%f, %f\n", targetAngle, g_currentMotorInf.angle);	
 				}
 				//成功后延迟并清除所有位
@@ -242,7 +243,7 @@ void UI_Task(void *params){
 		else{
 			xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3, pdTRUE, pdFALSE, portMAX_DELAY);
 			//xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-			xEventGroupClearBits(UIActionEvent, 1<<0);//停止动作执行任务
+			xSemaphoreTake(UIActionSemaphore, portMAX_DELAY);//停止动作执行任务
 			//Bar页面需恢复电机使能
 			if(getCurrentpageId() == Bar){
 				xSemaphoreGive(MotorPidSemaphore);
