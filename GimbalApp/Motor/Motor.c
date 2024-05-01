@@ -24,7 +24,7 @@ extern SemaphoreHandle_t MotorPidSemaphore;
 void MotorPid_Task(void *params){
 	float targetAngle = 0;
 	MotorPIDInit();
-	SendMessage2Motor(0, motorID);
+	xSemaphoreGive(MotorPidSemaphore);//初始状态置信号量为1
 	while(1){
 		xSemaphoreTake(MotorPidSemaphore, portMAX_DELAY);
 		xQueuePeek(TargetAngleQueueHandle, &targetAngle, 0);

@@ -198,9 +198,6 @@ void UI_Task(void *params){
 					xQueuePeek(TargetAngleQueueHandle, &TargetAngle, 0);	
 					id = getCurrentpageId();
 					//若为特定页面则使能电机pid
-					if(id == Light || id == Mode){
-						xSemaphoreGive(MotorPidSemaphore);
-					}
 					//vTaskDelay(3000);
 					PageIn();
 					//vTaskDelay(3000);
@@ -246,9 +243,10 @@ void UI_Task(void *params){
 			xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3, pdTRUE, pdFALSE, portMAX_DELAY);
 			//xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
 			xEventGroupClearBits(UIActionEvent, 1<<0);//停止动作执行任务
-			//电机断电
-			xSemaphoreTake(MotorPidSemaphore, 0);
-			SendMessage2Motor(0 ,motorID);
+			//Bar页面需恢复电机使能
+			if(getCurrentpageId() == Bar){
+				xSemaphoreGive(MotorPidSemaphore);
+			}
 			PageOut();
 			//printf("I am out\n");
 			//成功后延迟0.5秒并清除所有位
