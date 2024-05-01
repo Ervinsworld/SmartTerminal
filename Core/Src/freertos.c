@@ -71,6 +71,7 @@ QueueHandle_t AngleDiffQueueHandle;
 
 //QueueHandle_t ButtonQueueHandle;
 
+SemaphoreHandle_t MotorPidSemaphore;
 //SemaphoreHandle_t ActionSemaphore;
 EventGroupHandle_t UIResponseEvent;//摇杆事件对应的event（上下左右按下）
 EventGroupHandle_t UIActionEvent;//UI子页面和电机动作交互的事件
@@ -115,6 +116,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
+	MotorPidSemaphore = xSemaphoreCreateBinary();
 	//ActionSemaphore = xSemaphoreCreateBinary();
   /* USER CODE END RTOS_SEMAPHORES */
 
@@ -140,13 +142,13 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
   
 
-  xTaskCreate(MotorPid_Task, "MotorPidTask", 128, NULL, osPriorityNormal+2, &MotorPidTaskHandle);
-  xTaskCreate(Joystick_Task, "JoystickTask", 128, NULL, osPriorityNormal+1, NULL);
-  xTaskCreate(UI_Task, "UITask", 256, NULL, osPriorityNormal+1, NULL);
-  xTaskCreate(UIAction_Task, "UIAction_Task", 256, NULL, osPriorityNormal+1, NULL);
-  
+  xTaskCreate(MotorPid_Task, "MotorPidTask", 128, NULL, osPriorityNormal+3, &MotorPidTaskHandle);
+  xTaskCreate(UI_Task, "UITask", 256, NULL, osPriorityNormal+2, NULL);
+  xTaskCreate(UIAction_Task, "UIAction_Task", 256, NULL, osPriorityNormal+2, NULL);
+  xTaskCreate(Joystick_Task, "JoystickTask", 128, NULL, osPriorityNormal+2, NULL);
+ 
   /*test_thread*/
-  xTaskCreate(UIPrint_Task, "test", 128, NULL, osPriorityNormal+1, NULL);
+  //xTaskCreate(ButtonTest_Task, "test", 128, NULL, osPriorityNormal+3, NULL);
  
   /* USER CODE END RTOS_THREADS */
 

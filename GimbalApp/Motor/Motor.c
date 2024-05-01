@@ -4,9 +4,11 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
+#include "semphr.h"                     // ARM.FreeRTOS::RTOS:Core
 
 extern QueueHandle_t TargetAngleQueueHandle;
 extern QueueHandle_t AngleDiffQueueHandle;
+extern SemaphoreHandle_t MotorPidSemaphore;
 //extern QueueHandle_t MotorRawQueueHandle;
 
 /**********************************************************************
@@ -22,10 +24,13 @@ extern QueueHandle_t AngleDiffQueueHandle;
 void MotorPid_Task(void *params){
 	float targetAngle = 0;
 	MotorPIDInit();
+	SendMessage2Motor(0, motorID);
 	while(1){
+		xSemaphoreTake(MotorPidSemaphore, portMAX_DELAY);
 		xQueuePeek(TargetAngleQueueHandle, &targetAngle, 0);
 		SendMessage2Motor(cascade_loop(targetAngle, g_currentMotorInf.angle, g_currentMotorInf.speed), motorID);
 		//printf("%f, %f, %f\n", angle, baseAngle, targetAngle);
+		xSemaphoreGive(MotorPidSemaphore);
 		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 }

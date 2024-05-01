@@ -51,3 +51,4 @@ drivertester_f407\motor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/ta
 drivertester_f407\motor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 drivertester_f407\motor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 drivertester_f407\motor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
+drivertester_f407\motor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h

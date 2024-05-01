@@ -22,34 +22,30 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\DriverTester_F407.uvprojx
-Project File Date:  04/18/2024
+Project File Date:  04/30/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
-compiling page.c...
-..\GimbalApp\UI\page.c(116): warning:  #188-D: enumerated type mixed with another type
-        setCurrentpage(id);
-..\GimbalApp\UI\page.c(147): warning:  #188-D: enumerated type mixed with another type
-        setCurrentpage(id);
-..\GimbalApp\UI\page.c(229): warning:  #188-D: enumerated type mixed with another type
-                        setCurrentpage(PageMapTable[i][g_currentPage.data]);
-..\GimbalApp\UI\page.c(252): warning:  #223-D: function "vTaskDelay" declared implicitly
-                vTaskDelay(OLED_DELAY);
-..\GimbalApp\UI\page.c(268): warning:  #188-D: enumerated type mixed with another type
-                                setCurrentpage(PageMapTable[i][0]);
-..\GimbalApp\UI\page.c(249): warning:  #177-D: variable "j" was declared but never referenced
-        int i, j;
-..\GimbalApp\UI\page.c(378): warning:  #223-D: function "vTaskDelay" declared implicitly
-                        vTaskDelay(OLED_DELAY);
-..\GimbalApp\UI\page.c(541): warning:  #940-D: missing return statement at end of non-void function "showbardata"
-  }
-..\GimbalApp\UI\page.c(739): warning:  #1-D: last line of file ends without a newline
-  }
-..\GimbalApp\UI\page.c: 9 warnings, 0 errors
+compiling UI.c...
+..\GimbalApp\UI\UI.c(68): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                if(g_currentMotorInf.angle<_3_PI_4 - angleDiff){
+..\GimbalApp\UI\UI.c(81): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                if(g_currentMotorInf.angle>_PI_4 - angleDiff){
+..\GimbalApp\UI\UI.c(82): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        targetAngle = _PI - angleDiff;
+..\GimbalApp\UI\UI.c(120): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                float minAngle = _PI - angleDiff; //最小边界值
+..\GimbalApp\UI\UI.c(217): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                case Bright1: diffAngle = _PI - TargetAngle;    break;
+..\GimbalApp\UI\UI.c(222): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                        diffAngle = -(float)getCurrentpage().data*_PI/50 + _PI - TargetAngle;
+..\GimbalApp\UI\UI.c(273): warning:  #223-D: function "printf" declared implicitly
+                printf("%d\n", getCurrentpageId());
+..\GimbalApp\UI\UI.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=27204 RO-data=6796 RW-data=480 ZI-data=20576  
+Program Size: Code=27488 RO-data=6796 RW-data=484 ZI-data=20580  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 9 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
