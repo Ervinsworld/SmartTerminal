@@ -53,7 +53,17 @@ float cascade_loop(float target_angle, float current_angle, float current_speed)
 void MotorPIDInit(){
 	//速度环和位置环pid初始化
 	PID_Init(&vel_pid, 0.008, 0.0001, 0, 10000, 10000);//速度环采用pi控制
-	//PID_Init(&angle_pid, 20, 0, 0.5,10000, 10000);//位置环采用pd控制,该组参数稳定，但是委
-	PID_Init(&angle_pid, 37, 0, 0.5,10000, 10000);//相对激进，但有震荡的风险
+	//PID_Init(&angle_pid, 20, 0, 0.5,10000, 10000);//位置环采用pd控制,该组为稳定参数
+	//PID_Init(&angle_pid, 37, 0, 0.5,10000, 10000);//相对激进，但有震荡的风险
+	PID_Init(&angle_pid, 40, 0, 0.5,10000, 10000);
+}
+
+//本质上就是设置角度环PID的P值,限制在20-60
+void setIntens(uint8_t value){
+	if(value < 20)
+		value = 20;
+	else if(value >60)
+		value = 20;
+	angle_pid.kp = value;
 }
 

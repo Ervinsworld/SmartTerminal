@@ -53,6 +53,7 @@ void AnglePrint_Task(void *params){
 		xQueuePeek(TargetAngleQueueHandle, &targetAngle, 0);
 		xQueuePeek(AngleDiffQueueHandle, &diffAngle, 0);
 		printf("%f, %f, %f\n", g_currentMotorInf.angle, diffAngle, targetAngle);//物理角度，角度差值，目标角度
+		//printf("%f, %f\n", g_currentMotorInf.angle, g_currentMotorInf.speed);
 		vTaskDelay(50);
 	}
 }

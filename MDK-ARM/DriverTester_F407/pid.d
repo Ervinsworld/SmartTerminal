@@ -1,6 +1,5 @@
 drivertester_f407\pid.o: ..\GimbalApp\Motor\pid.c
 drivertester_f407\pid.o: ..\GimbalApp\Motor\pid.h
-drivertester_f407\pid.o: ../Core/Inc/main.h
 drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 drivertester_f407\pid.o: ../Core/Inc/stm32f4xx_hal_conf.h
 drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -38,3 +37,4 @@ drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_e
 drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+drivertester_f407\pid.o: ../Core/Inc/main.h

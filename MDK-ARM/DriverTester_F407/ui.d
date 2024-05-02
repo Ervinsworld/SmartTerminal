@@ -43,6 +43,7 @@ drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_joystick.h
 drivertester_f407\ui.o: ..\GimbalApp\UI\page.h
 drivertester_f407\ui.o: ..\GimbalApp\UI\UI.h
 drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_motorComm.h
+drivertester_f407\ui.o: ..\GimbalApp\Motor\pid.h
 drivertester_f407\ui.o: ..\GimbalApp\Motor\Motor.h
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 drivertester_f407\ui.o: ../Core/Inc/FreeRTOSConfig.h

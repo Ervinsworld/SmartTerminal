@@ -1,6 +1,7 @@
 #ifndef PID_H
 #define PID_H
 
+#include "stm32f4xx_hal.h"
 
 typedef struct
 {
@@ -16,6 +17,7 @@ void PID_Calc(PID *pid,float reference,float feedback);
 float speed_loop(float target_speed, float current_speed);
 float cascade_loop(float target_angle, float current_angle, float current_speed);
 void MotorPIDInit(void);
+void setIntens(uint8_t value);
 /******************************************************************************/
 
 #endif

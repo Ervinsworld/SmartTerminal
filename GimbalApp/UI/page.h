@@ -9,7 +9,7 @@
 #define MainBMPres 48   //主图标像素值
 #define ArrowBMPres 16  //箭头图标像素值，只有滑动模式拥有箭头图标
 
-#define PageNum 14
+#define PageNum 13
 #define FatherPageNum 5 //父页面的数量
 #define MaxSonPageNum 4	//最多的子页面的数量
 
@@ -28,9 +28,10 @@
 				- pStatic 最下栏有滑动框的主动类型
 				- pSilde  最下栏无滑动框（只有静态字符串）的主动类型
 	被动类型：由主动类型页面的事件（因按下按钮/旋转电机等）而触发的页面
-			 被动类型页面也有两种：
+			 被动类型页面有三种：
 				- nStatic  只显示画面，画面本身和外设无交互
-				- nDynamic 有交互的，效果需要单独实现
+				- nBar 	   有交互的，并且使用进度条交互
+				- nDynamic 有交互的，效果需要单独实现，如游戏
 */
 
 
@@ -40,26 +41,26 @@ typedef enum
     pStatic = 0,
 	pSlide= 1,
 	nStatic = 2,
-	nDynamic = 3
+	nBar = 3,	  //数值条页面
+	nDynamic = 4, //动态页面，如游戏页面
 }InterfaceMode;
 
 //页面代号，共N种页面,在c文件中补充页面的具体信息
 typedef enum
 {
-    Light = 1,
+    Light1 = 1,
 	Off,
 	On,
-	Mode,
+	Light2,
 	Bright1,
 	Bright2,
 	Bright3,
-	Window,
-	MotorPlay,
+	Light3,
 	Game,
-	Bar,
-	Free,
-	Ratchet,
-	Fixed,
+	Settings,
+	LightBar,  //Light3亮度条页面
+	BriBar, //屏幕亮度条页面
+	IntensBar //阻尼条页面
 }PageID;
 
 /************					页面信息结构体				************/
@@ -82,6 +83,7 @@ int8_t SlideRight(void);
 int8_t SlideLeft(void);
 int8_t PageIn(void);
 int8_t PageOut(void);
+int8_t sonPageSwitch(PageID targetPage);//子页面的换页
 
 //全局变量get/set方法
 void setCurrentpage(PageID id);
@@ -97,7 +99,8 @@ void clearPage(void);
 //数值条操作方法
 void showbarFrame(void);//显示数值条外框
 int8_t showbar(void);//根据pagedata显示数值条
-int8_t showbardata(void);//显示底部数据
+//int8_t showbardata(void);//显示底部数据
+int8_t showBottomData(int8_t data);
 void clearBar(void);
 int8_t barInit(void);
 
@@ -110,6 +113,9 @@ void showArrows(void);
 void clearArrows(void);
 void showBackArrow(void);
 void clearBackArrow(void);
+
+/*屏幕参数*/
+void setScreenBri(uint8_t value);
 
 //功能函数
 char* Int2String(int num,char *str);

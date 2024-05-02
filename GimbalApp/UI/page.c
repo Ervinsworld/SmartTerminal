@@ -10,43 +10,42 @@
 //父子页面关系表，二维数组每行的第一个元素是父页面，其余是子页面，索引号和UI_page结构体的data对应
 const uint8_t PageMapTable[FatherPageNum][MaxSonPageNum] = 
 {
-	{Light, Off, On},
-	{Mode, Bright1, Bright2, Bright3},
-	{Window, Bar},
-	{MotorPlay, Free, Ratchet, Fixed},
+	{Light1, Off, On},
+	{Light2, Bright1, Bright2, Bright3},
+	{Light3, LightBar},
+	{Settings, BriBar, IntensBar},
 };
 
 //页面底部的字符串信息，对于pSlide模式的页面，其索引号和UI_page结构体的data对应
 const char* bottomStr[PageNum][3] = 
 {
-	{"Light", "", ""},
+	{"Light1", "", ""},
 	{"OFF", "", ""},
 	{"ON", "", ""},
-	{"Mode", "", ""},
+	{"Light2", "", ""},
 	{"Low", "", ""},
 	{"Medium", "", ""},
 	{"High", "", ""},
-	{"Brightness", "", ""},
-	{"Free", "Ratchet", "Fixed"},
+	{"Light3", "", ""},
 	{"Block", "Car"},
+	{"Brightness", "Intensity"},
 };
 
 UIPage UIpages[PageNum] = 
 {	
-{pStatic, 0, 1, BMP_LIGHT_48x48},//data值1表示灯光关闭，2表示灯光开启
+{pStatic, 0, 1, BMP_LIGHT1_48x48},//data值1表示灯光关闭，2表示灯光开启
 {nStatic, 0, 0, BMP_OFF_48x48},
 {nStatic, 0, 0, BMP_ON_48x48},
-{pStatic, 0, 1, BMP_Sunny_48x48},//data值1，2，3代表亮度1，2，3
+{pStatic, 0, 1, BMP_LIGHT2_48x48},//data值1，2，3代表亮度1，2，3
 {nStatic, 0, 0, BMP_BRIGHT1_48x48},
 {nStatic, 0, 0, BMP_BRIGHT2_48x48},
 {nStatic, 0, 0, BMP_BRIGHT3_48x48},
-{pStatic, 0, 1, BMP_WINDOW_48x48},//data恒为1
-{pSlide, 3, 1, BMP_XBOX_48x48},//data值1, 2, 3代表 Free, Ratchet, Fixed模式
+{pStatic, 0, 1, BMP_LIGHT3_48x48},//data恒为1
 {pSlide, 2, 1, BMP_SWITCH_48x48},
-{nDynamic, 0, 0, NULL},//bar页面，data存储bar的值，0-100，精度1
-{nDynamic, 0, 0, BMP_FREE_48x48},//Free页面
-{nDynamic, 0, 0, BMP_RATCHET_48x48},//Ratchet页面
-{nDynamic, 0, 0, BMP_FIXED_48x48},//Fixed页面
+{pSlide, 2, 1, BMP_SETTINGS_48x48},
+{nBar, 0, 0, NULL},//lightBar页面，data存储bar的值，0-100，精度1, 开机默认为0
+{nBar, 0, 100,NULL}, //BriBar页面，data存储bar的值，0-100，精度1, 开机默认为100
+{nBar, 0, 50,NULL}, //DampingBar页面，data存储bar的值，0-100，精度1, 开机默认为50
 };
 
 
@@ -102,7 +101,7 @@ int8_t PageDown(){
 	uint8_t id = getCurrentpageId();
 	UIPage page = getCurrentpage();
 	//若该页是被动状态，则无法执行翻页操作
-	if((page.InfMode==nStatic) || (page.InfMode==nDynamic))
+	if((page.InfMode==nStatic) || (page.InfMode==nBar) || (page.InfMode==nDynamic))
 		return -1;
 	do{
 		if(id==PageNum){
@@ -111,7 +110,7 @@ int8_t PageDown(){
 		else{
 			id++;
 		}
-	}while((UIpages[id-1].InfMode==nStatic) || (UIpages[id-1].InfMode==nDynamic));
+	}while((UIpages[id-1].InfMode==nStatic) || (UIpages[id-1].InfMode==nBar) || (UIpages[id-1].InfMode==nDynamic));
 	clearPage();
 	setCurrentpage(id);
 	showPage();
@@ -132,7 +131,7 @@ int8_t PageUp(){
 	uint8_t id = getCurrentpageId();
 	UIPage page = getCurrentpage();
 	//若该页是被动状态，则无法执行翻页操作
-	if((page.InfMode==nStatic) || (page.InfMode==nDynamic))
+	if((page.InfMode==nStatic) || (page.InfMode==nBar) || (page.InfMode==nDynamic))
 		return -1;
 	do{
 		if(id==1){
@@ -142,7 +141,7 @@ int8_t PageUp(){
 			id--;
 		}
 
-	}while((UIpages[id-1].InfMode==nStatic) || (UIpages[id-1].InfMode==nDynamic));
+	}while((UIpages[id-1].InfMode==nStatic) || (UIpages[id-1].InfMode==nBar) || (UIpages[id-1].InfMode==nDynamic));
 	clearPage();
 	setCurrentpage(id);
 	showPage();
@@ -247,23 +246,9 @@ int8_t PageIn(){
 
 int8_t PageOut(){
 	int i, j;
-	//若为Bar页面
-	if(g_currentId == Bar){
-		vTaskDelay(OLED_DELAY);
-		clearBackArrow();
-		vTaskDelay(OLED_DELAY);
-		clearBar();
-		vTaskDelay(OLED_DELAY);
-		clearString();
-		vTaskDelay(OLED_DELAY);
-		setCurrentpage(Window);
-		showPage();
-		return 0;
-	}
-	//若为其他页面
 	for(i=0; i<FatherPageNum; i++){
 		for(int j=1; j<MaxSonPageNum; j++){
-			if(PageMapTable[i][j] == getCurrentpageId()){
+			if(PageMapTable[i][j] == g_currentId){
 				clearPage();
 				setCurrentpage(PageMapTable[i][0]);
 				showPage();
@@ -274,6 +259,63 @@ int8_t PageOut(){
 	return -1;
 }
 
+/**********************************************************************
+ * 函数名称： sonPageSwitch
+ * 功能描述： 用于子页面的切换
+ * 输入参数： 无
+ * 输出参数： 无
+ * 返 回 值： -1为失败，0为成功
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/6	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+int8_t sonPageSwitch(PageID targetPage){
+	int i, j;
+	int currentPageFaId = -1, targetPageFaId = -1;//记录现页面和父页面的id
+	uint8_t targetPageNum;
+	//若现页面不是nStatic，返回-1
+	if(g_currentPage.InfMode!=nStatic)
+		return -1;
+	for(i=0; i<FatherPageNum; i++){
+		for(int j=1; j<MaxSonPageNum; j++){
+			if(PageMapTable[i][j] == g_currentId){
+				currentPageFaId = i;
+			}
+			else if(PageMapTable[i][j] == targetPage){
+				targetPageFaId = i;
+				targetPageNum = j;
+			}
+		}
+	}
+	//判断页面是否有共同父页面，若否则返回-1
+	if(currentPageFaId!=targetPageFaId)
+		return -1;
+	//修改父页面的data值
+	setPagedata(PageMapTable[targetPageFaId][0], targetPageNum);
+	//执行换页操作
+	clearString();
+	clearMainIcon();
+	setCurrentpage(targetPage);
+	showString();
+	OLED_DrawBMP(g_mainIcon_Xstart,g_mainIcon_Ystart,g_mainIcon_XEnd,g_mainIcon_YEnd,g_currentPage.mainBMP);
+	return 0;
+}
+
+/**********************************************************************
+ * 函数名称： setScreenBri
+ * 功能描述： 设置页面亮度
+ * 输入参数： 0x00~0xff
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2024/4/6	     V1.0	  Ervin	      创建
+ ***********************************************************************/
+void setScreenBri(uint8_t value){
+	//g_currentPage = UIpages[id];
+	WriteCmd(0x81); //--set contrast control register
+    WriteCmd(value); //亮度调节 0x00~0xff
+}
 
 /**********************************************************************
  * 函数名称： setCurrentpage
@@ -371,18 +413,13 @@ int8_t setPagedata(uint8_t id, uint8_t data){
  * 2024/4/6	     V1.0	  Ervin	      创建
  ***********************************************************************/
 void showPage(){
-	//nDynamic模式需根据每个页面特殊处理
-	if(g_currentPage.InfMode == nDynamic){
+	if(g_currentPage.InfMode == nBar){
 		showBackArrow();
-		if(g_currentId == Bar){
-			vTaskDelay(OLED_DELAY);
-			showbarFrame();
-			barInit();
-			showbardata();
-		}
-		else if(g_currentId == Free || g_currentId == Ratchet || g_currentId == Fixed){
-			OLED_DrawBMP(g_mainIcon_Xstart,g_mainIcon_Ystart,g_mainIcon_XEnd,g_mainIcon_YEnd,g_currentPage.mainBMP);
-		}				
+		vTaskDelay(OLED_DELAY);
+		showbarFrame();
+		barInit();
+		vTaskDelay(OLED_DELAY);
+		//showBottomData(getCurrentpage().data);	
 		return;
 	}
 	//若为滑动模式则显示箭头
@@ -407,12 +444,22 @@ void showPage(){
  * 2024/4/6	     V1.0	  Ervin	      创建
  ***********************************************************************/
 void clearPage(){
+	if(g_currentPage.InfMode == nBar){
+		vTaskDelay(OLED_DELAY);
+		clearBackArrow();
+		vTaskDelay(OLED_DELAY);
+		clearBar();
+		vTaskDelay(OLED_DELAY);
+		clearString();
+		vTaskDelay(OLED_DELAY);
+		return;
+	}
+	else if(g_currentPage.InfMode == pSlide)
+		clearArrows();
+	else if(g_currentPage.InfMode == nStatic)
+		clearBackArrow();
 	clearMainIcon();
 	clearString();
-	if(g_currentPage.InfMode == pSlide)
-		clearArrows();
-	else if(g_currentPage.InfMode == nStatic||g_currentPage.InfMode == nDynamic)
-		clearBackArrow();
 }
 
 /**********************************************************************
@@ -427,7 +474,7 @@ void clearPage(){
  ***********************************************************************/
 
 int8_t barInit(){
-	if(g_currentId != Bar)
+	if(g_currentPage.InfMode != nBar)
 		return -1;
 	int i;
 	OLED_SetPos(BarXStart,BarYStart);
@@ -448,7 +495,9 @@ int8_t barInit(){
  ***********************************************************************/
 
 int8_t showbar(){
-	if(g_currentId != Bar)
+//	if(g_currentId != LightBar)
+//		return -1;
+	if(g_currentPage.InfMode != nBar)
 		return -1;
 	static uint8_t last_value = 0;
 	int8_t error;
@@ -515,21 +564,21 @@ void clearBar(){
 }
 
 /**********************************************************************
- * 函数名称： showbardata
+ * 函数名称： showBottomData
  * 功能描述： 数值条底部数值的显示函数
- * 输入参数： 无
+ * 输入参数： int
  * 输出参数： 无
  * 返 回 值： 0为成功，-1为失败
  * 修改日期        版本号     修改人	      修改内容
  * -----------------------------------------------
  * 2024/4/19	     V1.0	  Ervin	      创建
  ***********************************************************************/
-int8_t showbardata(){
+int8_t showBottomData(int8_t data){
 	char s[7] = {0};
 	char result_s[7] = " ";
-	if(g_currentId!=Bar)
+	if(g_currentPage.InfMode!=nBar)
 		return -1;
-	Int2String(g_currentPage.data, s);
+	Int2String(data, s);
 	//给转换完成的数字前后都加上一个空格“ ”
 	strcat(s, " ");
 	strcat(result_s, s);
@@ -538,6 +587,7 @@ int8_t showbardata(){
 	g_string_LenRes = len<<3;
 	g_string_Xpos = ((Xres-g_string_LenRes)>>1) - 1;
 	OLED_ShowStr(g_string_Xpos, g_string_Ypos, (unsigned char*)result_s, g_stringSize);
+	return 0;
 }
 
 /**********************************************************************

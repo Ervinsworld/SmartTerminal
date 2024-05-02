@@ -26,14 +26,30 @@ Project File Date:  04/30/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
-compiling freertos.c...
-..\GimbalApp\Joystick\joystick.h(7): warning:  #1-D: last line of file ends without a newline
-  #endif
-../Core/Src/freertos.c: 1 warning, 0 errors
+compiling UI.c...
+..\GimbalApp\UI\UI.c(66): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        if(g_currentMotorInf.angle<_3_PI_4 - angleDiff){
+..\GimbalApp\UI\UI.c(76): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        if(g_currentMotorInf.angle>_PI_4 - angleDiff){
+..\GimbalApp\UI\UI.c(77): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                targetAngle = _PI - angleDiff;
+..\GimbalApp\UI\UI.c(107): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                        float minAngle = _PI - angleDiff; //最小边界值
+..\GimbalApp\UI\UI.c(127): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        case BriBar: setScreenBri((float)getCurrentpage().data*2.55);break;
+..\GimbalApp\UI\UI.c(128): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        case IntensBar:setIntens((float)getCurrentpage().data*0.4+20);break;
+..\GimbalApp\UI\UI.c(198): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                        case Bright1: diffAngle = _PI - TargetAngle;    break;
+..\GimbalApp\UI\UI.c(206): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                diffAngle = -(float)getCurrentpage().data*_PI/50 + _PI - TargetAngle;
+..\GimbalApp\UI\UI.c(254): warning:  #223-D: function "printf" declared implicitly
+                printf("%d\n", getCurrentpageId());
+..\GimbalApp\UI\UI.c: 9 warnings, 0 errors
 linking...
-Program Size: Code=27508 RO-data=6796 RW-data=484 ZI-data=20580  
+Program Size: Code=27940 RO-data=5928 RW-data=464 ZI-data=20576  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 1 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 9 Warning(s).
 
 <h2>Software Packages used:</h2>
 
