@@ -1,4 +1,4 @@
-drivertester_f407\ui.o: ..\GimbalApp\UI\UI.c
+drivertester_f407\ui.o: ..\App\UI\UI.c
 drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_oled.h
 drivertester_f407\ui.o: ../Core/Inc/i2c.h
 drivertester_f407\ui.o: ../Core/Inc/main.h
@@ -40,11 +40,11 @@ drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\ui.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_joystick.h
-drivertester_f407\ui.o: ..\GimbalApp\UI\page.h
-drivertester_f407\ui.o: ..\GimbalApp\UI\UI.h
+drivertester_f407\ui.o: ..\App\UI\page.h
+drivertester_f407\ui.o: ..\App\UI\UI.h
 drivertester_f407\ui.o: ../Drivers/USER_Driver/driver_motorComm.h
-drivertester_f407\ui.o: ..\GimbalApp\Motor\pid.h
-drivertester_f407\ui.o: ..\GimbalApp\Motor\Motor.h
+drivertester_f407\ui.o: ..\App\Motor\pid.h
+drivertester_f407\ui.o: ..\App\Motor\Motor.h
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 drivertester_f407\ui.o: ../Core/Inc/FreeRTOSConfig.h
 drivertester_f407\ui.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h

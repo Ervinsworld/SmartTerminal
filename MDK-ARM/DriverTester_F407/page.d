@@ -1,5 +1,5 @@
-drivertester_f407\page.o: ..\GimbalApp\UI\page.c
-drivertester_f407\page.o: ..\GimbalApp\UI\page.h
+drivertester_f407\page.o: ..\App\UI\page.c
+drivertester_f407\page.o: ..\App\UI\page.h
 drivertester_f407\page.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 drivertester_f407\page.o: ../Core/Inc/stm32f4xx_hal_conf.h
 drivertester_f407\page.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h
@@ -48,4 +48,4 @@ drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/por
 drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
 drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 drivertester_f407\page.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
-drivertester_f407\page.o: ..\GimbalApp\UI\Icons.c
+drivertester_f407\page.o: ..\App\UI\Icons.c

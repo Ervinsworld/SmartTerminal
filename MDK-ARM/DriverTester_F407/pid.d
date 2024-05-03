@@ -1,5 +1,5 @@
-drivertester_f407\pid.o: ..\GimbalApp\Motor\pid.c
-drivertester_f407\pid.o: ..\GimbalApp\Motor\pid.h
+drivertester_f407\pid.o: ..\App\Motor\pid.c
+drivertester_f407\pid.o: ..\App\Motor\pid.h
 drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 drivertester_f407\pid.o: ../Core/Inc/stm32f4xx_hal_conf.h
 drivertester_f407\pid.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h

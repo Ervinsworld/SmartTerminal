@@ -1,4 +1,4 @@
-drivertester_f407\joystick.o: ..\GimbalApp\Joystick\Joystick.c
+drivertester_f407\joystick.o: ..\App\Joystick\Joystick.c
 drivertester_f407\joystick.o: ../Drivers/USER_Driver/driver_joystick.h
 drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 drivertester_f407\joystick.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -37,7 +37,7 @@ drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_
 drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-drivertester_f407\joystick.o: ../GimbalApp/UI/page.h
+drivertester_f407\joystick.o: ..\App\UI\page.h
 drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 drivertester_f407\joystick.o: ../Core/Inc/FreeRTOSConfig.h
 drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h

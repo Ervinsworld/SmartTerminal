@@ -1,4 +1,4 @@
-drivertester_f407\motor.o: ..\GimbalApp\Motor\Motor.c
+drivertester_f407\motor.o: ..\App\Motor\Motor.c
 drivertester_f407\motor.o: ../Drivers/USER_Driver/driver_motorComm.h
 drivertester_f407\motor.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 drivertester_f407\motor.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -37,8 +37,8 @@ drivertester_f407\motor.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr
 drivertester_f407\motor.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\motor.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\motor.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-drivertester_f407\motor.o: ..\GimbalApp\Motor\pid.h
-drivertester_f407\motor.o: ..\GimbalApp\Motor\Motor.h
+drivertester_f407\motor.o: ..\App\Motor\pid.h
+drivertester_f407\motor.o: ..\App\Motor\Motor.h
 drivertester_f407\motor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 drivertester_f407\motor.o: ../Core/Inc/FreeRTOSConfig.h
 drivertester_f407\motor.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
