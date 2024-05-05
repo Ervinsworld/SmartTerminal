@@ -22,11 +22,34 @@ Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
 C:\Users\16081\Desktop\SmartTerminal\terminal_firmware\SmartTerminal\MDK-ARM\DriverTester_F407.uvprojx
-Project File Date:  05/03/2024
+Project File Date:  05/05/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 0 Warning(s).
+compiling UI.c...
+..\App\UI\UI.c(66): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        if(getMotorAngle()<_3_PI_4 - angleDiff){
+..\App\UI\UI.c(76): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        if(getMotorAngle()>_PI_4 - angleDiff){
+..\App\UI\UI.c(77): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                targetAngle = _PI - angleDiff;
+..\App\UI\UI.c(107): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                        float minAngle = _PI - angleDiff; //最小边界值
+..\App\UI\UI.c(124): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        case BriBar: setScreenBri((float)getCurrentpage().data*2.55);break;
+..\App\UI\UI.c(125): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        case IntensBar:setIntens((float)getCurrentpage().data*0.4+20);break;
+..\App\UI\UI.c(194): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                        case Bright1: diffAngle = _PI - targetAngle;    break;
+..\App\UI\UI.c(202): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                                diffAngle = -(float)getCurrentpage().data*_PI/50 + _PI - targetAngle;
+..\App\UI\UI.c(254): warning:  #223-D: function "printf" declared implicitly
+                printf("%d\n", getCurrentpageId());
+..\App\UI\UI.c: 9 warnings, 0 errors
+linking...
+Program Size: Code=28008 RO-data=5928 RW-data=464 ZI-data=20576  
+FromELF: creating hex file...
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 9 Warning(s).
 
 <h2>Software Packages used:</h2>
 

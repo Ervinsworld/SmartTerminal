@@ -28,7 +28,7 @@ void MotorPid_Task(void *params){
 	while(1){
 		xSemaphoreTake(MotorPidSemaphore, portMAX_DELAY);
 		xQueuePeek(TargetAngleQueueHandle, &targetAngle, 0);
-		SendMessage2Motor(cascade_loop(targetAngle, g_currentMotorInf.angle, g_currentMotorInf.speed), motorID);
+		SendMessage2Motor(cascade_loop(targetAngle, getMotorAngle(), getMotorSpeed()), motorID);
 		//printf("%f, %f, %f\n", angle, baseAngle, targetAngle);
 		xSemaphoreGive(MotorPidSemaphore);
 		vTaskDelay(pdMS_TO_TICKS(1));
@@ -52,8 +52,8 @@ void AnglePrint_Task(void *params){
 		//xQueuePeek(MotorRawQueueHandle, &rxData, 0);
 		xQueuePeek(TargetAngleQueueHandle, &targetAngle, 0);
 		xQueuePeek(AngleDiffQueueHandle, &diffAngle, 0);
-		printf("%f, %f, %f\n", g_currentMotorInf.angle, diffAngle, targetAngle);//物理角度，角度差值，目标角度
-		//printf("%f, %f\n", g_currentMotorInf.angle, g_currentMotorInf.speed);
+		printf("%f, %f, %f\n", getMotorAngle(), diffAngle, targetAngle);//物理角度，角度差值，目标角度
+		//printf("%f, %f\n", getMotorAngle(), getMotorSpeed());
 		vTaskDelay(50);
 	}
 }

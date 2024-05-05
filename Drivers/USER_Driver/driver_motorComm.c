@@ -4,7 +4,7 @@
 #include "queue.h"
 #include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
 
-MotorInf g_currentMotorInf;
+static MotorInf g_currentMotorInf;
 //extern QueueHandle_t MotorRawQueueHandle;
 
 /**********************************************************************
@@ -22,6 +22,16 @@ MotorInf g_currentMotorInf;
 
 void MotorCommInit(){
 	MyCAN_Init();
+}
+
+//角度获取
+float getMotorAngle(){
+	return g_currentMotorInf.angle;
+}
+
+//速度获取
+float getMotorSpeed(){
+	return g_currentMotorInf.speed;
 }
 
 /**********************************************************************
@@ -61,7 +71,7 @@ void SendMessage2Motor(float voltage, uint8_t motorID)
 
 /**********************************************************************
  * 函数名称： HAL_CAN_RxFifo0MsgPendingCallback
- * 功能描述： CAN收到数据的中断回调(使用xQueueSendFromISR保护数据程序会无故卡死，这里只能使用全局变量传递数据)
+ * 功能描述： CAN收到数据的中断回调(使用xQueueSendFromISR保护数据程序会无故卡死，这里只能牺牲一些实时性在中断中处理数据)
  * 输入参数： 无
  * 输出参数： 无
  * 返 回 值： 无
@@ -87,6 +97,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
 void MotorComm_Test(void){
 	SendMessage2Motor(2, 1);
-	printf("angle is %f\n", g_currentMotorInf.angle);
-	printf("speed is %f\n", g_currentMotorInf.speed);
+	printf("angle is %f\n", getMotorAngle());
+	printf("speed is %f\n", getMotorSpeed());
 }
