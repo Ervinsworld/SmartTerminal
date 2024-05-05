@@ -26,30 +26,46 @@ Project File Date:  05/05/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
-compiling UI.c...
-..\App\UI\UI.c(66): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                        if(getMotorAngle()<_3_PI_4 - angleDiff){
-..\App\UI\UI.c(76): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                        if(getMotorAngle()>_PI_4 - angleDiff){
-..\App\UI\UI.c(77): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                                targetAngle = _PI - angleDiff;
-..\App\UI\UI.c(107): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                        float minAngle = _PI - angleDiff; //最小边界值
-..\App\UI\UI.c(124): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                        case BriBar: setScreenBri((float)getCurrentpage().data*2.55);break;
-..\App\UI\UI.c(125): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                        case IntensBar:setIntens((float)getCurrentpage().data*0.4+20);break;
-..\App\UI\UI.c(194): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                                        case Bright1: diffAngle = _PI - targetAngle;    break;
-..\App\UI\UI.c(202): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                                diffAngle = -(float)getCurrentpage().data*_PI/50 + _PI - targetAngle;
-..\App\UI\UI.c(254): warning:  #223-D: function "printf" declared implicitly
-                printf("%d\n", getCurrentpageId());
-..\App\UI\UI.c: 9 warnings, 0 errors
+compiling page.c...
+..\App\UI\page.c(144): warning:  #188-D: enumerated type mixed with another type
+        }while(getPage(id).InfMode==nStatic || getPage(id).InfMode==nBar || getPage(id).InfMode==nDynamic);
+..\App\UI\page.c(144): warning:  #188-D: enumerated type mixed with another type
+        }while(getPage(id).InfMode==nStatic || getPage(id).InfMode==nBar || getPage(id).InfMode==nDynamic);
+..\App\UI\page.c(144): warning:  #188-D: enumerated type mixed with another type
+        }while(getPage(id).InfMode==nStatic || getPage(id).InfMode==nBar || getPage(id).InfMode==nDynamic);
+..\App\UI\page.c(149): warning:  #188-D: enumerated type mixed with another type
+        setCurrentpage(id);
+..\App\UI\page.c(178): warning:  #188-D: enumerated type mixed with another type
+        }while(getPage(id).InfMode==nStatic || getPage(id).InfMode==nBar || getPage(id).InfMode==nDynamic);
+..\App\UI\page.c(178): warning:  #188-D: enumerated type mixed with another type
+        }while(getPage(id).InfMode==nStatic || getPage(id).InfMode==nBar || getPage(id).InfMode==nDynamic);
+..\App\UI\page.c(178): warning:  #188-D: enumerated type mixed with another type
+        }while(getPage(id).InfMode==nStatic || getPage(id).InfMode==nBar || getPage(id).InfMode==nDynamic);
+..\App\UI\page.c(183): warning:  #188-D: enumerated type mixed with another type
+        setCurrentpage(id);
+..\App\UI\page.c(266): warning:  #188-D: enumerated type mixed with another type
+        setCurrentpage(sonPage);
+..\App\UI\page.c(294): warning:  #188-D: enumerated type mixed with another type
+        setCurrentpage(faPage);
+..\App\UI\page.c(311): warning:  #177-D: variable "j" was declared but never referenced
+        int i, j;
+..\App\UI\page.c(549): warning:  #177-D: variable "j" was declared but never referenced
+        int i, j;
+..\App\UI\page.c(571): warning:  #223-D: function "vTaskDelay" declared implicitly
+                vTaskDelay(OLED_DELAY);
+..\App\UI\page.c(601): warning:  #223-D: function "vTaskDelay" declared implicitly
+                vTaskDelay(OLED_DELAY);
+..\App\UI\page.c(878): warning:  #1-D: last line of file ends without a newline
+  }
+..\App\UI\page.c(599): warning:  #177-D: function "clearPage" was declared but never referenced
+  static void clearPage(){
+..\App\UI\page.c(804): warning:  #177-D: function "clearBottom" was declared but never referenced
+  static void clearBottom(){
+..\App\UI\page.c: 17 warnings, 0 errors
 linking...
-Program Size: Code=27996 RO-data=5924 RW-data=464 ZI-data=20576  
+Program Size: Code=27996 RO-data=5908 RW-data=464 ZI-data=20576  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 9 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 17 Warning(s).
 
 <h2>Software Packages used:</h2>
 
