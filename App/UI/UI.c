@@ -267,11 +267,7 @@ void UIPrint_Task(void *params){
  * 2024/4/6	     V1.0	  Ervin	      创建
  ***********************************************************************/
 void UI_Init(){
-	OLED_Init();
-	OLED_CLS();
-	PagesInfInit();
-	setCurrentpage(Light1);//将switchpage作为开机初始页面
-	showPage();
+	PageInit();
 	vTaskDelay(1000);
 }
 
