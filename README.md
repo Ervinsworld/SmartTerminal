@@ -2,13 +2,13 @@
 ![图片](https://github.com/Ervinsworld/SmartTerminal/blob/main/1.MainBoard/4.Docs/images/body1.jpg "pic")
 ### Introduction
 A desptop_terminal with a 1.3 inch oled,a joystick and a programmed knob.
-The knob is a BLDC, benefit to the FOC controller, it can create more interesting interface experience.
-The terminal have a serial port for communication,so you can use it to controller everything u can think about in your room.
-Of course, it won't be limited to control items ,you can inject your inspiration with programming.
+The knob is a BLDC, benefit to the FOC controller, it can create lot of interesting interactive experience.
+The terminal is actually the basic part of a IoT plan, which aims to provide a physical interaction for all the IoT devices.
 ### Hardware
-- STM32F103 FOC driver_controller
 - STM32F407 Main_controller
+- STM32F103 FOC driver_controller
 ### Software
 Freertos
+> 3D models, hardware, software files all in SmartTerminal/1.MainBoard
 
 
