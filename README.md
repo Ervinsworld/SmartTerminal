@@ -1,5 +1,6 @@
 # SmartTerminal
 ![图片](https://github.com/Ervinsworld/SmartTerminal/blob/main/1.MainBoard/4.Docs/images/body1.jpg "pic")
+> 详细的中文介绍和教程在模块各自文件夹内
 ### Video
 Link is [here](https://www.bilibili.com/video/BV1Vm421p7aq)
 ### Introduction
