@@ -19,7 +19,7 @@
     │          UI.c          --page的上层文件，负责接收电机驱动和摇杆的数据决定如何进行页面操作
     │          UI.h          --接口文件
     │
-    └─Drivers
+    └─Drivers        --存放驱动程序
         └─USER_Driver           
                 driver_irq.c       --存放中断回调函数的集合
                 driver_joystick.c  --摇杆驱动
