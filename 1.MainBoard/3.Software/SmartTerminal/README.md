@@ -1,4 +1,5 @@
 ### 自己编写部分的代码结构如下
+```
 ──SmartTerminal
     ├─App            --存放freertos的应用
     │  ├─Joystick        --负责摇杆值的处理并给UI任务发送通知
@@ -19,8 +20,7 @@
     │          UI.h          --接口文件
     │
     └─Drivers
-        └─USER_Driver
-                ascii.h      
+        └─USER_Driver           
                 driver_irq.c       --存放中断回调函数的集合
                 driver_joystick.c  --摇杆驱动
                 driver_joystick.h
@@ -30,6 +30,7 @@
                 driver_motorComm.h
                 driver_mpu6050.c    --没有用到
                 driver_mpu6050.h
+                ascii.h             --存放常用字符点阵
                 driver_oled.c       --oled的驱动
                 driver_oled.h
                 driver_timer.c
