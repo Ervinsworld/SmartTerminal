@@ -9,7 +9,30 @@
 extern QueueHandle_t TargetAngleQueueHandle;
 extern QueueHandle_t AngleDiffQueueHandle;
 extern SemaphoreHandle_t MotorPidSemaphore;
+
+extern QueueHandle_t rawSpeedHandle;
+extern QueueHandle_t rawAngleHandle;
+extern QueueHandle_t realSpeedHandle;
+extern QueueHandle_t realAngleHandle;
+
+
 //extern QueueHandle_t MotorRawQueueHandle;
+
+void CalMotorData_Task(void *params){
+	//calculate real speed & angle
+	while(1){
+		float rawAngle = 0;
+		float rawSpeed = 0;
+		xQueuePeek(rawAngleHandle, &rawAngle, 0);
+		xQueuePeek(rawSpeedHandle, &rawSpeed, 0);
+		rawAngle = rawAngle/1000.0f;
+		rawSpeed = rawSpeed/10.0f;
+		xQueueOverwrite(realAngleHandle, &rawAngle);
+		xQueueOverwrite(realSpeedHandle, &rawSpeed);
+		vTaskDelay(pdMS_TO_TICKS(1));
+	}
+}
+
 
 /**********************************************************************
  * 函数名称： MotorPid_Task
@@ -25,15 +48,35 @@ void MotorPid_Task(void *params){
 	float targetAngle = 0;
 	MotorPIDInit();
 	xSemaphoreGive(MotorPidSemaphore);//初始状态置信号量为1
+	//SendMessage2Motor(0, motorID);
 	while(1){
 		xSemaphoreTake(MotorPidSemaphore, portMAX_DELAY);
 		xQueuePeek(TargetAngleQueueHandle, &targetAngle, 0);
-		SendMessage2Motor(cascade_loop(targetAngle, getMotorAngle(), getMotorSpeed()), motorID);
+		
+		//printf("%f, %f\n", rawAngle, angle);
+		//printf("%f, %f\n", rawAngle, rawSpeed);
+		//printf("%f, %f\n", getMotorAngle(), getMotorSpeed());
+		
+		//send message
+		SendMessage2Motor(cascade_loop(targetAngle,  getMotorAngle(), getMotorSpeed()), motorID);
 		//printf("%f, %f, %f\n", angle, baseAngle, targetAngle);
 		xSemaphoreGive(MotorPidSemaphore);
 		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 }
+
+float getMotorAngle(void){
+	float angle;
+	//xQueuePeek(realInfHandle.AngleHandle, &angle, 0);
+	xQueuePeek(realAngleHandle, &angle, 0);
+	return angle;
+};
+
+float getMotorSpeed(void){
+	float speed;
+	xQueuePeek(realSpeedHandle, &speed, 0);
+	return speed;
+};
 
 /**********************************************************************
  * 函数名称： AnglePrint_Task
@@ -57,3 +100,4 @@ void AnglePrint_Task(void *params){
 		vTaskDelay(50);
 	}
 }
+

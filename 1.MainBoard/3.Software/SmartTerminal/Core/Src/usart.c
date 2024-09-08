@@ -26,6 +26,7 @@
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart6;
 
 /* USART1 init function */
 
@@ -54,6 +55,35 @@ void MX_USART1_UART_Init(void)
   /* USER CODE BEGIN USART1_Init 2 */
 
   /* USER CODE END USART1_Init 2 */
+
+}
+/* USART6 init function */
+
+void MX_USART6_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART6_Init 0 */
+
+  /* USER CODE END USART6_Init 0 */
+
+  /* USER CODE BEGIN USART6_Init 1 */
+
+  /* USER CODE END USART6_Init 1 */
+  huart6.Instance = USART6;
+  huart6.Init.BaudRate = 115200;
+  huart6.Init.WordLength = UART_WORDLENGTH_8B;
+  huart6.Init.StopBits = UART_STOPBITS_1;
+  huart6.Init.Parity = UART_PARITY_NONE;
+  huart6.Init.Mode = UART_MODE_TX_RX;
+  huart6.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart6.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART6_Init 2 */
+
+  /* USER CODE END USART6_Init 2 */
 
 }
 
@@ -85,6 +115,33 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 
   /* USER CODE END USART1_MspInit 1 */
   }
+  else if(uartHandle->Instance==USART6)
+  {
+  /* USER CODE BEGIN USART6_MspInit 0 */
+
+  /* USER CODE END USART6_MspInit 0 */
+    /* USART6 clock enable */
+    __HAL_RCC_USART6_CLK_ENABLE();
+
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    /**USART6 GPIO Configuration
+    PC6     ------> USART6_TX
+    PC7     ------> USART6_RX
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF8_USART6;
+    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+    /* USART6 interrupt Init */
+    HAL_NVIC_SetPriority(USART6_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(USART6_IRQn);
+  /* USER CODE BEGIN USART6_MspInit 1 */
+
+  /* USER CODE END USART6_MspInit 1 */
+  }
 }
 
 void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
@@ -108,20 +165,527 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
   /* USER CODE END USART1_MspDeInit 1 */
   }
+  else if(uartHandle->Instance==USART6)
+  {
+  /* USER CODE BEGIN USART6_MspDeInit 0 */
+
+  /* USER CODE END USART6_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_USART6_CLK_DISABLE();
+
+    /**USART6 GPIO Configuration
+    PC6     ------> USART6_TX
+    PC7     ------> USART6_RX
+    */
+    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_6|GPIO_PIN_7);
+
+    /* USART6 interrupt Deinit */
+    HAL_NVIC_DisableIRQ(USART6_IRQn);
+  /* USER CODE BEGIN USART6_MspDeInit 1 */
+
+  /* USER CODE END USART6_MspDeInit 1 */
+  }
 }
 
 /* USER CODE BEGIN 1 */
-//重定义printf和getchar，便于调试
+
+
+
+#pragma import(__use_no_semihosting)
+struct __FILE
+{
+	int a;
+};
+FILE __stdout;
+FILE __stdin;
+
+void _sys_exit(int x)
+{
+	
+}
+
+/*****************************************************
+*function: 写字符文件函敿
+*param1: 输出的字笿
+*param2: 文件指针
+*return: 输出字符的ASCII砿
+******************************************************/
 int fputc(int ch, FILE *f)
 {
-  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xffff);
-  return ch;
+	HAL_UART_Transmit(&huart1, (uint8_t*)&ch, 1, 10);
+	return ch;
 }
- 
-int fgetc(FILE * f)
+/*****************************************************
+*function: 读字符文件函敿
+*param1: 文件指针
+*return: 读取字符的ASCII砿
+******************************************************/
+int fgetc(FILE *f)
 {
-  uint8_t ch = 0;
-  HAL_UART_Receive(&huart1,&ch, 1, 0xffff);
-  return ch;
+	uint8_t ch = 0;
+	HAL_UART_Receive(&huart1, (uint8_t*)&ch, 1, 10);
+	return (int)ch;
 }
+
+/***************************************/
+
+static uint8_t rx_data = 0;            //接收的字笿
+static uint8_t rx_len = 0;             //接收的长庿
+static uint8_t usart_rx_buf[200] = {0};//保存接收的数捿
+
+//调用HAL库接收函敿,等待接收数据
+void USART_StartRx(void)
+{
+	HAL_UART_Receive_IT(&huart6, (uint8_t*)&rx_data, 1);
+}
+
+void EnableUART6IRQ(void)
+{
+    HAL_NVIC_SetPriority(USART6_IRQn, 0, 1);
+    HAL_NVIC_EnableIRQ(USART6_IRQn);
+    
+    __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE); 
+}
+
+enum AT_STATUS {
+	INIT_STATUS,
+	LEN_STATUS,
+	DATA_STATUS
+};
+
+static enum AT_STATUS g_status = INIT_STATUS;
+
+#define DATA_BUF_LEN 512
+static char g_ESP8266DataBuff[DATA_BUF_LEN];
+static int g_DataBuffIndex = 0;
+static int g_DataLen = 0;
+
+#define PACKET_BUF_LEN 512
+static char g_ESP8266PacketBuff[PACKET_BUF_LEN];
+static int g_PacketR = 0;
+static int g_PacketW = 0;
+
+static void ESP8266PutPacketToBuf(char *buf, int len)
+{
+	int i;
+	int w;
+	
+	for (i = 0; i < len; i++)
+	{
+		w = (g_PacketW+1) & 511;
+		if (w != g_PacketR) /* 未满 */
+		{
+			g_ESP8266PacketBuff[g_PacketW] = buf[i];
+			g_PacketW = w;
+		}
+		else
+		{
+			return;
+		}
+	}
+}
+
+
+int ESP8266ReadPacket(unsigned char *buf, int len)
+{
+	int i;
+
+	for (i = 0; i < len; i++)
+	{
+		if (g_PacketR != g_PacketW)
+		{
+			buf[i] = g_ESP8266PacketBuff[g_PacketR];
+			g_PacketR = (g_PacketR+1) & 511;
+		}
+		else
+		{
+			return i;
+		}
+	}
+
+	return i;
+}
+
+static void StoreRawDataUART2(char c)
+{
+	if (rx_len < 200)
+	{
+		usart_rx_buf[rx_len++]= c;
+	}
+}
+
+
+/**********************************************************************
+ * 函数名称： ESP8266DataProcessCallback
+ * 功能描述： 网络数据数据回调函数: 得到网络数据,构造为InputEvent
+ * 输入参数： c-网络数据
+ * 输出参数： 无
+ * 返 回 值： 无
+ * 修改日期        版本号     修改人	      修改内容
+ * -----------------------------------------------
+ * 2021/10/16	     V1.0	  韦东山	      创建
+ ***********************************************************************/ 
+
+void ESP8266DataProcessCallback(char c)
+{	
+	/* 保存数据 */
+	char *buf = g_ESP8266DataBuff;
+	int i = g_DataBuffIndex;
+	int m;
+	static unsigned int time_get_data = 0;
+	extern unsigned int xTaskGetTickCount( void );
+
+	StoreRawDataUART2(c);
+	
+#if 1
+	if (time_get_data && (xTaskGetTickCount() - time_get_data > 1000))
+	{
+		/* 超时 */
+		i = g_DataBuffIndex = 0;
+		g_status = INIT_STATUS;
+		time_get_data = 0;
+	}
+#endif
+	buf[i] = c;
+	g_DataBuffIndex++;
+
+	/* 解析: +IPD,n:xxxxxxxxxx */
+	switch (g_status)
+	{
+		case INIT_STATUS:
+		{
+			if (buf[0] != '+')
+			{
+				g_DataBuffIndex = 0;
+			}			
+			else if (i == 4)
+			{
+				if (strncmp(buf, "+IPD,", 5) == 0)
+				{
+					g_status = LEN_STATUS;
+				}
+				g_DataBuffIndex = 0;
+			}
+			break;
+		}
+
+		case LEN_STATUS:
+		{
+			if (buf[i] == ':')
+			{
+				/* 计算长度 */
+				for (m = 0; m < i; m++)
+				{
+					g_DataLen = g_DataLen * 10 + buf[m] - '0';
+				}
+				g_status = DATA_STATUS;
+				g_DataBuffIndex = 0;
+
+				time_get_data = xTaskGetTickCount();
+			}
+			else if (i >= 9)  /* ESP8266数据buffer大小是2920,  4位数: +IPD,YYYY:xxxxxx */
+			{
+				/* 都没有接收到':' */
+				g_status = INIT_STATUS;
+				g_DataBuffIndex = 0;
+			}
+			break;
+		}
+
+		case DATA_STATUS:
+		{
+			if (g_DataBuffIndex == g_DataLen)
+			{
+				/* 接收完数据 */
+				ESP8266PutPacketToBuf(buf, g_DataLen);
+				if (g_DataLen != 2)
+				{
+					printf("ISR Get Data: ");
+					for (i = 0; i < g_DataLen; i++)
+						printf("%02x ", buf[i]);
+					printf("\r\n");
+				}
+
+				/* 恢复初始状态 */
+				g_status = INIT_STATUS;
+				g_DataBuffIndex = 0;
+				g_DataLen = 0;
+			}
+			break;
+		}
+		
+	}
+
+	
+}
+
+//USART中断回调函数,保存接收的数据并启动下一次接政
+
+//注意：该中断函数已被弃用！！！//
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	usart_rx_buf[rx_len%200]= rx_data;
+	rx_len++;
+	rx_len = rx_len%200;
+	ESP8266DataProcessCallback(rx_data);
+	HAL_UART_Receive_IT(&huart6, (uint8_t*)&rx_data, 1);
+}
+
+//获取接收的数捿
+uint8_t USART2_Receive(uint8_t *rx_data)
+{
+	memcpy(rx_data, (uint8_t*)usart_rx_buf, rx_len);
+	return rx_len;
+}
+
+//UASRT2发?数捿
+void USART2_Transmit(uint8_t *pdata, uint16_t len, uint16_t tt)
+{
+    HAL_UART_Transmit(&huart6, pdata, len, tt);
+}
+
+//清除接收的数捿
+void USART2_ClearBuf(void)
+{
+    rx_len = 0;
+    memset((uint8_t*)usart_rx_buf, 0, 200);
+}
+
+
+
+
+//向ESP8266发?数捿
+uint8_t ESP8266_SendCommand(char *cmd, char *reply, uint16_t timeout)
+{
+	//1.保存传入的指仿
+	char buf[256] = {0};
+	strcat(buf, cmd); //strcpy 
+	
+	//2.处理AT指令(添加换行)
+	if (strstr(buf, "\r\n") == 0)
+	{
+		strcat(buf, "\r\n");
+	}
+	
+	//3.清理前面接收的buf
+	USART2_ClearBuf();   
+	
+	//4.发?数捿
+	USART2_Transmit((uint8_t *)buf, strlen(buf), 500);
+	
+	//5.接收数据
+	memset(buf, 0, 256); //buf清空
+	while(timeout != 0)  //超时控制
+	{
+		if (USART2_Receive((uint8_t *)buf)) //接收数据
+		{
+			//棿查结枿
+			if (strstr(buf, reply)) 
+			{
+				printf("%s Send ok!\r\n", cmd);//发?成势
+				return 0;
+			}
+		}	
+		timeout--;
+		HAL_Delay(1);
+	}
+
+	printf("%s Send error!\r\n", cmd);//发?失贿
+	return 1;
+}
+
+
+//向ESP8266发送数据
+uint8_t ESP8266_SendRawData(unsigned char *data, int len, char *reply, uint16_t timeout)
+{
+	char buf[256] = {0};
+	
+	//3.清理前面接收的buf
+	USART2_ClearBuf();   
+	
+	//4.发送数据
+	USART2_Transmit((uint8_t *)data, len, 500);
+	
+	//5.接收数据
+	memset(buf, 0, 256); //buf清空
+	while(timeout != 0)  //超时控制
+	{
+		if (USART2_Receive((uint8_t *)buf)) //接收数据
+		{
+			// 判断返回的字符串是否有期待的字符
+			if (strstr(buf, reply)) 
+			{
+				return 0;
+			}
+			else
+			{
+				timeout--;
+				HAL_Delay(1);
+			}
+		}	
+	}
+
+	return 1;
+}
+
+
+
+//获取ESP8266的IP
+uint8_t ESP8266_GetIP(void)
+{
+	uint16_t timeout = 500;
+	
+	//1.准备发?的指令 AT+CIFSR
+	char buf[256] = {0};
+	strcat(buf, "AT+CIFSR\r\n");
+	
+	//2.清理前面接收的buf
+	USART2_ClearBuf();   
+	
+	//4.发?数捿
+	USART2_Transmit((uint8_t *)buf, strlen(buf), 500);
+	
+	//5.接收数据
+	memset(buf, 0, 256); //buf清空
+	
+	while(timeout != 0)  //超时控制
+	{
+		if (USART2_Receive((uint8_t *)buf)) //接收数据
+		{
+			//棿查结枿
+			if (strstr(buf, "OK")) 
+			{
+				printf("%s", buf); //打印IP
+				//Show_IP(buf);
+				return 0;
+			}
+			else
+			{
+				timeout--;
+				HAL_Delay(1);
+			}
+		}	
+	}
+	
+	printf("Get IP Failed! \r\n"); //获取失败
+	return 1;
+}
+
+
+//ESP8266发送数据
+uint8_t ESP8266_Send_Data(char *data)
+{
+	//1.准备发?的指令 AT+CIPSEND=len
+	char buf[256] = {0};
+	uint8_t len = strlen(data);
+	sprintf(buf, "AT+CIPSEND=%d\r\n", len); //把格式化的数据写入字符串
+	if (ESP8266_SendCommand(buf, "OK", 500) == 0) //发?指仿
+	{
+		ESP8266_SendCommand(data, "SEND OK", 1000); //发?数捿
+		return 0;
+	}
+	return 1;
+}
+
+//ESP8266发送数据
+int ESP8266_Send_Packet(unsigned char *data, int len)
+{
+	//1.准备发?的指令 AT+CIPSEND=len
+	char buf[256] = {0};
+	sprintf(buf, "AT+CIPSEND=%d\r\n", len); //把格式化的数据写入字符串
+	if (ESP8266_SendCommand(buf, "OK", 500) == 0) //发?指仿
+	{
+		ESP8266_SendRawData(data, len, "SEND OK", 1000); //发?数捿
+		return len;
+	}
+	return 0;
+}
+
+#if 0
+//添加功能1：支持手动输入WIFI账号和密砿
+void Key_Update_WIFI(char *cmd, uint16_t d_time)
+{
+	char ssid_buf[20] = "Programmers";
+	char pwd_buf[20] = "100asktech";
+	char wifi_cmd[50] = "AT+CWJAP=\"";
+	
+	char ch = 0;
+	char len = 0;
+	
+	//1.设置等待时间
+	HAL_Delay(d_time);
+	
+	//2.判断是否有按锿
+	if (Key_GetFlag()) 
+	{
+		//2.1获取WIFI账号
+		printf("Please enter SSID:");
+		
+		memset(ssid_buf, 0, 20);
+		while(ch != '\r') //判断是否输入宿 
+		{
+			ch = getchar();    //获取输入的字笿
+			if(ch > ' ')
+			{
+				printf("%c",ch);
+				ssid_buf[len] = ch;//保存输入
+				len++;
+			}
+		}	
+		
+		//2.2获取WIFI密码
+		ch = 0;
+		len = 0;
+		printf("\r\nPlease enter Password:");
+
+		memset(pwd_buf, 0, 20);
+		while(ch != '\r') //判断是否输入宿 
+		{
+			ch = getchar();    //获取输入的字笿
+			if(ch > ' ')
+			{
+				printf("%c",ch);
+				pwd_buf[len] = ch;//保存输入
+				len++;
+			}
+		}	
+	}
+	printf("\r\n");
+	
+	//3.组合指令 ("AT+CWJAP=\"NETGEAR\",\"100ask.cq\"") 
+	strcat(wifi_cmd, ssid_buf);
+	strcat(wifi_cmd, "\",\"");
+	strcat(wifi_cmd, pwd_buf);
+	strcat(wifi_cmd, "\"");
+
+	memcpy(cmd, wifi_cmd, strlen(wifi_cmd));
+}
+
+#endif
+
+//添加功能2：优化展示ESP8266 IP
+/*
+"192.168.50.170"
++CIFSR:STAMAC,"ac:0b:fb:c7:df:30"
+*/
+#if 0
+void Show_IP(char *ip)
+{
+	char buf[256] = {0};
+	char ip_buf[256] = {0};
+	uint8_t len = 0;
+	
+	char *ip_offset;
+	ip_offset = strstr(ip, "STAIP")+6;
+	
+	memcpy(buf, ip_offset, strlen(ip_offset));
+	while(buf[len] != '\r')  
+	{
+		ip_buf[len] = buf[len];
+		len++;
+	}
+	
+	printf("ESP8266 IP: %s\r\n", ip_buf);
+}
+#endif
 /* USER CODE END 1 */

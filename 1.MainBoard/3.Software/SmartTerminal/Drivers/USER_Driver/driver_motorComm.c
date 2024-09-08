@@ -1,11 +1,10 @@
 #include "can.h"
 #include "driver_motorComm.h"
 #include "FreeRTOS.h"
-#include "queue.h"
-#include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
+#include "Motor.h"
 
-static MotorInf g_currentMotorInf;
-//extern QueueHandle_t MotorRawQueueHandle;
+extern QueueHandle_t rawSpeedHandle;
+extern QueueHandle_t rawAngleHandle;
 
 /**********************************************************************
  * 函数名称： MotorCommInit
@@ -24,15 +23,6 @@ void MotorCommInit(){
 	MyCAN_Init();
 }
 
-//角度获取
-float getMotorAngle(){
-	return g_currentMotorInf.angle;
-}
-
-//速度获取
-float getMotorSpeed(){
-	return g_currentMotorInf.speed;
-}
 
 /**********************************************************************
  * 函数名称： SendMessage2Motor
@@ -45,7 +35,7 @@ float getMotorSpeed(){
  * 2024/3/14	     V1.0	  Ervin	      创建
  ***********************************************************************/
 
-void SendMessage2Motor(float voltage, uint8_t motorID)
+void SendMessage2Motor(float voltage, uint8_t motorId)
 {
 	CAN_TxHeaderTypeDef header;
 	header.IDE = CAN_ID_STD;
@@ -87,10 +77,20 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	
 	if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &header, rxData) != HAL_OK)
 		return;
+	
+	if((rawSpeedHandle==0 || rawSpeedHandle==0))
+		return;
+	else{
+			//角度数据放在前四个字节, 转速数据放在第5-6字节
+		float angle = *(int32_t*)&rxData[0];
+		float speed = *(int16_t*)&rxData[4];
+		xQueueOverwriteFromISR(rawAngleHandle, &angle, NULL);
+		xQueueOverwriteFromISR(rawSpeedHandle, &speed, NULL);
+		//printf("%f, %f\n", a, b);
+	}
 
-	//xQueueOverwriteFromISR(MotorRawQueueHandle, &rxData, NULL);
-	g_currentMotorInf.angle = *(int32_t*)&rxData[0] / 1000.0f;
-	g_currentMotorInf.speed = *(int16_t*)&rxData[4] / 10.0f;
+//	g_currentMotorInf.angle = *(int32_t*)&rxData[0] / 1000.0f;
+//	g_currentMotorInf.speed = *(int16_t*)&rxData[4] / 10.0f;
 
 }
 

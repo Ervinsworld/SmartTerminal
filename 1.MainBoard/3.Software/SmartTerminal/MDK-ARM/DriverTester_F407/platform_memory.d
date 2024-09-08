@@ -1,0 +1,14 @@
+drivertester_f407\platform_memory.o: ..\mqttclient\platform\FreeRTOS\platform_memory.c
+drivertester_f407\platform_memory.o: ..\mqttclient\platform\FreeRTOS\platform_memory.h
+drivertester_f407\platform_memory.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdlib.h
+drivertester_f407\platform_memory.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdio.h
+drivertester_f407\platform_memory.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stddef.h
+drivertester_f407\platform_memory.o: D:\MDK5\ARM\ARMCC\Bin\..\include\string.h
+drivertester_f407\platform_memory.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+drivertester_f407\platform_memory.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdint.h
+drivertester_f407\platform_memory.o: ../Core/Inc/FreeRTOSConfig.h
+drivertester_f407\platform_memory.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+drivertester_f407\platform_memory.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+drivertester_f407\platform_memory.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+drivertester_f407\platform_memory.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+drivertester_f407\platform_memory.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h

@@ -35,8 +35,9 @@ void Joystick_Task(void *params){
 void ButtonTest_Task(void *params){
 	while(1){
 		//xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3|1<<4, pdTRUE, pdFALSE, portMAX_DELAY);
-		xEventGroupWaitBits(UIResponseEvent, 1<<4, pdTRUE, pdFALSE, portMAX_DELAY);
-		printf("Button is pressed!\n");
-		vTaskDelay(100);
+		//xEventGroupWaitBits(UIResponseEvent, 1<<4, pdTRUE, pdFALSE, portMAX_DELAY);
+		//printf("Button is pressed!\n");
+		vTaskDelay(3000);
+		xEventGroupSetBits(UIResponseEvent, 1<<3);
 	}
 }

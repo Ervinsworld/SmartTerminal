@@ -74,6 +74,7 @@ UIPage getCurrentpage(void);
 PageID getCurrentpageId(void);
 int8_t setCurrentPagedata(uint8_t data);
 int8_t setPagedata(uint8_t id, uint8_t data);
+int8_t getPagedata(uint8_t id);
 
 //数值条操作方法
 void showbarFrame(void);//显示数值条外框

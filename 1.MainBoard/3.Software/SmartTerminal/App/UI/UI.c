@@ -10,6 +10,17 @@
 #include "event_groups.h"               // ARM.FreeRTOS::RTOS:Event Groups
 #include "semphr.h"                     // ARM.FreeRTOS::RTOS:Core
 
+extern TaskHandle_t MotorPidTaskHandle;
+extern QueueHandle_t TargetAngleQueueHandle;
+extern QueueHandle_t AngleDiffQueueHandle;
+extern EventGroupHandle_t UIResponseEvent;
+extern EventGroupHandle_t MqttNotifyEvent;
+extern SemaphoreHandle_t UIActionSemaphore;
+extern SemaphoreHandle_t MotorPidSemaphore;
+
+void mqtt_switchNotify(float oldTargetAngle, float diffAngle, PageID targetPage, int waitTime);
+void mqtt_barNotify(uint8_t value);
+
 /**********************************************************************
  * 函数名称： UIAction_Task
  * 功能描述： 在子页面中执行相应的行为，主要是电机和屏幕的交互
@@ -20,14 +31,6 @@
  * -----------------------------------------------
  * 2024/4/19	     V1.0	  Ervin	      创建
  ***********************************************************************/
-
-extern TaskHandle_t MotorPidTaskHandle;
-extern QueueHandle_t TargetAngleQueueHandle;
-extern QueueHandle_t AngleDiffQueueHandle;
-extern EventGroupHandle_t UIResponseEvent;
-extern SemaphoreHandle_t UIActionSemaphore;
-extern SemaphoreHandle_t MotorPidSemaphore;
-
 void UIAction_Task(void *params){ 
 	PageID id;
 	float targetAngle = 0;
@@ -37,64 +40,40 @@ void UIAction_Task(void *params){
 		xSemaphoreTake(UIActionSemaphore, portMAX_DELAY);
 		xQueuePeek(AngleDiffQueueHandle, &angleDiff, portMAX_DELAY);
 		id = getCurrentpageId();
-		//printf("%f,%f\n", motorInf.angle, targetAngle);
+		//printf("%f,%f\n", getMotorAngle(), targetAngle);
 		
 		//若为nStatic页面
 		if(getCurrentpage().InfMode == nStatic){	
 			switch(id){
 				case On:{
-					if(getMotorAngle()>-_3_PI_4 - angleDiff){
-						targetAngle = 0 - angleDiff;
-						xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-						sonPageSwitch(Off);
-						vTaskDelay(pdMS_TO_TICKS(1000));
-					}
+					if(getMotorAngle()>-_3_PI_4 - angleDiff)
+						mqtt_switchNotify(0, angleDiff, Off, 1000);
 					break;
 				}
 
 				case Off:{
-					if(getMotorAngle()<-_PI_4 - angleDiff){
-						targetAngle = -_PI - angleDiff;
-						xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-						sonPageSwitch(On);
-						vTaskDelay(pdMS_TO_TICKS(1000));
-					}
+					if(getMotorAngle()<-_PI_4 - angleDiff)
+						mqtt_switchNotify(-_PI, angleDiff, On, 1000);
 					break;
 				}
 				
 				case Bright1:{
-					if(getMotorAngle()<_3_PI_4 - angleDiff){
-						targetAngle = 0 - angleDiff;
-						xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-						sonPageSwitch(Bright2);
-						vTaskDelay(pdMS_TO_TICKS(1000));
-					}
+					if(getMotorAngle()<_3_PI_4 - angleDiff)
+						mqtt_switchNotify(0, angleDiff, Bright2, 1000);
 					break;
 				}
 				
 				case Bright2:{
-					if(getMotorAngle()>_PI_4 - angleDiff){
-						targetAngle = _PI - angleDiff;
-						xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-						sonPageSwitch(Bright1);
-						vTaskDelay(pdMS_TO_TICKS(1000));
-					}
-					else if(getMotorAngle()<-_PI_4 - angleDiff){
-						targetAngle = -_PI - angleDiff;
-						xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-						sonPageSwitch(Bright3);
-						vTaskDelay(pdMS_TO_TICKS(1000));
-					}
+					if(getMotorAngle()>_PI_4 - angleDiff)
+						mqtt_switchNotify(_PI, angleDiff, Bright1, 1000);
+					else if(getMotorAngle()<-_PI_4 - angleDiff)
+						mqtt_switchNotify(-_PI, angleDiff, Bright3, 1000);
 					break;
 				}
 				
 				case Bright3:{
-					if(getMotorAngle()>-_3_PI_4 - angleDiff){
-						targetAngle = 0 - angleDiff;
-						xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
-						sonPageSwitch(Bright2);
-						vTaskDelay(pdMS_TO_TICKS(1000));
-					}
+					if(getMotorAngle()>-_3_PI_4 - angleDiff)
+						mqtt_switchNotify(0, angleDiff, Bright2, 1000);
 					break;
 				}
 				default: break;	
@@ -108,19 +87,21 @@ void UIAction_Task(void *params){
 			float maxAngle = -_PI - angleDiff;  //最大边界值
 			//将电机角度值转换为value值
 			value = -(getMotorAngle() + angleDiff)*(50/_PI) + 50;
-			
 			if(value>=-5&&value<105){
 				//确保pid任务暂停，电机断电
 				xSemaphoreTake(MotorPidSemaphore, 0);
 				SendMessage2Motor(0 ,motorID);
+				uint8_t realvalue = 0;
 				if(value<0)
-					setCurrentPagedata(0);
+					realvalue = 0;
 				else if(value > 100)
-					setCurrentPagedata(100);
+					realvalue = 100;
 				else
-					setCurrentPagedata(value);
+					realvalue = value;
+				setCurrentPagedata(realvalue);
+				
 				switch(id){
-					case LightBar: break;
+					case LightBar:mqtt_barNotify(realvalue);break;
 					case BriBar: setScreenBri((float)getCurrentpage().data*2.55);break;
 					case IntensBar:setIntens((float)getCurrentpage().data*0.4+20);break;
 					default : break;
@@ -166,7 +147,8 @@ void UI_Task(void *params){
 		InterfaceMode mode = getCurrentpage().InfMode;
 		//若为父页面
 		if((mode == pStatic)||(mode == pSlide)){
-			UIResponseEventbit = xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3|1<<4, pdTRUE, pdFALSE, portMAX_DELAY);
+			UIResponseEventbit = xEventGroupWaitBits(UIResponseEvent, 1<<0|1<<1|1<<2|1<<3|1<<4, 
+			pdTRUE, pdFALSE, portMAX_DELAY);
 			if(UIResponseEventbit){
 				//优先翻页
 				if(UIResponseEventbit&(1<<2))
@@ -269,5 +251,26 @@ void UIPrint_Task(void *params){
 void UI_Init(){
 	PageInit();
 	vTaskDelay(1000);
+}
+
+
+void mqtt_switchNotify(float oldTargetAngle, float diffAngle, PageID targetPage, int waitTime){
+	float targetAngle = oldTargetAngle - diffAngle;
+	xQueueOverwrite(TargetAngleQueueHandle, &targetAngle);
+	sonPageSwitch(targetPage);
+	if(targetPage == On || targetPage == Off)
+		xEventGroupSetBits(MqttNotifyEvent, 1<<0);
+	else if(targetPage == Bright1 || targetPage == Bright2 || targetPage == Bright3)
+		xEventGroupSetBits(MqttNotifyEvent, 1<<1);
+	vTaskDelay(pdMS_TO_TICKS(waitTime));
+}
+
+
+void mqtt_barNotify(uint8_t value){
+	static uint8_t lastvalue = 0;
+	if(lastvalue!=value){
+		xEventGroupSetBits(MqttNotifyEvent, 1<<2);
+		lastvalue = value;
+	}
 }
 

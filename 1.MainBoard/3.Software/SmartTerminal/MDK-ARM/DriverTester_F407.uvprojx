@@ -224,7 +224,7 @@
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>1</useUlib>
+            <useUlib>0</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <RoSelD>3</RoSelD>
@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/USER_Driver;../Drivers/MPU6050;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\App\Joystick;..\App\Motor;..\App\UI</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/USER_Driver;../Drivers/MPU6050;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../App/Joystick;../App/Motor;../App/UI;../mqttclient/test;../mqttclient/mqtt;../mqttclient/common;../mqttclient/platform/FreeRTOS;../mqttclient/common/log;../mqttclient/network;../mqttclient/mqttclient;../App/MQTT</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1135,26 +1135,6 @@
               <FilePath>..\Drivers\USER_Driver\driver_motorComm.c</FilePath>
             </File>
             <File>
-              <FileName>inv_mpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\MPU6050\inv_mpu.c</FilePath>
-            </File>
-            <File>
-              <FileName>inv_mpu_dmp_motion_driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\MPU6050\inv_mpu_dmp_motion_driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>mpu6050.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\MPU6050\mpu6050.c</FilePath>
-            </File>
-            <File>
-              <FileName>mpu6050_IIC.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\MPU6050\mpu6050_IIC.c</FilePath>
-            </File>
-            <File>
               <FileName>driver_led.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\USER_Driver\driver_led.c</FilePath>
@@ -1163,6 +1143,11 @@
               <FileName>driver_irq.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\USER_Driver\driver_irq.c</FilePath>
+            </File>
+            <File>
+              <FileName>driver_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\USER_Driver\driver_timer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1193,6 +1178,156 @@
               <FileName>UI.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\UI\UI.c</FilePath>
+            </File>
+            <File>
+              <FileName>mqttApp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\MQTT\mqttApp.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mqttclient</GroupName>
+          <Files>
+            <File>
+              <FileName>mqttclient.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqttclient\mqttclient.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mqttclient/log</GroupName>
+          <Files>
+            <File>
+              <FileName>fifo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\common\log\fifo.c</FilePath>
+            </File>
+            <File>
+              <FileName>format.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\common\log\format.c</FilePath>
+            </File>
+            <File>
+              <FileName>arch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\common\log\arch\freertos\arch.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mqttclient/network</GroupName>
+          <Files>
+            <File>
+              <FileName>nettype_tcp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\network\nettype_tcp.c</FilePath>
+            </File>
+            <File>
+              <FileName>network.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\network\network.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mqttclient/platform</GroupName>
+          <Files>
+            <File>
+              <FileName>platform_memory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\platform\FreeRTOS\platform_memory.c</FilePath>
+            </File>
+            <File>
+              <FileName>platform_mutex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\platform\FreeRTOS\platform_mutex.c</FilePath>
+            </File>
+            <File>
+              <FileName>platform_net_socket.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\platform\FreeRTOS\platform_net_socket.c</FilePath>
+            </File>
+            <File>
+              <FileName>platform_thread.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\platform\FreeRTOS\platform_thread.c</FilePath>
+            </File>
+            <File>
+              <FileName>platform_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\platform\FreeRTOS\platform_timer.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mqttclient/common</GroupName>
+          <Files>
+            <File>
+              <FileName>mqtt_list.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\common\mqtt_list.c</FilePath>
+            </File>
+            <File>
+              <FileName>random.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\common\random.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mqttclient/paho</GroupName>
+          <Files>
+            <File>
+              <FileName>MQTTConnectClient.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTConnectClient.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTConnectServer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTConnectServer.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTDeserializePublish.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTDeserializePublish.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTFormat.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTFormat.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTPacket.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTPacket.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTSerializePublish.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTSerializePublish.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTSubscribeClient.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTSubscribeClient.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTSubscribeServer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTSubscribeServer.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTUnsubscribeClient.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTUnsubscribeClient.c</FilePath>
+            </File>
+            <File>
+              <FileName>MQTTUnsubscribeServer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mqttclient\mqtt\MQTTUnsubscribeServer.c</FilePath>
             </File>
           </Files>
         </Group>

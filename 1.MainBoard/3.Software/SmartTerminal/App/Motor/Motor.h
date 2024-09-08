@@ -1,3 +1,6 @@
+#include "FreeRTOS.h"
+#include "queue.h"
+
 #ifndef _MOTOR__H
 #define _MOTOR__H
 
@@ -10,7 +13,11 @@
 
 #define motorID 1
 
+
+float getMotorAngle(void);
+float getMotorSpeed(void);
 void MotorPid_Task(void *params);
+void CalMotorData_Task(void *params);
 void AnglePrint_Task(void *params);
 
 #endif

@@ -1,0 +1,11 @@
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTUnsubscribeServer.c
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTPacket.h
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTConnect.h
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTPublish.h
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTSubscribe.h
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTUnsubscribe.h
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTFormat.h
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\StackTrace.h
+drivertester_f407\mqttunsubscribeserver.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdio.h
+drivertester_f407\mqttunsubscribeserver.o: ..\mqttclient\mqtt\MQTTPacket.h
+drivertester_f407\mqttunsubscribeserver.o: D:\MDK5\ARM\ARMCC\Bin\..\include\string.h

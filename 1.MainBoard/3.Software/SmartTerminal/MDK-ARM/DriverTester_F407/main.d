@@ -54,3 +54,4 @@ drivertester_f407\main.o: ../Core/Inc/dma.h
 drivertester_f407\main.o: ../Core/Inc/i2c.h
 drivertester_f407\main.o: ../Core/Inc/usart.h
 drivertester_f407\main.o: ../Core/Inc/gpio.h
+drivertester_f407\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

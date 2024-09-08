@@ -14,3 +14,4 @@ drivertester_f407\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/ta
 drivertester_f407\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 drivertester_f407\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 drivertester_f407\tasks.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/stack_macros.h
+drivertester_f407\tasks.o: D:\MDK5\ARM\ARMCC\Bin\..\include\stdio.h

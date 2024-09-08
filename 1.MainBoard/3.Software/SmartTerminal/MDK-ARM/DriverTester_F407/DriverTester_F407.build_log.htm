@@ -21,8 +21,8 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.14.0_KEIL
 Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
-C:\Users\16081\Desktop\SmartTerminal\1.MainBoard\2.Hardware\SmartTerminal\MDK-ARM\DriverTester_F407.uvprojx
-Project File Date:  05/08/2024
+C:\Users\16081\Desktop\publish\SmartTerminal\1.MainBoard\3.Software\SmartTerminal\MDK-ARM\DriverTester_F407.uvprojx
+Project File Date:  09/08/2024
 
 <h2>Output:</h2>
 Build target 'DriverTester_F407'
@@ -30,14 +30,45 @@ assembling startup_stm32f407xx.s...
 compiling main.c...
 compiling gpio.c...
 compiling freertos.c...
-..\App\Joystick\joystick.h(7): warning:  #1-D: last line of file ends without a newline
-  #endif
+../Core/Src/freertos.c(83): warning:  #177-D: variable "pcWriteBuffer" was declared but never referenced
+  static signed char pcWriteBuffer[200];
 ../Core/Src/freertos.c: 1 warning, 0 errors
 compiling adc.c...
 compiling can.c...
 compiling dma.c...
 compiling i2c.c...
 compiling usart.c...
+../Core/Src/usart.c(363): warning:  #223-D: function "strncmp" declared implicitly
+                                if (strncmp(buf, "+IPD,", 5) == 0)
+../Core/Src/usart.c(437): warning:  #223-D: function "memcpy" declared implicitly
+        memcpy(rx_data, (uint8_t*)usart_rx_buf, rx_len);
+../Core/Src/usart.c(451): warning:  #223-D: function "memset" declared implicitly
+      memset((uint8_t*)usart_rx_buf, 0, 200);
+../Core/Src/usart.c(462): warning:  #223-D: function "strcat" declared implicitly
+        strcat(buf, cmd); //strcpy 
+../Core/Src/usart.c(465): warning:  #223-D: function "strstr" declared implicitly
+        if (strstr(buf, "\r\n") == 0)
+../Core/Src/usart.c(474): warning:  #223-D: function "strlen" declared implicitly
+        USART2_Transmit((uint8_t *)buf, strlen(buf), 500);
+../Core/Src/usart.c(477): warning:  #223-D: function "memset" declared implicitly
+        memset(buf, 0, 256); //buf清空
+../Core/Src/usart.c(483): warning:  #223-D: function "strstr" declared implicitly
+                        if (strstr(buf, reply)) 
+../Core/Src/usart.c(510): warning:  #223-D: function "memset" declared implicitly
+        memset(buf, 0, 256); //buf清空
+../Core/Src/usart.c(516): warning:  #223-D: function "strstr" declared implicitly
+                        if (strstr(buf, reply)) 
+../Core/Src/usart.c(540): warning:  #223-D: function "strcat" declared implicitly
+        strcat(buf, "AT+CIFSR\r\n");
+../Core/Src/usart.c(546): warning:  #223-D: function "strlen" declared implicitly
+        USART2_Transmit((uint8_t *)buf, strlen(buf), 500);
+../Core/Src/usart.c(549): warning:  #223-D: function "memset" declared implicitly
+        memset(buf, 0, 256); //buf清空
+../Core/Src/usart.c(556): warning:  #223-D: function "strstr" declared implicitly
+                        if (strstr(buf, "OK")) 
+../Core/Src/usart.c(580): warning:  #223-D: function "strlen" declared implicitly
+        uint8_t len = strlen(data);
+../Core/Src/usart.c: 15 warnings, 0 errors
 compiling stm32f4xx_it.c...
 compiling stm32f4xx_hal_msp.c...
 compiling stm32f4xx_hal_timebase_tim.c...
@@ -75,25 +106,21 @@ compiling driver_joystick.c...
         int buttonValue;
 ..\Drivers\USER_Driver\driver_joystick.c: 2 warnings, 0 errors
 compiling driver_motorComm.c...
-..\Drivers\USER_Driver\driver_motorComm.c(60): warning:  #223-D: function "memcpy" declared implicitly
+..\Drivers\USER_Driver\driver_motorComm.c(50): warning:  #223-D: function "memcpy" declared implicitly
                 memcpy(&data[(motorID-1)*2], &(int16_t){voltage*1000}, 2);
-..\Drivers\USER_Driver\driver_motorComm.c(65): warning:  #223-D: function "memcpy" declared implicitly
+..\Drivers\USER_Driver\driver_motorComm.c(55): warning:  #223-D: function "memcpy" declared implicitly
+                memcpy(&data[(motorID-5)*2], &(int16_t){voltage*1000}, 2);
+..\Drivers\USER_Driver\driver_motorComm.c(55): warning:  #175-D: subscript out of range
                 memcpy(&data[(motorID-5)*2], &(int16_t){voltage*1000}, 2);
 ..\Drivers\USER_Driver\driver_motorComm.c(100): warning:  #223-D: function "printf" declared implicitly
         printf("angle is %f\n", getMotorAngle());
-..\Drivers\USER_Driver\driver_motorComm.c: 3 warnings, 0 errors
-compiling inv_mpu.c...
-compiling inv_mpu_dmp_motion_driver.c...
-compiling mpu6050.c...
-compiling mpu6050_IIC.c...
+..\Drivers\USER_Driver\driver_motorComm.c: 4 warnings, 0 errors
 compiling driver_led.c...
 compiling driver_irq.c...
+compiling driver_timer.c...
 compiling Joystick.c...
-..\App\Joystick\Joystick.c(39): warning:  #223-D: function "printf" declared implicitly
-                printf("Button is pressed!\n");
-..\App\Joystick\Joystick.c: 1 warning, 0 errors
 compiling Motor.c...
-..\App\Motor\Motor.c(55): warning:  #223-D: function "printf" declared implicitly
+..\App\Motor\Motor.c(98): warning:  #223-D: function "printf" declared implicitly
                 printf("%f, %f, %f\n", getMotorAngle(), diffAngle, targetAngle);//物理角度，角度差值，目标角度
 ..\App\Motor\Motor.c: 1 warning, 0 errors
 compiling pid.c...
@@ -120,39 +147,72 @@ compiling page.c...
         setCurrentpage(faPage);
 ..\App\UI\page.c(311): warning:  #177-D: variable "j" was declared but never referenced
         int i, j;
-..\App\UI\page.c(549): warning:  #177-D: variable "j" was declared but never referenced
+..\App\UI\page.c(567): warning:  #177-D: variable "j" was declared but never referenced
         int i, j;
-..\App\UI\page.c(571): warning:  #223-D: function "vTaskDelay" declared implicitly
+..\App\UI\page.c(589): warning:  #223-D: function "vTaskDelay" declared implicitly
                 vTaskDelay(OLED_DELAY);
-..\App\UI\page.c(601): warning:  #223-D: function "vTaskDelay" declared implicitly
+..\App\UI\page.c(619): warning:  #223-D: function "vTaskDelay" declared implicitly
                 vTaskDelay(OLED_DELAY);
-..\App\UI\page.c(878): warning:  #1-D: last line of file ends without a newline
+..\App\UI\page.c(896): warning:  #1-D: last line of file ends without a newline
   }
-..\App\UI\page.c(599): warning:  #177-D: function "clearPage" was declared but never referenced
+..\App\UI\page.c(617): warning:  #177-D: function "clearPage" was declared but never referenced
   static void clearPage(){
-..\App\UI\page.c(804): warning:  #177-D: function "clearBottom" was declared but never referenced
+..\App\UI\page.c(822): warning:  #177-D: function "clearBottom" was declared but never referenced
   static void clearBottom(){
 ..\App\UI\page.c: 17 warnings, 0 errors
 compiling UI.c...
-..\App\UI\UI.c(66): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                        if(getMotorAngle()<_3_PI_4 - angleDiff){
-..\App\UI\UI.c(76): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                        if(getMotorAngle()>_PI_4 - angleDiff){
-..\App\UI\UI.c(77): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                                                targetAngle = _PI - angleDiff;
-..\App\UI\UI.c(107): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\App\UI\UI.c(61): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        if(getMotorAngle()<_3_PI_4 - angleDiff)
+..\App\UI\UI.c(67): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                        if(getMotorAngle()>_PI_4 - angleDiff)
+..\App\UI\UI.c(86): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                         float minAngle = _PI - angleDiff; //最小边界值
-..\App\UI\UI.c(124): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\App\UI\UI.c(105): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                         case BriBar: setScreenBri((float)getCurrentpage().data*2.55);break;
-..\App\UI\UI.c(125): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\App\UI\UI.c(106): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                         case IntensBar:setIntens((float)getCurrentpage().data*0.4+20);break;
-..\App\UI\UI.c(194): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\App\UI\UI.c(36): warning:  #177-D: variable "targetAngle" was declared but never referenced
+        float targetAngle = 0;
+..\App\UI\UI.c(176): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                         case Bright1: diffAngle = _PI - targetAngle;    break;
-..\App\UI\UI.c(202): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\App\UI\UI.c(184): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                                 diffAngle = -(float)getCurrentpage().data*_PI/50 + _PI - targetAngle;
-..\App\UI\UI.c(254): warning:  #223-D: function "printf" declared implicitly
+..\App\UI\UI.c(236): warning:  #223-D: function "printf" declared implicitly
                 printf("%d\n", getCurrentpageId());
 ..\App\UI\UI.c: 9 warnings, 0 errors
+compiling mqttApp.c...
+..\App\MQTT\mqttApp.c(48): warning:  #177-D: variable "cnt" was declared but never referenced
+        int cnt = 0;
+..\App\MQTT\mqttApp.c(140): warning:  #1-D: last line of file ends without a newline
+  }
+..\App\MQTT\mqttApp.c(140): warning:  #940-D: missing return statement at end of non-void function "makeMsg"
+  }
+..\App\MQTT\mqttApp.c(16): warning:  #177-D: function "smarthome_msg_handler" was declared but never referenced
+  static void smarthome_msg_handler(void* client, message_data_t* msg)
+..\App\MQTT\mqttApp.c: 4 warnings, 0 errors
+compiling mqttclient.c...
+compiling fifo.c...
+compiling format.c...
+compiling arch.c...
+compiling nettype_tcp.c...
+compiling network.c...
+compiling platform_memory.c...
+compiling platform_mutex.c...
+compiling platform_net_socket.c...
+compiling platform_thread.c...
+compiling platform_timer.c...
+compiling mqtt_list.c...
+compiling random.c...
+compiling MQTTConnectClient.c...
+compiling MQTTConnectServer.c...
+compiling MQTTDeserializePublish.c...
+compiling MQTTFormat.c...
+compiling MQTTPacket.c...
+compiling MQTTSerializePublish.c...
+compiling MQTTSubscribeClient.c...
+compiling MQTTSubscribeServer.c...
+compiling MQTTUnsubscribeClient.c...
+compiling MQTTUnsubscribeServer.c...
 compiling croutine.c...
 compiling event_groups.c...
 compiling list.c...
@@ -164,9 +224,9 @@ compiling cmsis_os2.c...
 compiling heap_4.c...
 compiling port.c...
 linking...
-Program Size: Code=27996 RO-data=5908 RW-data=464 ZI-data=20576  
+Program Size: Code=42100 RO-data=6780 RW-data=528 ZI-data=32720  
 FromELF: creating hex file...
-"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 35 Warning(s).
+"DriverTester_F407\DriverTester_F407.axf" - 0 Error(s), 54 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -177,7 +237,7 @@ Package Vendor: ARM
    * Component: CORE Version: 3.40.0
 
 <h2>Collection of Component include folders:</h2>
-  C:\Users\16081\Desktop\SmartTerminal\1.MainBoard\2.Hardware\SmartTerminal\MDK-ARM\RTE
+  C:\Users\16081\Desktop\publish\SmartTerminal\1.MainBoard\3.Software\SmartTerminal\MDK-ARM\RTE
   D:\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include
   D:\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\2.17.1
 

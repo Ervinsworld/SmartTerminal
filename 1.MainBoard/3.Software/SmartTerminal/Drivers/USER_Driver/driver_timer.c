@@ -149,4 +149,9 @@ uint64_t system_get_ns(void)
     return ns;
 }
 
+/*返回系统启动后过了多长时间(us)*/
+unsigned long getRunTimeCounterValue(void){
+	return system_get_ns()/1000;
+}
+
 

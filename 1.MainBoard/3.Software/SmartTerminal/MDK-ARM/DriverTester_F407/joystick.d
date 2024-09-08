@@ -37,7 +37,7 @@ drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_
 drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 drivertester_f407\joystick.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-drivertester_f407\joystick.o: ..\App\UI\page.h
+drivertester_f407\joystick.o: ../App/UI/page.h
 drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 drivertester_f407\joystick.o: ../Core/Inc/FreeRTOSConfig.h
 drivertester_f407\joystick.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
