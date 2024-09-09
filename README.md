@@ -26,3 +26,7 @@ quick guide to MainBoard Software path:[MainBoard Software](1.MainBoard/3.Softwa
 ![图片](https://github.com/Ervinsworld/SmartTerminal/blob/main/1.MainBoard/4.Docs/images/mqtt2.gif "mqtt2")
 ![图片](https://github.com/Ervinsworld/SmartTerminal/blob/main/1.MainBoard/4.Docs/images/mqtt3.gif "mqtt3")
 
+### Vision
+This project is aimed to construct an interesting IoT terminal framework.
+
+Wish this framework can help u create your personal IoT terminal!
